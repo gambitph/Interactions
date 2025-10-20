@@ -65,7 +65,7 @@ if ( ! class_exists( 'Interact_Rest_Editor' ) ) {
 		public static function validate_string( $value, $request, $param ) {
 			if ( ! is_string( $value ) ) {
 				// Translators: %s is the parameter name.
-				return new WP_Error( 'invalid_param', sprintf( esc_html__( '%s must be a string.', 'interactions' ), $param ) );
+				return new WP_Error( 'invalid_param', sprintf( esc_html__( '%s must be a string.', 'interactions' ), esc_html( $param ) ) );
 			}
 			return true;
 		}
@@ -79,12 +79,12 @@ if ( ! class_exists( 'Interact_Rest_Editor' ) ) {
 			$data = json_decode( $value );
 			if ( ! $data ) {
 				// Translators: %s is the parameter name.
-				return new WP_Error( 'invalid_param', sprintf( esc_html__( '%s must be a valid JSON string.', 'interactions' ), $param ) );
+				return new WP_Error( 'invalid_param', sprintf( esc_html__( '%s must be a valid JSON string.', 'interactions' ), esc_html( $param ) ) );
 			}
 
 			$result = Interact_Interaction::validate_interaction_data( $data );
 			if ( is_wp_error( $result ) ) {
-				return $is_valid;
+				return $result;
 			}
 
 			return true;
