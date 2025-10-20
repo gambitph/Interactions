@@ -5,5 +5,4 @@ build-plugin/
 .DS_Store
 *.log
 *.map
-package-lock.json
 pro__premium_only/
