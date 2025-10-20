@@ -95,7 +95,7 @@ if ( ! class_exists( 'Interact_Interaction' ) ) {
 					$action_value = $action['value'];
 
 					if ( $action_config->verify_integrity ) {
-						$signature = hash_hmac( 'sha256', json_encode( $action_value ), interact_salt() );
+						$signature = hash_hmac( 'sha256', wp_json_encode( $action_value ), interact_salt() );
 
 						// Add the signature to the data.
 						$interaction_data['timelines'][ $timeline_index ]['actions'][ $action_index ]['signature'] = $signature;
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Interact_Interaction' ) ) {
 		 */
 		public function set_data( $interaction_data ) {
 			$this->interaction_data = $interaction_data;
-			$this->post->post_content = json_encode( $interaction_data );
+			$this->post->post_content = wp_json_encode( $interaction_data );
 			$this->post->post_name = $interaction_data['key'];
 			$this->post->post_title = $interaction_data['title'];
 		}
@@ -214,7 +214,7 @@ if ( ! class_exists( 'Interact_Interaction' ) ) {
 
 					if ( ! empty( $action_config ) && $action_config->verify_integrity ) {
 						$action_value = $action['value'];
-						$signature = hash_hmac( 'sha256', json_encode( $action_value ), interact_salt() );
+						$signature = hash_hmac( 'sha256', wp_json_encode( $action_value ), interact_salt() );
 
 						// If the signature is not valid, remove the action from the timeline.
 						if ( ! hash_equals( $signature, $action['signature'] ) ) {

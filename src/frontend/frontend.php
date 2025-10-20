@@ -137,7 +137,7 @@ if ( ! class_exists( 'Interact_Frontend' ) ) {
 			}
 
 			// Set the interactions.
-			wp_add_inline_script( 'interact-frontend', 'InteractRunner.configure(' . json_encode( $animations ) . ');' );
+			wp_add_inline_script( 'interact-frontend', 'InteractRunner.configure(' . wp_json_encode( $animations ) . ');' );
 
 			// Add the closing part of the InteractRunner check script
 			wp_add_inline_script( 'interact-frontend',
