@@ -1,0 +1,11 @@
+{
+    "id": "scrollToTop",
+    "name": "Scroll to Top",
+    "description": "Scroll to the top of the page when clicked",
+    "category": "button",
+    "apply": {
+        "name": "Scroll to Top",
+        "category": "click"
+    },
+    "preview": "scrollToTop"
+}

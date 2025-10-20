@@ -1,0 +1,11 @@
+{
+    "id": "glowingButton",
+    "name": "Glowing Button",
+    "description": "Element glows on hover",
+    "category": "button",
+    "apply": {
+        "name": "Glowing Effect",
+        "category": "hover"
+    },
+    "preview": "glowingButton"
+}

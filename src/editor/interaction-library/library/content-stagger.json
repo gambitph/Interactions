@@ -1,0 +1,7 @@
+{
+    "id": "contentStagger",
+    "name": "Content Stagger",
+    "description": "A column with staggered content",
+    "category": "columns",
+    "preview": "contentStagger"
+}

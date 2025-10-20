@@ -1,0 +1,187 @@
+{
+    "id": "flickeringText",
+    "name": "Flickering Text",
+    "description": "A text block spreads when hovered",
+    "category": "text",
+    "apply": {
+        "name": "Flickering effect",
+        "category": "hover"
+    },
+    "preview": "flickeringText",
+    "interactionSetup": {
+        "type": "hover",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.1,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": "0"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0.1,
+                            "duration": 0.1,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": "0.5"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0.2,
+                            "duration": 0.1,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": "1"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0.3,
+                            "duration": 0.1,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": "0.5"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0.4,
+                            "duration": 0.1,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": "1"
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": []
+            }
+        ],
+        "options": {}
+    },
+    "configurableOptions": [
+        {
+            "key": "interactionType",
+            "controls": {
+                "name": "Interaction Type",
+                "type": "select",
+                "help": "Choose the interaction type that triggers the flickering effect.",
+                "options": [
+                    {
+                        "value": "click",
+                        "label": "Click"
+                    },
+                    {
+                        "value": "hover",
+                        "label": "Hover"
+                    },
+                    {
+                        "value": "enterViewport",
+                        "label": "Entered into viewport"
+                    }
+                ],
+                "default": "hover"
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "type"
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "spread",
+            "controls": {
+                "name": "Spread",
+                "type": "number",
+                "help": "Adjust how much the text spreads during the animation.",
+                "min": 1,
+                "max": 5,
+                "step": 0.5,
+                "default": 1
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        0,
+                        "value",
+                        "value"
+                    ],
+                    "transformFn": "spreadingTextSpread"
+                }
+            ]
+        }
+    ],
+    "serializedBlockExample": "<!-- wp:heading -->\r\n<h2 class=\"wp-block-heading\">Interactions</h2>\r\n<!-- /wp:heading -->"
+}

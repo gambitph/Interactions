@@ -1,0 +1,302 @@
+.interact-interaction-library-modal {
+	min-height: calc(100vh - 5rem);
+	width: calc(100vw - 5rem);
+	--wp-components-color-accent: #05f;
+
+	&:has(.interact-interaction-library__configure-wrapper) {
+		width: 700px;
+	}
+
+	// Modal content
+	.components-modal__content {
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		margin-top: 60px;
+	}
+
+	.components-modal__content > div:not(.components-modal__header) {
+		height: 100%;
+
+		&:has(.interact-interaction-library__select-wrapper) {
+			background-color: #e4e4e7;
+		}
+	}
+
+	// Header
+	.components-modal__header {
+		padding: 0 24px;
+		margin: 0;
+		height: 60px;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.components-modal__header + div {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.components-modal__header-heading {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.interact-interaction-library-modal__search {
+			max-width: 250px;
+
+			.components-base-control__field {
+				margin: 0;
+			}
+		}
+	}
+
+	// Select modal body wrapper
+	.interact-interaction-library__select-wrapper {
+		display: flex;
+		margin: 0;
+	}
+
+	// Side bar
+	.interact-interaction-library__select__sidebar {
+		background-color: #fff;
+		width: 240px;
+		height: 100%;
+		position: fixed;
+		padding: 24px 24px 0;
+		border-right: 1px solid #dcdcde;
+		overflow-y: auto;
+	}
+
+	.interact-interaction-library__select__categories {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+
+		.interact-interaction-library__select__category {
+			width: 100%;
+			padding: 12px 16px;
+			cursor: pointer;
+			font-size: 14px;
+			transition: background-color 0.2s ease;
+			background-color: transparent;
+
+			&.active {
+				background-color: #eee;
+				font-weight: 700;
+			}
+		}
+	}
+
+	// Main content
+	.interact-interaction-library__select__content {
+		background-color: #e4e4e7;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding: 24px;
+		margin-left: 240px;
+	}
+
+	// Presets grid
+	.interact-interaction-library__select__presets {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+		gap: 24px;
+	}
+
+	.interact-interaction-library__select__preset-card {
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+
+		&:hover video {
+			transform: scale(1.05);
+		}
+
+		.interact-pro-crown-icon {
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			z-index: 2;
+		}
+
+		&.interact-premium-preset {
+
+			.interact-interaction-library__select__buttons-overlay {
+				flex-direction: column;
+				gap: 4px !important;
+
+				> * {
+					margin: 0 !important;
+				}
+
+				svg {
+					margin-bottom: 8px !important;
+					box-shadow: 0 0 16px #fff;
+				}
+			}
+
+			.interact-interaction-library__select__premium-icon {
+				fill: #05f !important;
+				border-radius: 100px;
+				padding: 8px;
+				width: 40px;
+				height: 40px;
+				border: 1px solid #05f;
+				background: #0055ff12;
+			}
+
+			.interact-pro-upsell-button {
+				margin-top: 16px !important;
+			}
+		}
+
+		.interact-interaction-library__select__preset-wrapper {
+			position: relative;
+			display: inline-block;
+			overflow: hidden;
+			border: 1px solid #dcdcde;
+			border-radius: 16px;
+			transition: border-color 0.2s ease;
+
+			&:hover {
+				border-color: #05f;
+			}
+
+			video {
+				transition: all 0.2s ease;
+				width: 100%;
+				min-height: 100%;
+				aspect-ratio: 1660 / 1080;
+				object-fit: cover;
+			}
+
+			.interact-interaction-library__select__buttons-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #ffffffe0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 10px;
+				opacity: 0;
+				transition: opacity 0.3s ease;
+
+				button, .components-button {
+					border-radius: 4px;
+
+					&:nth-child(2) {
+						background: #0d41aa;
+
+						&:hover {
+							background: #06296f;
+						}
+					}
+				}
+			}
+
+			button:hover, .components-button:hover {
+				background-color: #0f4ac2;
+			}
+
+			&:hover .interact-interaction-library__select__buttons-overlay,
+			.interact-show-overlay {
+				opacity: 1;
+			}
+		}
+
+		.interact-interaction-library__select__title-wrapper {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+			margin-top: 8px;
+			padding-inline: 4px;
+
+			h3 {
+				font-weight: 400;
+				font-size: 1.1em;
+				margin: 0;
+			}
+
+			.interact-greyed-out {
+				color: #888;
+				opacity: 0.7;
+			}
+		}
+
+		.interact-interaction-library__select__favorites-button {
+			margin-inline-start: auto;
+			box-shadow: none;
+
+			svg:hover {
+				color: #fd3997;
+			}
+		}
+	}
+}
+
+.interact-interaction-library__back-button-wrapper {
+	padding: 8px 24px;
+	border-bottom: 1px solid #eee;
+}
+
+.interact-interaction-library__configure-scroll-wrapper {
+	flex: 1 1 auto;
+	overflow-y: scroll;
+}
+
+.interact-interaction-library__configure-wrapper {
+	display: grid;
+	grid-template-columns: 0.8fr 1fr;
+	min-height: 100%;
+
+
+	> * {
+		padding: 24px;
+
+		&:not(:first-child) {
+			border-left: 1px solid #eee;
+		}
+
+		h2 {
+			margin-top: 0;
+		}
+	}
+
+	.interact-interaction-library__configure__preset-preview {
+		width: 100%;
+		max-height: 200px;
+		object-fit: cover;
+		border-radius: 8px;
+	}
+
+	.interact-interaction-library__configure__control {
+		margin: 24px 0;
+	}
+}
+
+.interact-interaction-library__configure__target-selector {
+	background: #f9fafb;
+	border: 1px solid #eee;
+	padding: 12px 16px;
+	border-radius: 4px;
+
+	summary {
+		cursor: pointer;
+	}
+
+
+	> div {
+		margin-top: 12px;
+	}
+}
+
+.interact-interaction-library__configure__apply-button {
+	border-top: 1px solid #ddd;
+	padding: 16px 24px;
+	text-align: right;
+}

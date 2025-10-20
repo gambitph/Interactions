@@ -1,0 +1,141 @@
+{
+    "id": "columnsFadeInStagger",
+    "name": "Columns Fade In Stagger",
+    "description": "The column inside of a columns block fades in one by one",
+    "category": "columns",
+    "preview": "columnsFadeInStagger",
+    "config": "columnsFadeInStagger",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "block-name",
+                            "value": "core/column",
+                            "blockName": "core/column",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": 0
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "block-name",
+                            "value": "core/column",
+                            "blockName": "core/column",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0.3
+                        },
+                        "value": {
+                            "opacity": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": []
+            }
+        ],
+        "options": {}
+    },
+    "configurableOptions": [
+        {
+            "key": "count",
+            "controls": {
+                "name": "Count",
+                "type": "number",
+                "help": "The number of inner columns.",
+                "min": 1,
+                "max": 5,
+                "step": 1,
+                "default": 3
+            }
+        },
+        {
+            "key": "interval",
+            "controls": {
+                "name": "Time interval",
+                "type": "number",
+                "help": "How long does the next column enters in seconds.",
+                "min": 0,
+                "max": 5,
+                "step": 0.1,
+                "default": 0.3
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        1,
+                        "timing",
+                        "stagger"
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "duration",
+            "controls": {
+                "name": "Duration",
+                "type": "number",
+                "help": "The time it takes for a column to enter.",
+                "min": 0,
+                "max": 5,
+                "step": 0.1,
+                "default": 1
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        1,
+                        "timing",
+                        "duration"
+                    ]
+                }
+            ]
+        }
+    ],
+    "serializedParentBlock": "<!-- wp:columns {\"style\":{\"spacing\":{\"blockGap\":{\"left\":\"var:preset|spacing|20\"}}}} -->\r\n<div class=\"wp-block-columns\"><!-- wp:column -->\r\n<div class=\"wp-block-column\"></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns -->",
+    "serializedChildrenBlocks": [
+        "<!-- wp:column {\"style\":{\"color\":{\"background\":\"#0b0d4b\"},\"spacing\":{\"padding\":{\"top\":\"var:preset|spacing|30\",\"bottom\":\"var:preset|spacing|30\",\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\"}},\"border\":{\"radius\":\"10px\"}}} -->\r\n<div class=\"wp-block-column has-background\" style=\"border-radius:10px;background-color:#0b0d4b;padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"style\":{\"border\":{\"radius\":\"10px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1538964173425-93884d739596?q=80&amp;w=870&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:10px;aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image -->\r\n\r\n<!-- wp:heading {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\"} -->\r\n<h2 class=\"wp-block-heading has-base-color has-text-color has-link-color\">Verdant</h2>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-base-color has-text-color has-link-color has-medium-font-size\">Lush greenery symbolizing life and growth. A bold statement of freshness and vitality.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column {\"style\":{\"color\":{\"background\":\"#0b0d4b\"},\"spacing\":{\"padding\":{\"top\":\"var:preset|spacing|30\",\"bottom\":\"var:preset|spacing|30\",\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\"}},\"border\":{\"radius\":\"10px\"}}} -->\r\n<div class=\"wp-block-column has-background\" style=\"border-radius:10px;background-color:#0b0d4b;padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"style\":{\"border\":{\"radius\":\"10px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1541417904950-b855846fe074?q=80&amp;w=1682&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:10px;aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image -->\r\n\r\n<!-- wp:heading {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\"} -->\r\n<h2 class=\"wp-block-heading has-base-color has-text-color has-link-color\">Solstice</h2>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-base-color has-text-color has-link-color has-medium-font-size\">The turning point of seasons and renewal. A symbol of balance and timeless energy.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column {\"style\":{\"color\":{\"background\":\"#0b0d4b\"},\"spacing\":{\"padding\":{\"top\":\"var:preset|spacing|30\",\"bottom\":\"var:preset|spacing|30\",\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\"}},\"border\":{\"radius\":\"10px\"}}} -->\r\n<div class=\"wp-block-column has-background\" style=\"border-radius:10px;background-color:#0b0d4b;padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"style\":{\"border\":{\"radius\":\"10px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&amp;w=3133&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:10px;aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image -->\r\n\r\n<!-- wp:heading {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\"} -->\r\n<h2 class=\"wp-block-heading has-base-color has-text-color has-link-color\">Drift</h2>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-base-color has-text-color has-link-color has-medium-font-size\">The gentle flow of rivers, clouds, and time. A vision of freedom in constant motion.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column {\"style\":{\"color\":{\"background\":\"#0b0d4b\"},\"spacing\":{\"padding\":{\"top\":\"var:preset|spacing|30\",\"bottom\":\"var:preset|spacing|30\",\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\"}},\"border\":{\"radius\":\"10px\"}}} -->\r\n<div class=\"wp-block-column has-background\" style=\"border-radius:10px;background-color:#0b0d4b;padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"style\":{\"border\":{\"radius\":\"10px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1538964173425-93884d739596?q=80&amp;w=870&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:10px;aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image -->\r\n\r\n<!-- wp:heading {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\"} -->\r\n<h2 class=\"wp-block-heading has-base-color has-text-color has-link-color\">Verdant</h2>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-base-color has-text-color has-link-color has-medium-font-size\">Lush greenery symbolizing life and growth. A bold statement of freshness and vitality.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column {\"style\":{\"color\":{\"background\":\"#0b0d4b\"},\"spacing\":{\"padding\":{\"top\":\"var:preset|spacing|30\",\"bottom\":\"var:preset|spacing|30\",\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\"}},\"border\":{\"radius\":\"10px\"}}} -->\r\n<div class=\"wp-block-column has-background\" style=\"border-radius:10px;background-color:#0b0d4b;padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"style\":{\"border\":{\"radius\":\"10px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1538964173425-93884d739596?q=80&amp;w=870&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:10px;aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image -->\r\n\r\n<!-- wp:heading {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\"} -->\r\n<h2 class=\"wp-block-heading has-base-color has-text-color has-link-color\">Verdant</h2>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph {\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}}},\"textColor\":\"base\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-base-color has-text-color has-link-color has-medium-font-size\">Lush greenery symbolizing life and growth. A bold statement of freshness and vitality.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->"
+    ],
+    "applyWhitelist": []
+}

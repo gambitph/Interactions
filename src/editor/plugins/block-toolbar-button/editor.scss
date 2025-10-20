@@ -1,0 +1,17 @@
+.interact-block-toolbar-button__select-popover {
+	--wp-components-color-accent: #05f;
+}
+
+.interact-block-toolbar-button__select-popover .components-popover__content {
+	width: 280px;
+}
+.interact-block-toolbar-button__select-popover__add-button {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.interact-block-toolbar-button__select-popover__delete-all__wrapper {
+	display: flex;
+	justify-content: flex-end;
+}

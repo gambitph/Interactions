@@ -1,0 +1,255 @@
+{
+    "id": "hero4",
+    "name": "Hero 4",
+    "description": "Hero with multiple moving shapes according to mouse movement.",
+    "category": "hero",
+    "preview": "hero4",
+    "interactionSetup": {
+        "type": "mouseHovering",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shapes",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "-30",
+                            "y": "",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shapes",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 100,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "30",
+                            "y": "",
+                            "z": ""
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shapes",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "-30",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shape-1",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "-50",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shape-5",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "-20",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shape-6",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "-50",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shapes",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 100,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "30",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shape-1",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 100,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "50",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shape-5",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 100,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "20",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "class",
+                            "value": "shape-6",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 100,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "-2",
+                            "y": "50",
+                            "z": ""
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": {
+            "resetDelay": "0"
+        }
+    },
+    "serializedBlockExample": "<!-- wp:cover {\"customOverlayColor\":\"#0b0d4b\",\"isUserOverlayColor\":true,\"minHeight\":100,\"minHeightUnit\":\"vh\",\"align\":\"full\",\"layout\":{\"type\":\"constrained\"}} -->\r\n<div class=\"wp-block-cover alignfull\" style=\"min-height:100vh\"><span aria-hidden=\"true\" class=\"wp-block-cover__background has-background-dim-100 has-background-dim\" style=\"background-color:#0b0d4b\"></span><div class=\"wp-block-cover__inner-container\"><!-- wp:heading {\"textAlign\":\"center\",\"level\":1,\"style\":{\"typography\":{\"fontSize\":\"4rem\"}}} -->\r\n<h1 class=\"wp-block-heading has-text-align-center\" style=\"font-size:4rem\"><strong>Welcome to Your Next Big Thing</strong></h1>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph {\"align\":\"center\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-text-align-center has-medium-font-size\">This is a short description that highlights your product, service, or brand. Keep it concise, engaging, and focused on the value you provide.</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:buttons {\"layout\":{\"type\":\"flex\",\"justifyContent\":\"center\"}} -->\r\n<div class=\"wp-block-buttons\"><!-- wp:button {\"className\":\"is-style-fill\",\"style\":{\"color\":{\"background\":\"#f00069\"},\"border\":{\"width\":\"0px\",\"style\":\"none\",\"radius\":\"8px\"}}} -->\r\n<div class=\"wp-block-button is-style-fill\"><a class=\"wp-block-button__link has-background wp-element-button\" style=\"border-style:none;border-width:0px;border-radius:8px;background-color:#f00069\">Get Started</a></div>\r\n<!-- /wp:button --></div>\r\n<!-- /wp:buttons -->\r\n\r\n<!-- wp:columns {\"align\":\"full\",\"style\":{\"spacing\":{\"blockGap\":{\"left\":\"0\"},\"padding\":{\"left\":\"0\",\"right\":\"0\",\"top\":\"20vh\",\"bottom\":\"20vh\"}}}} -->\r\n<div class=\"wp-block-columns alignfull\" style=\"padding-top:20vh;padding-right:0;padding-bottom:20vh;padding-left:0\"><!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:html -->\r\n<div class=\"shapes shape-1\" style=\"position: absolute; top: 30%; left: 15%; width: 70px; height: 70px; background-color: transparent; border: 10px solid #0050F0; border-radius: 10px; transform: rotate(-20deg)\"></div>\r\n<!-- /wp:html -->\r\n\r\n<!-- wp:html -->\r\n<div class=\"shapes shape-4\"  style=\"position: absolute; top: 80%; left: 10%; width: 75px; height: 75px; border-radius: 50px; background-color: #f00069; transform: rotate(-30deg)\"></div>\r\n<!-- /wp:html --></div>\r\n<!-- /wp:column -->\r\n\r\n<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:html -->\r\n<div class=\"shapes shape-2\" style=\"position: absolute; top: 50%; left: 30%; background-color: transparent; border-radius: 200px; width: 100px; height: 100px; border: 20px solid #FFFFFF; transform: rotate(10deg)\"></div>\r\n<!-- /wp:html -->\r\n\r\n<!-- wp:html -->\r\n<div class=\"shapes shape-5\" style=\"position: absolute; width: 150px; height: 150px; background-color: #0050F0; top: 70%; left:50%; border-radius: 15px; transform: rotate(10deg)\"></div>\r\n<!-- /wp:html --></div>\r\n<!-- /wp:column -->\r\n\r\n<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:html -->\r\n<div class=\"shapes shape-3\" style=\"width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 40px solid #f00069; position: absolute; top: 25%; left: 80%; transform: rotate(30deg)\"></div>\r\n<!-- /wp:html -->\r\n\r\n<!-- wp:html -->\r\n<div class=\"shapes shape-6\"  style=\"position: absolute; top: 50%; left: 70%; width: 100px; height: 100px; border-radius: 50px; background-color: #ffffff; transform: rotate(-20deg)\"></div>\r\n<!-- /wp:html --></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns --></div></div>\r\n<!-- /wp:cover -->",
+    "applyWhitelist": []
+}

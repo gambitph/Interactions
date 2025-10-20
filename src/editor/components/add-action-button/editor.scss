@@ -1,0 +1,26 @@
+.interact-action-list-popover.interact-popover .components-panel__body {
+	max-width: 100%;
+	width: 900px;
+}
+.interact-popover-help {
+	font-size: 12px;
+	font-style: normal;
+	color: #5e5e5e;
+	background: #f6f6f6;
+	padding: 8px;
+	line-height: 1;
+}
+.interact-add-action-popover__close-button {
+	float: right;
+}
+.interact-action-list-item--focused {
+	outline: 1px solid !important;
+}
+.interact-action-list-item-data {
+	background: #d6e0f4;
+	border-radius: 3px;
+	color: #222;
+	font-size: 11px;
+	margin-inline: 8px;
+	padding: 2px 6px;
+}

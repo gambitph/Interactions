@@ -1,0 +1,6 @@
+node_modules/
+vendor/
+build/
+dist/
+*.min.js
+src/editor/animejs/index.js

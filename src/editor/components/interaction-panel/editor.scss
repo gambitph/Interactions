@@ -1,0 +1,56 @@
+.interact-interaction-card {
+	padding: 16px;
+	margin-top: 70px; // Push the contents down because the controls are fixed on top
+	h2 {
+		margin: 0 0 8px;
+	}
+}
+.interact-interaction__active-toggle {
+	color: #999;
+	&.is-active {
+		color: #03a503;
+	}
+}
+.interact-interaction-card-controls {
+	display: flex;
+	align-items: center;
+	background: #fff;
+	z-index: 1;
+	position: fixed;
+	padding: 16px;
+	gap: 8px;
+	border-bottom: 1px solid #ddd;
+	max-width: -webkit-fill-available;
+	height: fit-content;
+	> :first-child {
+		margin-inline-end: auto;
+	}
+}
+
+.interact-panel-description {
+	color: #5e5e5e;
+	font-size: 12px;
+	font-style: normal;
+}
+
+.interact-panel-blink {
+	animation: interact-panel-blink 0.4s linear 1;
+	animation-delay: 1s;
+}
+
+@keyframes interact-panel-blink {
+	0%,
+	50%,
+	100% {
+		opacity: 1;
+	}
+	25%,
+	75% {
+		opacity: 0.3;
+	}
+}
+
+.interact-export-container {
+	text-align: center;
+	margin-top: 20px;
+}

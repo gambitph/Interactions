@@ -1,0 +1,27 @@
+.interact-pro-upsell {
+	padding: 16px;
+    background: #0055ff12;
+    border: 1px solid #588fff;
+    border-radius: 12px;
+	gap: 12px !important;
+}
+
+.interact-pro-upsell-button {
+	background: #05f !important;
+	color: #fff !important;
+	border-radius: 4px !important;
+	transition: background-color 0.2s ease;
+
+	&:hover {
+		background: #000068 !important;
+		color: #fff !important;
+	}
+}
+
+.interact-pro-upsell__content {
+	flex: 1;
+
+	h4 {
+		margin: 0 !important;
+	}
+}

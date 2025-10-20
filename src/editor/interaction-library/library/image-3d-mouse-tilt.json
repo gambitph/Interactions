@@ -1,0 +1,11 @@
+{
+    "id": "image3dMouseTilt",
+    "name": "Image 3D Mouse Tilt",
+    "description": "Rotates in 3D according to the mouse position",
+    "category": "image",
+    "apply": {
+        "name": "Image 3D Mouse Tilt Effect",
+        "category": "hover"
+    },
+    "preview": "image3DMouseTilt"
+}

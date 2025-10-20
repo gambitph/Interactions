@@ -1,0 +1,132 @@
+{
+    "id": "parallax",
+    "name": "Parallax",
+    "description": "Image moves at a different speed for depth",
+    "category": "image",
+    "apply": {
+        "name": "Parallax Effect",
+        "category": "advanced"
+    },
+    "preview": "parallax",
+    "config": "parallax",
+    "interactionSetup": {
+        "type": "elementScrolling",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "cssRule",
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "property": "z-index",
+                            "value": "1"
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "1",
+                            "y": "1"
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "-50",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 100,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "50",
+                            "z": ""
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": []
+    },
+    "configurableOptions": [
+        {
+            "key": "count",
+            "controls": {
+                "name": "Count",
+                "type": "number",
+                "help": "The number of inner images.",
+                "min": 1,
+                "max": 5,
+                "step": 1,
+                "default": 3
+            }
+        },
+        {
+            "key": "moveFactor",
+            "controls": {
+                "name": "Move Factor",
+                "type": "number",
+                "help": "The move factor used for each image",
+                "min": 20,
+                "max": 100,
+                "step": 1,
+                "default": 50
+            }
+        },
+        {
+            "key": "scaleFactor",
+            "controls": {
+                "name": "Scale Factor",
+                "type": "number",
+                "help": "The scale factor used for each image",
+                "min": 1,
+                "max": 10,
+                "step": 1,
+                "default": 5
+            }
+        }
+    ],
+    "serializedParentBlock": "<!-- wp:columns {\"isStackedOnMobile\":false} -->\r\n<div class=\"wp-block-columns is-not-stacked-on-mobile\"><!-- wp:column -->\r\n<div class=\"wp-block-column\"></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns -->",
+    "serializedChildrenBlocks": [
+        "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1541417904950-b855846fe074?q=80&amp;w=1682&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1538964173425-93884d739596?q=80&amp;w=870&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&amp;w=3133&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->",
+        "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1647161221900-2cabf3208088?q=80&w=2066&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->"
+    ],
+    "applyWhitelist": []
+}

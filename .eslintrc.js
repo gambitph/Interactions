@@ -1,0 +1,67 @@
+module.exports = {
+	root: true,
+	extends: [
+		'plugin:@wordpress/eslint-plugin/recommended-with-formatting',
+		'plugin:jest/recommended',
+		'plugin:compat/recommended',
+	],
+	env: {
+		browser: true,
+	},
+	rules: {
+		semi: [ 'error', 'never' ],
+		'arrow-parens': [ 'error', 'as-needed' ],
+		camelcase: [ 'error', { allow: [ '\\w+(_\\d+)+' ] } ],
+		'object-curly-newline': [ 'error', {
+			ObjectExpression: {
+				multiline: true, minProperties: 3, consistent: true,
+			},
+			ObjectPattern: {
+				multiline: true, minProperties: 3, consistent: true,
+			},
+			ImportDeclaration: {
+				multiline: true, minProperties: 3, consistent: false,
+			},
+			ExportDeclaration: {
+				multiline: true, minProperties: 3, consistent: false,
+			},
+		} ],
+		'no-shadow': 'off',
+		'no-nested-ternary': 'off',
+		'no-mixed-spaces-and-tabs': [ 'error', 'smart-tabs' ],
+		'sort-vars': [ 'error', { ignoreCase: true } ],
+		'array-element-newline': [ 'error', 'consistent' ],
+		'@wordpress/valid-sprintf': 'off',
+		'@wordpress/no-unused-vars-before-return': 'off',
+		'jsdoc/no-undefined-types': 'off',
+		'@wordpress/no-unguarded-get-range-at': 'off',
+		'linebreak-style': [ 'error', 'unix' ],
+		'no-unused-expressions': 'off',
+		'import/no-extraneous-dependencies': 'off',
+		'import/no-unresolved': 'off',
+		'@wordpress/i18n-text-domain': 'off',
+		'@wordpress/i18n-translator-comments': 'off',
+		'@wordpress/no-base-control-with-label-without-id': 'off',
+		'no-unused-vars': [ 'error', { varsIgnorePattern: '^_' } ],
+		'react/jsx-indent': [ 2, 'tab', { indentLogicalExpressions: true } ],
+		'react/jsx-curly-brace-presence': [ 'error', { props: 'never', children: 'never' } ],
+	},
+	globals: {
+		localStorage: true,
+		fetch: true,
+		Waypoint: true,
+		shallow: true,
+		btoa: true,
+		alert: true,
+		Element: true,
+		FileReader: true,
+		MutationObserver: true,
+		IntersectionObserver: true,
+		InteractRunner: true,
+		interactions: true,
+		BUILD_TYPE: true,
+		PREMIUM_ACTIONS_NUM: true,
+		PREMIUM_INTERACTIONS_NUM: true,
+	},
+}
+

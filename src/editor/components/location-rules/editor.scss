@@ -1,0 +1,15 @@
+.interact-location-rule {
+	margin-bottom: 16px;
+}
+.interact-location-rule__buttons {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.interact-location-rule:not(:hover) .interact-location-rule__remove-button {
+	display: none;
+}
+.interact-location-rule__or {
+	margin-bottom: 16px;
+	font-weight: bold;
+}

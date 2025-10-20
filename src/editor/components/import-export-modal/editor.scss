@@ -1,0 +1,39 @@
+.interact-import-export-modal {
+	width: 100%;
+	max-width: 50%;
+	max-height: 90%;
+
+	.components-modal__content {
+		margin-top: 56px;
+	}
+
+	.interact-import-export-modal__description {
+		margin-bottom: 20px;
+	}
+
+	.interact-import-export-modal__textarea-label-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.interact-import-export-modal__textarea-label {
+		font-size: 11px;
+		font-weight: 500;
+		text-transform: uppercase;
+	}
+
+	.components-textarea-control__input {
+		font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+		margin-bottom: 12px;
+	}
+
+	.interact-import-export-modal__import-button-wrapper {
+		text-align: right;
+	}
+
+	.interact-import-export-modal__export-button {
+		margin-bottom: 8px;
+	}
+}

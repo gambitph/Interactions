@@ -1,0 +1,71 @@
+.interact-target-selector__help {
+	display: block;
+	font-size: 12px;
+	font-style: normal;
+	color: rgb(117, 117, 117);
+	margin-bottom: 16px;
+}
+.interact-popover-block-picker .components-panel__body {
+	width: max-content;
+	p {
+		margin: 0;
+	}
+}
+.interact-picker--small {
+	flex-wrap: wrap;
+	> *:first-child {
+		flex-basis: 100%;
+	}
+}
+.interact-target-block-button ~ span:empty {
+	display: none;
+}
+
+.interact-target-selector__warn {
+	background: #fff4e6;
+	border-left: 3px solid #f90;
+	color: #391602;
+	display: block;
+	padding: 6px 8px;
+}
+
+.interact-block-picker-control {
+	.components-flex {
+		min-height: 30px;
+	}
+	.components-combobox-control__suggestions-container {
+		position: relative;
+	}
+
+	.components-form-token-field__suggestions-list {
+		min-height: 170px;
+		position: absolute !important;
+		z-index: 9999;
+		background: #fff;
+		width: 100%;
+		top: 30px;
+		border: 1px solid #949494;
+		border-radius: 2px;
+		box-shadow: none;
+	}
+	.interact-block-picker-item {
+		padding: 1px;
+	}
+	.interact-block-picker-item-value {
+		color: #666;
+		font-size: 12px;
+	}
+	.components-form-token-field__suggestion.is-selected {
+		.interact-block-picker-item-value {
+			color: #fff !important;
+		}
+	}
+}
+
+.components-popover__content {
+	.interact-block-picker-control {
+		.components-form-token-field__suggestions-list {
+			min-height: 220px;
+		}
+	}
+}

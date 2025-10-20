@@ -1,0 +1,105 @@
+{
+    "id": "textFadeInEntrance",
+    "name": "Text Fade In Entrance",
+    "description": "A text block fades in when it enters the viewport",
+    "category": "text",
+    "preview": "textFadeInEntrance",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": true,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": 0.3
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": []
+            }
+        ],
+        "options": {}
+    },
+    "configurableOptions": [
+        {
+            "key": "duration",
+            "controls": {
+                "name": "Duration",
+                "type": "number",
+                "help": "Adjust the animation duration in seconds.",
+                "min": 0,
+                "max": 5,
+                "step": 0.1,
+                "default": 0.5
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        2,
+                        "timing",
+                        "duration"
+                    ]
+                },
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        1,
+                        "timing",
+                        "duration"
+                    ]
+                }
+            ]
+        }
+    ],
+    "serializedBlockExample": "<!-- wp:paragraph -->\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula. Integer mollis quam vel euismod auctor. Donec et velit blandit, pharetra nisl et, cursus leo. Duis hendrerit leo vel nisl consectetur, eget fringilla nisi mattis. Sed ac libero luctus, condimentum ligula ac, laoreet arcu. Duis congue diam et consequat lobortis.</p>\r\n<!-- /wp:paragraph -->"
+}

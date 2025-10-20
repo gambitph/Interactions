@@ -1,0 +1,7 @@
+{
+    "id": "cardFlip",
+    "name": "Card Flip",
+    "description": "Flips a card horizontally",
+    "category": "card",
+    "preview": "cardFlip"
+}

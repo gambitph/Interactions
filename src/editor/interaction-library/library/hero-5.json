@@ -1,0 +1,198 @@
+{
+    "id": "hero5",
+    "name": "Hero 5",
+    "description": "Hero with a content on the left and graphic on the right.",
+    "category": "hero",
+    "preview": "hero5",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": true,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "cssRule",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "property": "clip-path",
+                            "value": "inset(0 100% 0 0)"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "block-name",
+                            "value": "core/heading",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "opacity": 0
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "block-name",
+                            "value": "core/heading",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "-100",
+                            "y": "0",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "selector",
+                            "value": "p",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0.2
+                        },
+                        "value": {
+                            "opacity": 0
+                        }
+                    },
+                    {
+                        "type": "cssRule",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.8,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "property": "clip-path",
+                            "value": "inset(0 0% 0 0)"
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "block-name",
+                            "value": "core/heading",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.8,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "0",
+                            "y": "0",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "block-name",
+                            "value": "core/heading",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.8,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "opacity": "1"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "selector",
+                            "value": "p",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0.2,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0.2
+                        },
+                        "value": {
+                            "opacity": "1"
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": []
+            }
+        ],
+        "options": []
+    },
+    "serializedBlockExample": "<!-- wp:columns {\"align\":\"full\",\"style\":{\"spacing\":{\"blockGap\":{\"left\":\"var:preset|spacing|20\"}}}} -->\r\n<div class=\"wp-block-columns alignfull\"><!-- wp:column {\"verticalAlignment\":\"center\",\"style\":{\"spacing\":{\"padding\":{\"right\":\"var:preset|spacing|50\",\"left\":\"var:preset|spacing|80\"},\"blockGap\":\"var:preset|spacing|40\"}}} -->\r\n<div class=\"wp-block-column is-vertically-aligned-center\" style=\"padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--80)\"><!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">2000-2010</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:heading {\"level\":1,\"style\":{\"spacing\":{\"padding\":{\"right\":\"0\",\"left\":\"0\"}},\"typography\":{\"fontSize\":\"5rem\"}}} -->\r\n<h1 class=\"wp-block-heading\" style=\"padding-right:0;padding-left:0;font-size:5rem\"><strong>Designing Spaces That Inspire</strong></h1>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph -->\r\n<p><strong>BY INTERACTIONS</strong></p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">We bring vision, creativity, and precision together to craft architectural solutions that blend aesthetics with functionality. From concept to completion, our team ensures every project is built to stand the test of time while reflecting the unique character of its environment.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->\r\n\r\n<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\"} -->\r\n<figure class=\"wp-block-image size-large\"><img src=\"https://images.pexels.com/photos/33661575/pexels-photo-33661575.jpeg?cs=srgb&amp;dl=pexels-eran-topcu-733234192-33661575.jpg\" alt=\"\" style=\"aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns -->",
+    "applyWhitelist": []
+}

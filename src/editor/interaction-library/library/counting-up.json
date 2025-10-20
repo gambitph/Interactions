@@ -1,0 +1,7 @@
+{
+    "id": "countingUp",
+    "name": "Counting Up",
+    "description": "A card with a number that counts up to the desired value",
+    "category": "card",
+    "preview": "countingUp"
+}

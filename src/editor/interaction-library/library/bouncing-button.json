@@ -1,0 +1,179 @@
+{
+    "id": "bouncingButton",
+    "name": "Bouncing Button",
+    "description": "An element slightly scales down to mimic a physical button press",
+    "category": "button",
+    "apply": {
+        "name": "Bouncing Effect",
+        "category": "click"
+    },
+    "preview": "bouncingButton",
+    "interactionSetup": {
+        "type": "click",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "0.8",
+                            "y": "0.8"
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0.1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "1",
+                            "y": "1"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "configurableOptions": [
+        {
+            "key": "interactionType",
+            "controls": {
+                "name": "Interaction Type",
+                "type": "select",
+                "help": "Choose the interaction type that triggers the bounce effect.",
+                "options": [
+                    {
+                        "value": "click",
+                        "label": "Click"
+                    },
+                    {
+                        "value": "hover",
+                        "label": "Hover"
+                    },
+                    {
+                        "value": "enterViewport",
+                        "label": "Entered into viewport"
+                    }
+                ],
+                "default": "click"
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "type"
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "bounceFactor",
+            "controls": {
+                "name": "Bounce Factor",
+                "type": "number",
+                "help": "Adjust how much the element bounces during the animation.",
+                "min": 1,
+                "max": 10,
+                "step": 0.5,
+                "default": 3
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        0,
+                        "value",
+                        "x"
+                    ],
+                    "transformFn": "bouncingButtonBounceFactor"
+                },
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        0,
+                        "value",
+                        "y"
+                    ],
+                    "transformFn": "bouncingButtonBounceFactor"
+                }
+            ]
+        },
+        {
+            "key": "duration",
+            "controls": {
+                "name": "Duration",
+                "type": "number",
+                "help": "Adjust the animation duration in seconds.",
+                "min": 0,
+                "max": 1,
+                "step": 0.05,
+                "default": 0.1
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        0,
+                        "timing",
+                        "duration"
+                    ]
+                },
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        1,
+                        "timing",
+                        "start"
+                    ]
+                }
+            ]
+        }
+    ],
+    "serializedBlockExample": "<!-- wp:buttons {\"layout\":{\"type\":\"flex\",\"justifyContent\":\"center\"}} -->\r\n<div class=\"wp-block-buttons\"><!-- wp:button {\"className\":\"is-style-fill\",\"style\":{\"color\":{\"background\":\"#0b0d4b\"},\"border\":{\"radius\":\"10px\"},\"spacing\":{\"padding\":{\"left\":\"40px\",\"right\":\"40px\",\"top\":\"15px\",\"bottom\":\"15px\"}}},\"fontSize\":\"medium\"} -->\r\n<div class=\"wp-block-button is-style-fill\"><a class=\"wp-block-button__link has-background has-medium-font-size has-custom-font-size wp-element-button\" style=\"border-radius:10px;background-color:#0b0d4b;padding-top:15px;padding-right:40px;padding-bottom:15px;padding-left:40px\"><strong>Button</strong></a></div>\r\n<!-- /wp:button --></div>\r\n<!-- /wp:buttons -->",
+    "targetMappings": [
+        {
+            "blockPath": [
+                "innerBlocks",
+                0
+            ],
+            "interactionPath": [
+                "target"
+            ]
+        }
+    ]
+}

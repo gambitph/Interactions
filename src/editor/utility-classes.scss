@@ -1,0 +1,24 @@
+/**
+ * These are utility classes that can be used in the editor to adjust the layout of blocks.
+ *
+ * These are specific for overriding utility classes in the editor
+ */
+
+/** Stacked: for use inside groups. Follows size of first child */
+.editor-styles-wrapper .block-editor-block-list__block.interact-stacked,
+.editor-styles-wrapper .block-editor-block-list__block.wpi-stacked {
+	position: relative;
+	> *:not(:first-child) {
+		position: absolute;
+		inset: 0;
+	}
+	> * {
+		margin: 0;
+	}
+	> figure > .components-resizable-box__container {
+		object-fit: cover;
+		object-position: center;
+		height: 100% !important;
+		width: 100% !important;
+	}
+}

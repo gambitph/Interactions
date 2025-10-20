@@ -1,0 +1,7 @@
+{
+    "id": "scrubVideo",
+    "name": "Scrub Video",
+    "description": "While scrolling, the background video plays along with the amount of scroll",
+    "category": "video",
+    "preview": "scrubVideo"
+}

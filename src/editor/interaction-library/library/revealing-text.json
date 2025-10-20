@@ -1,0 +1,123 @@
+{
+    "id": "revealingText",
+    "name": "Revealing Text",
+    "description": "Reveal the text hidden under the image as you scroll.",
+    "category": "text",
+    "preview": "revealingText",
+    "interactionSetup": {
+        "type": "elementScrolling",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 25,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "-200",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 25,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "0.8",
+                            "y": "0.8"
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 50,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "0",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 50,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "1",
+                            "y": "1"
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": []
+    },
+    "serializedBlockExample": "<!-- wp:columns {\"align\":\"wide\"} -->\r\n<div class=\"wp-block-columns alignwide\"><!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:heading {\"textAlign\":\"center\",\"level\":1,\"style\":{\"spacing\":{\"margin\":{\"right\":\"20vw\",\"left\":\"20vw\"}}}} -->\r\n<h1 class=\"wp-block-heading has-text-align-center\" style=\"margin-right:20vw;margin-left:20vw\"><strong>Experience the Magic of Flight Above the Clouds</strong></h1>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:image {\"width\":\"900px\",\"aspectRatio\":\"16/9\",\"scale\":\"cover\",\"sizeSlug\":\"large\",\"align\":\"center\"} -->\r\n<figure class=\"wp-block-image aligncenter size-large is-resized\"><img src=\"https://images.pexels.com/photos/2325452/pexels-photo-2325452.jpeg?cs=srgb&amp;dl=pexels-francesco-ungaro-2325452.jpg\" alt=\"\" style=\"aspect-ratio:16/9;object-fit:cover;width:900px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns -->",
+    "targetMappings": [
+        {
+            "blockPath": [
+                "innerBlocks",
+                0,
+                "innerBlocks",
+                1
+            ],
+            "interactionPath": [
+                "target"
+            ]
+        }
+    ],
+    "applyWhitelist": []
+}

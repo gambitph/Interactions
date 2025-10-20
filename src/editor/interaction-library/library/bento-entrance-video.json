@@ -1,0 +1,96 @@
+{
+    "id": "bentoEntranceVideo",
+    "name": "Bento Entrance Video",
+    "description": "Bento with entrance background video",
+    "category": "columns",
+    "preview": "bentoEntranceVideo",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "toggleVideo",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "mode": "play",
+                            "startTime": ""
+                        }
+                    },
+                    {
+                        "type": "toggleVideo",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 5,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "mode": "pause",
+                            "startTime": ""
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "toggleVideo",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "mode": "pause",
+                            "startTime": ""
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": []
+    },
+    "serializedBlockExample": "<!-- wp:cover {\"url\":\"https://www.pexels.com/download/video/4957770/\",\"dimRatio\":50,\"backgroundType\":\"video\",\"minHeight\":80,\"minHeightUnit\":\"vh\",\"align\":\"wide\",\"style\":{\"border\":{\"radius\":\"20px\"},\"spacing\":{\"padding\":{\"top\":\"var:preset|spacing|40\",\"bottom\":\"var:preset|spacing|40\",\"left\":\"var:preset|spacing|40\",\"right\":\"var:preset|spacing|40\"}}}} -->\r\n<div class=\"wp-block-cover alignwide\" style=\"border-radius:20px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40);min-height:80vh\"><video class=\"wp-block-cover__video-background intrinsic-ignore\" autoplay muted loop playsinline src=\"https://www.pexels.com/download/video/4957770/\" data-object-fit=\"cover\"></video><span aria-hidden=\"true\" class=\"wp-block-cover__background has-background-dim\"></span><div class=\"wp-block-cover__inner-container\"><!-- wp:spacer {\"height\":\"60vh\"} -->\r\n<div style=\"height:60vh\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>\r\n<!-- /wp:spacer -->\r\n\r\n<!-- wp:heading {\"fontSize\":\"xx-large\"} -->\r\n<h2 class=\"wp-block-heading has-xx-large-font-size\"><strong>Crafting Wood, Creating Legacy</strong></h2>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:columns -->\r\n<div class=\"wp-block-columns\"><!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">Quality woodwork built with passion, precision, and timeless craftsmanship.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->\r\n\r\n<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:buttons {\"layout\":{\"type\":\"flex\",\"justifyContent\":\"right\"}} -->\r\n<div class=\"wp-block-buttons\"><!-- wp:button {\"textAlign\":\"right\",\"backgroundColor\":\"base\",\"textColor\":\"contrast\",\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|contrast\"}}},\"spacing\":{\"padding\":{\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\",\"top\":\"var:preset|spacing|20\",\"bottom\":\"var:preset|spacing|20\"}}},\"fontSize\":\"small\"} -->\r\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link has-contrast-color has-base-background-color has-text-color has-background has-link-color has-small-font-size has-text-align-right has-custom-font-size wp-element-button\" style=\"padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--30)\">View our work</a></div>\r\n<!-- /wp:button -->\r\n\r\n<!-- wp:button {\"className\":\"is-style-outline\",\"style\":{\"spacing\":{\"padding\":{\"left\":\"var:preset|spacing|30\",\"right\":\"var:preset|spacing|30\",\"top\":\"var:preset|spacing|20\",\"bottom\":\"var:preset|spacing|20\"}}},\"fontSize\":\"small\"} -->\r\n<div class=\"wp-block-button is-style-outline\"><a class=\"wp-block-button__link has-small-font-size has-custom-font-size wp-element-button\" style=\"padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--30)\">Get a quote</a></div>\r\n<!-- /wp:button --></div>\r\n<!-- /wp:buttons --></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns --></div></div>\r\n<!-- /wp:cover -->",
+    "applyWhitelist": []
+}

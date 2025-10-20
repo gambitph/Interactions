@@ -1,0 +1,8 @@
+{
+    "id": "priceCalculator",
+    "name": "Price Calculator",
+    "description": "Calculates total when buttons are clicked",
+    "category": "calculator",
+    "preview": "priceCalculator",
+    "config": "priceCalculator"
+}

@@ -1,0 +1,11 @@
+{
+    "id": "fillingButton",
+    "name": "Filling Button",
+    "description": "A button is filled from the left on hover",
+    "category": "button",
+    "apply": {
+        "name": "Filling Effect",
+        "category": "click"
+    },
+    "preview": "fillingButton"
+}

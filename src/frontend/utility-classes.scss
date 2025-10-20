@@ -1,0 +1,219 @@
+/**
+ * These are utility classes that can be used in the editor to adjust the layout of blocks.
+ * Users can add these class names to the block's Additional CSS Classes field.
+ */
+
+/** Positions */
+.interact-relative, .wpi-relative {
+	position: relative !important;
+}
+.interact-absolute, .wpi-absolute {
+	position: absolute !important;
+}
+.interact-fixed, .wpi-fixed {
+	position: fixed !important;
+}
+.interact-sticky, .wpi-sticky {
+	position: sticky !important;
+}
+
+/** Inset */
+.interact-inset-0, .wpi-inset-0 {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+.interact-top-0, .wpi-top-0 {
+	top: 0;
+}
+.interact-right-0, .wpi-right-0 {
+	right: 0;
+}
+.interact-bottom-0, .wpi-bottom-0 {
+	bottom: 0;
+}
+.interact-left-0, .wpi-left-0 {
+	left: 0;
+}
+@for $i from 1 through 10 {
+	.interact-top-#{$i}, .wpi-top-#{$i} {
+		top: $i * 0.25rem;
+	}
+}
+@for $i from 1 through 10 {
+	.interact-right-#{$i}, .wpi-right-#{$i} {
+		right: $i * 0.25rem;
+	}
+}
+@for $i from 1 through 10 {
+	.interact-bottom-#{$i}, .wpi-bottom-#{$i} {
+		bottom: $i * 0.25rem;
+	}
+}
+@for $i from 1 through 10 {
+	.interact-left-#{$i}, .wpi-left-#{$i} {
+		left: $i * 0.25rem;
+	}
+}
+
+/** Margins */
+.interact-m-0, .wpi-m-0 {
+	margin: 0 !important;
+}
+
+/** Height */
+.interact-h-100-screen, .wpi-h-100-screen {
+	height: 100vh;
+}
+.interact-h-75-screen, .wpi-h-75-screen {
+	height: 75hv;
+}
+.interact-h-50-screen, .wpi-h-50-screen {
+	height: 50vh;
+}
+.interact-h-25-screen, .wpi-h-25-screen {
+	height: 25vh;
+}
+
+/** Overflow */
+.interact-overflow-hidden, .wpi-overflow-hidden {
+	overflow: hidden;
+}
+.interact-overflow-visible, .wpi-overflow-visible {
+	overflow: visible;
+}
+.interact-overflow-auto, .wpi-overflow-auto {
+	overflow: auto;
+}
+.interact-overflow-x-hidden, .wpi-overflow-x-hidden {
+	overflow-x: hidden;
+}
+.interact-overflow-x-visible, .wpi-overflow-x-visible {
+	overflow-x: visible;
+}
+.interact-overflow-x-auto, .wpi-overflow-x-auto {
+	overflow-x: auto;
+}
+.interact-overflow-y-hidden, .wpi-overflow-y-hidden {
+	overflow-y: hidden;
+}
+.interact-overflow-y-visible, .wpi-overflow-y-visible {
+	overflow-y: visible;
+}
+.interact-overflow-y-auto, .wpi-overflow-y-auto {
+	overflow-y: auto;
+}
+
+/** Max width */
+.interact-max-width-none, .wpi-max-width-none {
+	max-width: none !important;
+}
+.interact-max-width-fit-content, .wpi-max-width-fit-content {
+	max-width: fit-content !important;
+}
+.interact-max-width-max-content, .wpi-max-width-max-content {
+	max-width: max-content !important;
+}
+.interact-max-width-min-content, .wpi-max-width-min-content {
+	max-width: min-content !important;
+}
+.interact-max-width-100, .wpi-max-width-100 {
+	max-width: 100% !important;
+}
+
+/** Z-index */
+.interact-z-n1, .wpi-z-n1 {
+	z-index: -1;
+}
+@for $i from 0 through 10 {
+	.interact-z-#{$i}, .wpi-z-#{$i} {
+		z-index: $i;
+	}
+}
+.interact-z-auto, .wpi-z-auto {
+	z-index: auto;
+}
+.interact-z-999, .wpi-z-999 {
+	z-index: 999;
+}
+.interact-z-9999, .wpi-z-9999 {
+	z-index: 9999;
+}
+
+/** Cursor */
+.interact-cursor-default, .wpi-cursor-default {
+	cursor: default !important;
+}
+.interact-cursor-pointer, .wpi-cursor-pointer {
+	cursor: pointer !important;
+}
+.interact-cursor-move, .wpi-cursor-move {
+	cursor: move !important;
+}
+.interact-cursor-not-allowed, .wpi-cursor-not-allowed {
+	cursor: not-allowed !important;
+}
+.interact-cursor-help, .wpi-cursor-help {
+	cursor: help !important;
+}
+.interact-cursor-zoom-in, .wpi-cursor-zoom-in {
+	cursor: zoom-in !important;
+}
+.interact-cursor-zoom-out, .wpi-cursor-zoom-out {
+	cursor: zoom-out !important;
+}
+.interact-cursor-grab, .wpi-cursor-grab {
+	cursor: grab !important;
+}
+.interact-cursor-grabbing, .wpi-cursor-grabbing {
+	cursor: grabbing !important;
+}
+.interact-cursor-copy, .wpi-cursor-copy {
+	cursor: copy !important;
+}
+
+/** Object fit */
+.interact-object-cover, .wpi-object-cover {
+	object-fit: cover !important;
+}
+.interact-object-contain, .wpi-object-contain {
+	object-fit: contain !important;
+}
+
+/** Stacked: for use inside groups. Follows size of first child */
+.interact-stacked, .wpi-stacked {
+	position: relative;
+	> *:not(:first-child) {
+		position: absolute;
+		inset: 0;
+	}
+	> * {
+		margin: 0;
+	}
+	> figure > img {
+		object-fit: cover;
+		object-position: center;
+		height: 100%;
+		width: 100%;
+	}
+}
+/** Stacked: for use inside groups. Follows size of the biggest child */
+// .interact-stacked-grid, .wpi-stacked-grid {
+// 	display: grid;
+// 	grid-template-columns: 1fr;
+// 	grid-template-rows: 1fr;
+// 	> * {
+// 		grid-column: 1;
+// 		grid-row: 1;
+// 		overflow: hidden;
+// 		width: 100%;
+// 		margin: 0;
+// 	}
+// 	> figure img {
+// 		object-fit: cover;
+// 		object-position: center;
+// 		height: 100%;
+// 		width: 100%;
+// 	}
+// }

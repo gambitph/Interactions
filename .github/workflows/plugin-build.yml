@@ -1,0 +1,51 @@
+name: Plugin Build
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+
+    - name: Set the version suffix for the output
+      run: echo VERSION_SUFFIX=${GITHUB_REF_NAME//\//-} >> $GITHUB_ENV
+
+    - name: Install ffmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+
+    - name: Install dependencies and build
+      run: |
+        npm ci --legacy-peer-deps
+        npm run build --suffix=${{ env.VERSION_SUFFIX }}
+
+    - name: Rename build zip for PR
+      run: |
+        # Find the zip file in build directory
+        ZIP_FILE=$(find build -name "interactions-*.zip" -type f | head -1)
+        if [ -n "$ZIP_FILE" ]; then
+          mv "$ZIP_FILE" wpnteractions-${{ env.VERSION_SUFFIX }}.zip
+          echo "Renamed $ZIP_FILE to interactions-${{ env.VERSION_SUFFIX }}.zip"
+        else
+          echo "Build zip file not found in build directory"
+          echo "Contents of build directory:"
+          ls -la build/
+          exit 1
+        fi
+
+    - name: Upload PR build zip artifact
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: gavv/pull-request-artifacts@v1.0.0
+      with:
+        commit: ${{ github.event.pull_request.head.sha }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: interactions-${{ env.VERSION_SUFFIX }}.zip
+        artifacts-branch: artifacts

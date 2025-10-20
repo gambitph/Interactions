@@ -1,0 +1,182 @@
+{
+    "id": "imageSlideInEntrance",
+    "name": "Image Slide In Entrance",
+    "description": "An image block slides in when it enters the viewport",
+    "category": "image",
+    "apply": {
+        "name": "Slide in entrance",
+        "category": "entrance"
+    },
+    "preview": "imageSlideInEntrance",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": true,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "-100",
+                            "y": "0",
+                            "z": "0"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": 0.3
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "0",
+                            "y": "0",
+                            "z": "0"
+                        }
+                    },
+                    {
+                        "type": "opacity",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "linear",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "opacity": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": []
+            }
+        ],
+        "options": {}
+    },
+    "configurableOptions": [
+        {
+            "key": "direction",
+            "controls": {
+                "name": "Direction",
+                "type": "select",
+                "help": "Adjust the direction of the animation.",
+                "options": [
+                    {
+                        "value": "horizontal",
+                        "label": "Horizontal"
+                    },
+                    {
+                        "value": "vertical",
+                        "label": "Vertical"
+                    }
+                ],
+                "default": "horizontal"
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        0,
+                        "value"
+                    ],
+                    "transformFn": "imageSlideInDirection"
+                }
+            ]
+        },
+        {
+            "key": "duration",
+            "controls": {
+                "name": "Duration",
+                "type": "number",
+                "help": "Adjust the animation duration in seconds.",
+                "min": 0,
+                "max": 5,
+                "step": 0.1,
+                "default": 0.5
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        2,
+                        "timing",
+                        "duration"
+                    ]
+                },
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        3,
+                        "timing",
+                        "duration"
+                    ]
+                }
+            ]
+        }
+    ],
+    "serializedBlockExample": "<!-- wp:image {\"sizeSlug\":\"large\",\"className\":\"is-style-default\",\"style\":{\"border\":{\"radius\":\"20px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border is-style-default\"><img src=\"https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&amp;w=1933&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:20px\"/></figure>\r\n<!-- /wp:image -->"
+}

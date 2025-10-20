@@ -1,0 +1,132 @@
+:root {
+	--interact-panel-dark-color: #f4f6f8;
+	--interact-panel-dark-color-10: #e5eaee;
+}
+
+.interact-sidebar {
+	--wp-components-color-accent: #05f;
+	overflow: hidden;
+	min-height: 70vh;
+	.components-panel__body-toggle {
+		background: var(--interact-panel-dark-color);
+		padding-block: 12px;
+		border-bottom: 1px solid #e0e0e0;
+		border-radius: 0;
+		&[aria-expanded="true"] {
+			margin-bottom: 12px !important;
+		}
+		&:hover {
+			background: var(--interact-panel-dark-color-10);
+		}
+	}
+	.components-panel__body-title:hover {
+		background: transparent !important;
+	}
+
+	.interact-panel-side-buttons {
+		display: flex;
+		flex-direction: row;
+	}
+}
+// If the the list control is the first element in the panel, pull it up a bit.
+.components-panel__body-title + .interact-list-control {
+	margin-top: -12px;
+}
+.interact-sidebar__browse-interactions {
+	justify-content: space-between;
+	width: 100%;
+}
+
+/* List control with a plus button beside the title */
+.interact-list-control {
+	margin-bottom: 8px;
+	.components-base-control__field {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		justify-content: center;
+		align-items: center;
+		row-gap: 6px;
+	}
+	.components-base-control__label {
+		margin: 0;
+		display: flex;
+		align-items: center;
+	}
+	.components-base-control__field > :nth-child(n+3) {
+		grid-column: 1 / 3;
+	}
+
+	.interact-list-control__empty-description {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		margin: auto;
+		text-align: center;
+		background: var(--interact-panel-dark-color);
+		width: 100%;
+		padding-inline: 24px;
+		height: 200px;
+		svg {
+			margin-bottom: 8px;
+			fill: currentColor;
+		}
+		p {
+			font-size: 12px;
+		}
+		> *:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+@keyframes interact-highlight {
+	0% {
+		background-color: #c2cae0;
+	}
+	100% {
+		background-color: var(--interact-panel-dark-color);
+	}
+}
+.interact-list-control__title-tip {
+	margin-left: 8px !important;
+	cursor: help;
+	vertical-align: sub;
+}
+
+/* Popover */
+.interact-popover {
+	--wp-components-color-accent: #05f;
+	.components-panel__body {
+		width: 250px;
+		> h4 {
+			margin-top: 0;
+		}
+	}
+}
+
+/* Control specific styles */
+.interact-sidebar,
+.interact-popover {
+	.components-number-control {
+		margin-bottom: 8px;
+	}
+}
+
+.interact-editor-footer {
+	font-size: 12px;
+	// margin: 0 !important;
+}
+
+.interact-warning-text {
+	color: #d63638;
+	font-weight: 600;
+	margin-bottom: 8px;
+	display: block;
+}
+.interact-dismiss-button {
+	--wp-components-color-accent: currentColor;
+}
+
+.interact-add-interaction-button-wrapper {
+	--wp-components-color-accent: #05f;
+}

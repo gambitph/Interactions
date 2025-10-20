@@ -1,0 +1,135 @@
+{
+    "id": "playVideo",
+    "name": "Play Video Once",
+    "description": "Play video once when entering the viewport",
+    "category": "video",
+    "apply": {
+        "category": "entrance"
+    },
+    "preview": "playVideo",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "toggleVideo",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "mode": "play",
+                            "startTime": ""
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "toggleVideo",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "mode": "pause",
+                            "startTime": ""
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": {}
+    },
+    "configurableOptions": [
+        {
+            "key": "interactionType",
+            "controls": {
+                "name": "Interaction Type",
+                "type": "select",
+                "help": "Choose the interaction type that triggers the playing of video.",
+                "options": [
+                    {
+                        "value": "click",
+                        "label": "Click"
+                    },
+                    {
+                        "value": "hover",
+                        "label": "Hover"
+                    },
+                    {
+                        "value": "enterViewport",
+                        "label": "Entered into viewport"
+                    }
+                ],
+                "default": "enterViewport"
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "type"
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "startTime",
+            "controls": {
+                "name": "Start time",
+                "type": "number",
+                "help": "Adjust the start time in seconds.",
+                "min": 0,
+                "max": 10,
+                "step": 0.1,
+                "default": 1
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        1,
+                        "timing",
+                        "startTime"
+                    ]
+                }
+            ]
+        }
+    ],
+    "serializedBlockExample": "<!-- wp:video -->\n<figure class=\"wp-block-video\"><video src=\"https://videos.pexels.com/video-files/1572321/1572321-uhd_2560_1440_24fps.mp4\"></video></figure>\n<!-- /wp:video -->",
+    "applyWhitelist": [
+        "/video",
+        "core/cover"
+    ]
+}

@@ -1,0 +1,44 @@
+{
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"editor.detectIndentation": false,
+	"files.eol": "\n",
+	"editor.formatOnSave": false,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"source.fixAll.stylelint": "explicit",
+		"source.organizeImports": "never"
+	},
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact"
+	],
+	"stylelint.validate": [
+		"css",
+		"scss"
+	],
+	"css.validate": false,
+	"scss.validate": false,
+	"prettier.enable": false,
+	"eslint.format.enable": false,
+	"eslint.alwaysShowStatus": true,
+	"eslint.workingDirectories": [ { "mode": "auto" } ],
+	"[javascript]": {
+		"editor.formatOnSave": false
+	},
+	"[javascriptreact]": {
+		"editor.formatOnSave": false
+	},
+	"[scss]": {
+		"editor.formatOnSave": false,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.stylelint": "never"
+		}
+	},
+	"[css]": {
+		"editor.formatOnSave": false,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.stylelint": "never"
+		}
+	}
+}

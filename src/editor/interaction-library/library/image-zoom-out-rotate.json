@@ -1,0 +1,270 @@
+{
+    "id": "imageZoomOutAndRotate",
+    "name": "Image Zoom Out and Rotate",
+    "description": "Zooms out and rotates the image to create a dynamic effect",
+    "category": "image",
+    "apply": {
+        "category": "hover"
+    },
+    "preview": "imageZoomOutAndRotate",
+    "interactionSetup": {
+        "type": "hover",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "cssRule",
+                        "target": {
+                            "type": "selector",
+                            "value": "figure",
+                            "blockName": "",
+                            "options": "siblings-with-trigger"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "property": "overflow",
+                            "value": "hidden"
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "1.4",
+                            "y": "1.4",
+                            "rotate": -1.4
+                        }
+                    },
+                    {
+                        "type": "rotate",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": 1.1,
+                            "y": 1.1,
+                            "rotate": "10"
+                        }
+                    },
+                    {
+                        "type": "rotate",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": 1.1,
+                            "y": 1.1,
+                            "rotate": "0"
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "1.0",
+                            "y": "1.0",
+                            "rotate": -1.4
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "cssRule",
+                        "target": {
+                            "type": "selector",
+                            "value": "figure",
+                            "blockName": "",
+                            "options": "siblings-with-trigger"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "property": "overflow",
+                            "value": "hidden"
+                        }
+                    },
+                    {
+                        "type": "scale",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": "1.4",
+                            "y": "1.4",
+                            "rotate": -1.4
+                        }
+                    },
+                    {
+                        "type": "rotate",
+                        "target": {
+                            "type": "selector",
+                            "value": "img",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 1,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "x": 1.1,
+                            "y": 1.1,
+                            "rotate": "10"
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": {}
+    },
+    "configurableOptions": [
+        {
+            "key": "interactionType",
+            "controls": {
+                "name": "Interaction Type",
+                "type": "select",
+                "help": "Choose the interaction type that triggers the zoom and rotate effect.",
+                "options": [
+                    {
+                        "value": "click",
+                        "label": "Click"
+                    },
+                    {
+                        "value": "hover",
+                        "label": "Hover"
+                    },
+                    {
+                        "value": "enterViewport",
+                        "label": "Entered into viewport"
+                    }
+                ],
+                "default": "hover"
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "type"
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "duration",
+            "controls": {
+                "name": "Duration",
+                "type": "number",
+                "help": "Adjust the animation duration in seconds.",
+                "min": 0,
+                "max": 5,
+                "step": 0.1,
+                "default": 1
+            },
+            "mappings": [
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        3,
+                        "timing",
+                        "duration"
+                    ]
+                },
+                {
+                    "path": [
+                        "timelines",
+                        0,
+                        "actions",
+                        4,
+                        "timing",
+                        "duration"
+                    ]
+                }
+            ]
+        }
+    ],
+    "serializedBlockExample": "<!-- wp:image {\"sizeSlug\":\"large\"} -->\r\n<figure class=\"wp-block-image size-large\"><img src=\"https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&amp;w=1933&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\"/></figure>\r\n<!-- /wp:image -->",
+    "applyWhitelist": [
+        "\\bimage\\b"
+    ]
+}

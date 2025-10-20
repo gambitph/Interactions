@@ -1,0 +1,120 @@
+{
+    "id": "toggleDetails",
+    "name": "Toggle Details",
+    "description": "Toggle all details in the container",
+    "category": "details",
+    "preview": "toggleDetails",
+    "interactionSetup": {
+        "type": "toggle",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "replaceText",
+                        "target": {
+                            "type": "trigger"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "text": "Close all"
+                        }
+                    },
+                    {
+                        "type": "updateAttribute",
+                        "target": {
+                            "type": "selector",
+                            "value": "details",
+                            "blockName": "",
+                            "options": "siblings"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "attribute": "open",
+                            "value": "",
+                            "action": "update"
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "replaceText",
+                        "target": {
+                            "type": "trigger"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "text": "Open all"
+                        }
+                    },
+                    {
+                        "type": "updateAttribute",
+                        "target": {
+                            "type": "selector",
+                            "value": "details",
+                            "blockName": "",
+                            "options": "siblings"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": ""
+                        },
+                        "value": {
+                            "attribute": "open",
+                            "value": "",
+                            "action": "remove"
+                        }
+                    }
+                ]
+            }
+        ],
+        "options": {}
+    },
+    "serializedBlockExample": "<!-- wp:columns -->\r\n<div class=\"wp-block-columns\"><!-- wp:column {\"style\":{\"spacing\":{\"padding\":{\"top\":\"0\",\"bottom\":\"0\"}},\"border\":{\"radius\":\"0px\"}}} -->\r\n<div class=\"wp-block-column\" style=\"border-radius:0px;padding-top:0;padding-bottom:0\"><!-- wp:paragraph {\"className\":\"is-style-text-annotation\",\"style\":{\"spacing\":{\"margin\":{\"top\":\"var:preset|spacing|30\",\"bottom\":\"var:preset|spacing|30\",\"left\":\"0\",\"right\":\"0\"},\"padding\":{\"right\":\"var:preset|spacing|40\",\"left\":\"var:preset|spacing|40\",\"top\":\"var:preset|spacing|20\",\"bottom\":\"var:preset|spacing|20\"}},\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|base\"}}},\"border\":{\"width\":\"0px\",\"style\":\"none\",\"radius\":\"100px\"}},\"backgroundColor\":\"accent-4\",\"textColor\":\"base\",\"fontSize\":\"medium\"} -->\r\n<p class=\"is-style-text-annotation has-base-color has-accent-4-background-color has-text-color has-background has-link-color has-medium-font-size\" style=\"border-style:none;border-width:0px;border-radius:100px;margin-top:var(--wp--preset--spacing--30);margin-right:0;margin-bottom:var(--wp--preset--spacing--30);margin-left:0;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--40)\">Open all<\/p>\r\n<!-- \/wp:paragraph -->\r\n\r\n<!-- wp:details {\"fontSize\":\"large\"} -->\r\n<details class=\"wp-block-details has-large-font-size\"><summary><strong>What is Interactions?<\/strong><\/summary><!-- wp:paragraph {\"placeholder\":\"Type \/ to add a hidden block\",\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|contrast\"}}}},\"textColor\":\"contrast\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-contrast-color has-text-color has-link-color has-medium-font-size\">Interactions is an upcoming plugin that is designed to bring interactivity to websites built with the WordPress Editor. With Interactions, you can set&nbsp;triggers that will set off an action or&nbsp;series of actions&nbsp;to make any website element interactive.<\/p>\r\n<!-- \/wp:paragraph --><\/details>\r\n<!-- \/wp:details -->\r\n\r\n<!-- wp:details {\"fontSize\":\"large\"} -->\r\n<details class=\"wp-block-details has-large-font-size\"><summary>Who created Interactions?<\/summary><!-- wp:paragraph {\"placeholder\":\"Type \/ to add a hidden block\",\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|contrast\"}}}},\"textColor\":\"contrast\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-contrast-color has-text-color has-link-color has-medium-font-size\">Interactions was created by Benjamin Intal, founder and lead developer of&nbsp;<a href=\"https:\/\/wpstackable.com\/\">Stackable<\/a>&nbsp;\u2013 a page builder block library plugin for WordPress.<\/p>\r\n<!-- \/wp:paragraph --><\/details>\r\n<!-- \/wp:details -->\r\n\r\n<!-- wp:details {\"fontSize\":\"large\"} -->\r\n<details class=\"wp-block-details has-large-font-size\"><summary>When is your official launch?<\/summary><!-- wp:paragraph {\"placeholder\":\"Type \/ to add a hidden block\",\"style\":{\"elements\":{\"link\":{\"color\":{\"text\":\"var:preset|color|contrast\"}}}},\"textColor\":\"contrast\",\"fontSize\":\"medium\"} -->\r\n<p class=\"has-contrast-color has-text-color has-link-color has-medium-font-size\">As of now, Interactions is currently in Beta testing. If you wish to get a copy to test, you can download beta by&nbsp;<a href=\"https:\/\/wpinteractions.com\/\">signing up to our Beta release<\/a><\/p>\r\n<!-- \/wp:paragraph --><\/details>\r\n<!-- \/wp:details --><\/div>\r\n<!-- \/wp:column --><\/div>\r\n<!-- \/wp:columns -->",
+    "targetMappings": [
+        {
+            "blockPath": [
+                "innerBlocks",
+                0,
+                "innerBlocks",
+                0
+            ],
+            "interactionPath": [
+                "target"
+            ]
+        }
+    ],
+    "applyWhitelist": []
+}

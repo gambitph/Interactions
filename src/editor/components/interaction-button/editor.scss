@@ -1,0 +1,83 @@
+.interact-list__item-button {
+	width: 100%;
+	padding: 5px 8px 6px;
+	min-height: 0;
+	height: auto;
+	text-align: start;
+	gap: 8px;
+	display: grid;
+	grid-template-columns: auto 24px;
+	&.is--inactive:not(:hover) {
+		.interact-list__item-button__grid-label {
+			opacity: 0.75;
+		}
+	}
+	&.is--inactive {
+		color: #444;
+	}
+	&.is--highlight-enabled {
+		grid-template-columns: 6px auto 24px;
+	}
+	align-items: start;
+	> * {
+		width: 100%;
+	}
+	&:hover {
+		background-color: var(--interact-panel-dark-color);
+	}
+	// When the interactions list highlights an entry.
+	&.is--highlighted {
+		animation: interact-highlight 0.5s ease-in-out;
+		background-color: var(--interact-panel-dark-color);
+	}
+	.interact-list__item-button__icon {
+		height: 6px;
+		width: 6px;
+		background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+		border-radius: 100%;
+		visibility: hidden;
+		margin-top: 6px;
+	}
+	.interact-list__item-button__grid-label {
+		text-overflow: ellipsis;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.interact-list__item-button__title {
+		text-wrap: wrap;
+	}
+	&.is--highlighted {
+		.interact-list__item-button__icon {
+			visibility: visible;
+		}
+	}
+	&:not(:hover) button {
+		visibility: hidden;
+	}
+	&:not(:first-child) {
+		margin-top: -1px;
+	}
+}
+.interact-list__item-button__top-line {
+	display: flex;
+	text-wrap: wrap;
+	text-align: start;
+	gap: 8px;
+	align-items: center;
+	button {
+		align-self: start;
+		margin-left: auto;
+	}
+}
+.interact-list__item-button__bottom-line {
+	font-size: 11px;
+	color: #444;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.interact-list__item-button__label {
+	font-size: 11px;
+	color: #777;
+}

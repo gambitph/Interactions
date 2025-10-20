@@ -1,0 +1,10 @@
+{
+    "id": "copyText",
+    "name": "Copy Text",
+    "description": "Copy text from an element when clicked.",
+    "category": "text",
+    "apply": {
+        "category": "click"
+    },
+    "preview": "copyText"
+}

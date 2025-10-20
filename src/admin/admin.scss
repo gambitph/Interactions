@@ -1,0 +1,122 @@
+body[class*="page_interactions"] {
+	background: #fff;
+	#wpcontent {
+		padding-left: 0;
+	}
+}
+.interact-wrap {
+	margin: 0 24px 250px;
+	img {
+		max-width: 100%;
+	}
+	h2 {
+		color: #000069;
+		font-size: 32px;
+		font-weight: 600;
+		span {
+			color: #f05;
+		}
+	}
+	h2,
+	h3 {
+		line-height: 1.2;
+		margin-block: 8px 24px;
+	}
+	p,
+	a,
+	.interact-video-wrapper {
+		font-size: 14px;
+		margin-block: 0 24px;
+	}
+	.interact-video {
+		max-width: 100%;
+		min-width: unset;
+		width: 700px;
+		aspect-ratio: 16/9;
+	}
+}
+.interact-logo {
+	width: 250px;
+}
+.interact-header {
+	display: grid;
+	grid-template-columns: 250px 1fr 250px;
+	padding: 16px 32px;
+	border-bottom: 1px solid #ddd;
+	margin: 0 -24px 40px;
+	align-items: center;
+	> :nth-child(2) {
+		text-align: center;
+	}
+}
+.interact-getting-started {
+	max-width: 900px;
+	text-align: center;
+	margin: 0 auto 32px;
+}
+.interact-button {
+	padding: 12px 20px;
+	border: none !important;
+	box-sizing: border-box !important;
+	color: #fff !important;
+	cursor: pointer;
+	text-decoration: none !important;
+	background: #1414ab;
+	border-radius: 4px !important;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.03ch;
+	display: inline-block;
+	align-self: flex-start;
+	&:hover {
+		color: #fff !important;
+		background: #000069;
+	}
+}
+.interact-2-column,
+.interact-3-column {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
+	margin: 0 auto 40px;
+	max-width: 1200px;
+}
+.interact-3-column {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+.interact-column {
+	border: 1px solid #1018280f;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	box-shadow: 0 6px 16px -3px #63636333;
+	transition: all 0.2s ease-in-out;
+	> :last-child {
+		margin-bottom: 0;
+	}
+}
+a.interact-column {
+	text-decoration: none !important;
+	color: initial;
+	&:hover {
+		box-shadow: 0 50px 100px -20px #32325d40, 0 30px 60px -30px #0000004d;
+		.interact-button {
+			background: #000069;
+		}
+	}
+}
+.interact-icon {
+	align-items: center;
+	border: 1px solid #eaecf0;
+	border-radius: 8px;
+	display: flex;
+	margin-bottom: 20px;
+	max-width: -moz-fit-content;
+	max-width: fit-content;
+	padding: 10px;
+	img {
+		height: 24px;
+		width: 24px;
+	}
+}

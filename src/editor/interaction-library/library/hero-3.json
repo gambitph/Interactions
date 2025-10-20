@@ -1,0 +1,119 @@
+{
+    "id": "hero3",
+    "name": "Hero 3",
+    "description": "Hero with a video background containing large appearing headings",
+    "category": "hero",
+    "preview": "hero3",
+    "interactionSetup": {
+        "type": "enterViewport",
+        "timelines": [
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": [
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "selector",
+                            "value": "span span",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": true,
+                            "start": -1,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "150",
+                            "z": ""
+                        }
+                    },
+                    {
+                        "type": "updateAttribute",
+                        "target": {
+                            "type": "class",
+                            "value": "wp-block-cover__video-background",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "attribute": "loop",
+                            "value": "",
+                            "action": "remove"
+                        }
+                    },
+                    {
+                        "type": "toggleVideo",
+                        "target": {
+                            "type": "trigger",
+                            "value": "",
+                            "blockName": "",
+                            "options": ""
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0
+                        },
+                        "value": {
+                            "mode": "play",
+                            "startTime": "0"
+                        }
+                    },
+                    {
+                        "type": "move",
+                        "target": {
+                            "type": "selector",
+                            "value": "span span",
+                            "blockName": "",
+                            "options": "children"
+                        },
+                        "timing": {
+                            "isStartingState": false,
+                            "start": 0,
+                            "duration": 0.5,
+                            "easing": "outCirc",
+                            "customEasing": "",
+                            "stagger": 0.3
+                        },
+                        "value": {
+                            "x": "",
+                            "y": "0",
+                            "z": ""
+                        }
+                    }
+                ]
+            },
+            {
+                "loop": false,
+                "onceOnly": false,
+                "alternate": false,
+                "reset": false,
+                "reverse": false,
+                "actions": []
+            }
+        ],
+        "options": []
+    },
+    "serializedBlockExample": "<!-- wp:cover {\"url\":\"https://www.pexels.com/download/video/3135929/\",\"dimRatio\":50,\"backgroundType\":\"video\",\"minHeight\":100,\"minHeightUnit\":\"vh\",\"align\":\"full\",\"layout\":{\"type\":\"default\"}} -->\r\n<div class=\"wp-block-cover alignfull\" style=\"min-height:100vh\"><video class=\"wp-block-cover__video-background intrinsic-ignore\" autoplay muted loop playsinline src=\"https://www.pexels.com/download/video/3135929/\" data-object-fit=\"cover\"></video><span aria-hidden=\"true\" class=\"wp-block-cover__background has-background-dim\"></span><div class=\"wp-block-cover__inner-container\"><!-- wp:heading {\"level\":1,\"fontSize\":\"xx-large\"} -->\r\n<h1 class=\"wp-block-heading has-xx-large-font-size\"><span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Modern Web Solutions</span></span>\r\n<span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Built for Tomorrow's</span></span>\r\n<span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Digital Needs</span></span></h1>\r\n<!-- /wp:heading --></div></div>\r\n<!-- /wp:cover -->",
+    "applyWhitelist": []
+}

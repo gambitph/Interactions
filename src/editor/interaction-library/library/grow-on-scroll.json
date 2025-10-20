@@ -1,0 +1,11 @@
+{
+    "id": "growOnScroll",
+    "name": "Grow On Scroll",
+    "description": "Element grows depending on the scroll strength",
+    "category": "card",
+    "apply": {
+        "name": "Grow on scroll effect",
+        "category": "scroll"
+    },
+    "preview": "growOnScroll"
+}
