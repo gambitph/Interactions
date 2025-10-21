@@ -32,7 +32,7 @@ jobs:
         # Find the zip file in build directory
         ZIP_FILE=$(find build -name "interactions-*.zip" -type f | head -1)
         if [ -n "$ZIP_FILE" ]; then
-          mv "$ZIP_FILE" wpnteractions-${{ env.VERSION_SUFFIX }}.zip
+          mv "$ZIP_FILE" interactions-${{ env.VERSION_SUFFIX }}.zip
           echo "Renamed $ZIP_FILE to interactions-${{ env.VERSION_SUFFIX }}.zip"
         else
           echo "Build zip file not found in build directory"
