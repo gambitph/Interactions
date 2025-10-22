@@ -9,6 +9,7 @@ import { isPresetApplicable, useInteractionPresets } from './util'
 /**
  * External deprendencies
  */
+import { GuidedModalTour } from '~interact/editor/components'
 
 /**
  * WordPress deprendencies
@@ -193,8 +194,10 @@ export const InteractionLibrary = () => {
 
 	const handleClose = () => {
 		// Close the modal and reset the interaction library target.
-		setMode( null )
-		setTarget( null )
+		setTimeout( () => {
+			setMode( null )
+			setTarget( null )
+		}, 100 )
 	}
 
 	const handleBack = () => {
@@ -270,6 +273,7 @@ export const InteractionLibrary = () => {
 					mode={ interactionMode }
 				/>
 			) }
+			<GuidedModalTour tourId="interaction-library" />
 		</Modal>
 	)
 }

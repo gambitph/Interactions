@@ -6,6 +6,7 @@ import {
 	InteractionButton,
 	InteractionPanel,
 	ImportExportModal,
+	GuidedModalTour,
 } from './components'
 import { createNewInteraction, createNewAction } from './util'
 import { useInteractions } from './hooks'
@@ -445,6 +446,7 @@ const InteractionsEditor = () => {
 		{ /* Render the Interaction Library modal in the root editor component */
 			interactionLibraryMode && <InteractionLibrary />
 		}
+		<GuidedModalTour tourId="editor" />
 	</>
 }
 

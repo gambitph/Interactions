@@ -135,3 +135,4 @@ require_once( plugin_dir_path( __FILE__ ) . 'src/rest-api/class-rest-editor.php'
 require_once( plugin_dir_path( __FILE__ ) . 'src/rest-api/class-rest-location-rules.php' );
 
 require_once( plugin_dir_path( __FILE__ ) . 'src/editor/interaction-library/index.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/editor/getting-started.php' );
