@@ -50,8 +50,10 @@ const ModalTour = memo( props => {
 		hasConfetti = true,
 		initialize = NOOP,
 	} = useMemo( () =>
-		TOUR_STEPS[ tourId ],
+		TOUR_STEPS[ tourId ] || {},
 	[ tourId ] )
+
+	const step = ( steps && steps[ currentStep ] ) || {}
 
 	const {
 		title,
@@ -73,7 +75,7 @@ const ModalTour = memo( props => {
 		// eslint-disable-next-line no-unused-vars
 		postStep = NOOP, // If provided, this is a function to run after the step is shown.
 		skipIf = NOOP, // If provided, this is a function to check if the step should be skipped.
-	} = steps[ currentStep ]
+	} = step
 
 	useEffect( () => {
 		setTimeout( () => {
@@ -275,7 +277,12 @@ const ModalTour = memo( props => {
 			return [ '', '' ] // This is for the entire screen.
 		}
 
-		const modalRect = modalRef.current.querySelector( '.interact-tour-modal' ).getBoundingClientRect()
+		const modalEl = modalRef.current?.querySelector?.( '.interact-tour-modal' )
+		if ( ! modalEl ) {
+			return [ '', '' ]
+		}
+		const modalRect = modalEl.getBoundingClientRect()
+
 		const defaultOffset = [ `${ ( window.innerWidth / 2 ) - ( modalRect.width / 2 ) }px`, `${ ( window.innerHeight / 2 ) - ( modalRect.height / 2 ) }px` ]
 
 		if ( ! anchor ) {

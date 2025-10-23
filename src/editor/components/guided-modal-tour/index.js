@@ -87,7 +87,9 @@ const GuidedModalTour = memo( props => {
 					if ( ! guidedTourStates.includes( tourId ) ) {
 						// eslint-disable-next-line camelcase
 						const settings = new models.Settings( { interact_guided_tour_states: [ ...guidedTourStates, tourId ] } )
-						settings.save()
+						settings.save().catch( error => {
+							console.error( 'Error saving guided tour state:', error ) // eslint-disable-line no-console
+						} )
 					}
 
 					// Soft update the global variable to prevent the tour from being shown again.

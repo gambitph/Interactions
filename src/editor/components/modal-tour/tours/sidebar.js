@@ -34,7 +34,7 @@ export const sidebar = {
 		{
 			title: __( 'Apply to Existing Elements', 'interactions' ),
 			description: __( 'Interactions aren’t limited to new content. You can also add animations to elements you’ve already created.', 'interactions' ),
-			help: createInterpolateElement( __( 'Select an existing block and click the Interactions logo to open the library.', 'interactions' ), {
+			help: createInterpolateElement( __( 'Select an existing block and click the <strong>Interactions logo</strong> to open the library.', 'interactions' ), {
 				strong: <strong />,
 			} ),
 			size: 'medium',
