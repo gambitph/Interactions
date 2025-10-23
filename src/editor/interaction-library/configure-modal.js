@@ -57,100 +57,102 @@ export const ConfigureModal = props => {
 	} = useInteractions()
 
 	const handleApply = () => {
-		const config = getConfig( selectedPreset.config )
-		let isRunDefaultConfig = true
-		// Allow an entry to handle configurations and block generation for complex interactions
-		if ( config ) {
-			try {
-				isRunDefaultConfig = config( selectedPreset, optionValues, interactionSetup )
-			} catch ( error ) {
-				console.error( 'Interactions Library configuration error:', error.message ) // eslint-disable-line no-console
-				isRunDefaultConfig = false
-			}
-		}
-
-		if ( isRunDefaultConfig ) {
-			// Edit the timelines based on the user's configuration
-			configurableOptions.forEach( option => {
-				const value = optionValues[ option.key ] ?? option.controls.default ?? ''
-				option.mappings.forEach( mapping => {
-					const transformFn = getConfig( mapping.transformFn ) ?? ( v => v )
-					const transformedValue = transformFn( value )
-					setValueAtPath( interactionSetup, mapping.path, transformedValue )
-				} )
-			} )
-
-			const targetMappings = selectedPreset.targetMappings
-
-			// If mode is inset, create a new block based on the seralized example.
-			// Otherwise, use the target from target selector.
-			if ( mode === 'insert' ) {
-				const block = parse( selectedPreset.serializedBlockExample ?? '' )[ 0 ]
-				if ( ! block ) {
-					return
+		setTimeout( () => {
+			const config = getConfig( selectedPreset.config )
+			let isRunDefaultConfig = true
+			// Allow an entry to handle configurations and block generation for complex interactions
+			if ( config ) {
+				try {
+					isRunDefaultConfig = config( selectedPreset, optionValues, interactionSetup )
+				} catch ( error ) {
+					console.error( 'Interactions Library configuration error:', error.message ) // eslint-disable-line no-console
+					isRunDefaultConfig = false
 				}
-				dispatch( 'core/block-editor' ).insertBlocks( block )
-
-				// If target mappings are provided, dynamically create target for each.
-				applyTargetMappings( interactionSetup, targetMappings, block, )
-			} else if ( mode === 'apply' ) {
-				applyTargetMappings( interactionSetup, targetMappings, selectedTarget )
 			}
-		}
 
-		// Ensure the interactions are in an array format
-		const interactions = Array.isArray( interactionSetup )
-			? interactionSetup
-			: [ interactionSetup ]
-
-		// Create new actions based on import to regenerate action key
-		// and fill missing properties with defaults.
-		interactions.forEach( ( interaction, index, array ) => {
-			const timelines = interaction.timelines ?? []
-			interaction.timelines = timelines.map( timeline => {
-				const actions = ( timeline.actions ?? [] ).map( action =>
-					createNewAction( {
-						actionType: action.type ?? '',
-						start: action.timing?.start ?? 0,
-						targetType: action.target?.type ?? '',
-						props: { ...action },
+			if ( isRunDefaultConfig ) {
+			// Edit the timelines based on the user's configuration
+				configurableOptions.forEach( option => {
+					const value = optionValues[ option.key ] ?? option.controls.default ?? ''
+					option.mappings.forEach( mapping => {
+						const transformFn = getConfig( mapping.transformFn ) ?? ( v => v )
+						const transformedValue = transformFn( value )
+						setValueAtPath( interactionSetup, mapping.path, transformedValue )
 					} )
-				)
+				} )
 
-				return { ...timeline, actions }
+				const targetMappings = selectedPreset.targetMappings
+
+				// If mode is inset, create a new block based on the seralized example.
+				// Otherwise, use the target from target selector.
+				if ( mode === 'insert' ) {
+					const block = parse( selectedPreset.serializedBlockExample ?? '' )[ 0 ]
+					if ( ! block ) {
+						return
+					}
+					dispatch( 'core/block-editor' ).insertBlocks( block )
+
+					// If target mappings are provided, dynamically create target for each.
+					applyTargetMappings( interactionSetup, targetMappings, block, )
+				} else if ( mode === 'apply' ) {
+					applyTargetMappings( interactionSetup, targetMappings, selectedTarget )
+				}
+			}
+
+			// Ensure the interactions are in an array format
+			const interactions = Array.isArray( interactionSetup )
+				? interactionSetup
+				: [ interactionSetup ]
+
+			// Create new actions based on import to regenerate action key
+			// and fill missing properties with defaults.
+			interactions.forEach( ( interaction, index, array ) => {
+				const timelines = interaction.timelines ?? []
+				interaction.timelines = timelines.map( timeline => {
+					const actions = ( timeline.actions ?? [] ).map( action =>
+						createNewAction( {
+							actionType: action.type ?? '',
+							start: action.timing?.start ?? 0,
+							targetType: action.target?.type ?? '',
+							props: { ...action },
+						} )
+					)
+
+					return { ...timeline, actions }
+				} )
+
+				// Bypass anchor change confirmation since the change is only for the newly created block.
+				dispatch( 'interact/interactions' ).setDidModifyPostContent( false )
+
+				// Save through the editor if it's the last interaction
+				if ( index === array.length - 1 ) {
+				// Create the new interaction
+					window.dispatchEvent( new window.CustomEvent( 'interact/add-interaction', {
+						detail: {
+							type: interaction?.type ?? '',
+							target: interaction.target,
+							props: interaction,
+						},
+					} ) )
+
+					setTimeout( () => {
+						window?.dispatchEvent( new CustomEvent( 'interact/save-interaction' ) )
+						dispatch( 'core/editor' ).savePost()
+					}, 100 )
+				} else {
+					const newInteraction = createNewInteraction(
+						interaction?.type ?? '',
+						interaction.target,
+						interaction,
+					)
+					updateInteraction( newInteraction )
+				}
 			} )
 
-			// Bypass anchor change confirmation since the change is only for the newly created block.
-			dispatch( 'interact/interactions' ).setDidModifyPostContent( false )
-
-			// Save through the editor if it's the last interaction
-			if ( index === array.length - 1 ) {
-				// Create the new interaction
-				window.dispatchEvent( new window.CustomEvent( 'interact/add-interaction', {
-					detail: {
-						type: interaction?.type ?? '',
-						target: interaction.target,
-						props: interaction,
-					},
-				} ) )
-
-				setTimeout( () => {
-					window?.dispatchEvent( new CustomEvent( 'interact/save-interaction' ) )
-					dispatch( 'core/editor' ).savePost()
-				}, 100 )
-			} else {
-				const newInteraction = createNewInteraction(
-					interaction?.type ?? '',
-					interaction.target,
-					interaction,
-				)
-				updateInteraction( newInteraction )
-			}
+			// Close the modal, and open the sidebar for the new interaction.
+			closeModal()
+			openInteractionsSidebar()
 		} )
-
-		// Close the modal, and open the sidebar for the new interaction.
-		closeModal()
-		openInteractionsSidebar()
 	}
 
 	// If skipConfig is true, just apply the interaction user without configuration.

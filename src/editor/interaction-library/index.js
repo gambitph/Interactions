@@ -194,10 +194,8 @@ export const InteractionLibrary = () => {
 
 	const handleClose = () => {
 		// Close the modal and reset the interaction library target.
-		setTimeout( () => {
-			setMode( null )
-			setTarget( null )
-		}, 100 )
+		setMode( null )
+		setTarget( null )
 	}
 
 	const handleBack = () => {
@@ -244,6 +242,7 @@ export const InteractionLibrary = () => {
 			className="interact-interaction-library-modal"
 			onRequestClose={ handleClose }
 		>
+			<GuidedModalTour tourId="interaction-library" />
 			{ isLoadingPresets ? (
 				<div style={ {
 					display: 'flex',
@@ -273,7 +272,6 @@ export const InteractionLibrary = () => {
 					mode={ interactionMode }
 				/>
 			) }
-			<GuidedModalTour tourId="interaction-library" />
 		</Modal>
 	)
 }
