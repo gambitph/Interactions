@@ -21,8 +21,8 @@ const mountAddButton = () => {
 			if ( toolbar ) {
 				// If the button gets lost, just attach it again.
 				if ( ! toolbar.querySelector( '.interact-add-interaction-button-wrapper' ) ) {
-					// If .ugb-insert-library-button__wrapper button is present, add after this button.
-					const insertLibraryButton = toolbar.querySelector( '.ugb-insert-library-button__wrapper' )
+					// If .interact-insert-library-button__wrapper button is present, add after this button.
+					const insertLibraryButton = toolbar.querySelector( '.interact-insert-library-button__wrapper' )
 					if ( insertLibraryButton ) {
 						insertLibraryButton.after( buttonDiv )
 					} else {

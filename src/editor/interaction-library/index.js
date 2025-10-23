@@ -9,6 +9,7 @@ import { isPresetApplicable, useInteractionPresets } from './util'
 /**
  * External deprendencies
  */
+import { GuidedModalTour } from '~interact/editor/components'
 
 /**
  * WordPress deprendencies
@@ -241,6 +242,7 @@ export const InteractionLibrary = () => {
 			className="interact-interaction-library-modal"
 			onRequestClose={ handleClose }
 		>
+			<GuidedModalTour tourId="interaction-library" />
 			{ isLoadingPresets ? (
 				<div style={ {
 					display: 'flex',
