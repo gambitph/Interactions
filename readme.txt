@@ -146,10 +146,10 @@ https://github.com/gambitph/Interactions
 = 1.3.0 =
 
 * New: Interaction library
-* New: Initial release in the WordPress Plugin Directory!
 * New: Block name field is now searchable #70
 * New: Import / export functionality #71
 * New: Box shadow action #81
+* New: 3D Rotate - new transform origin option
 * Fixed: Hover interaction glitches when hovering too fast #9
 * Fixed: On enter viewport doesn't always trigger when on mobile #23
 * Fixed: Confetti action - selecting window will no longer show a display target warning message #74
