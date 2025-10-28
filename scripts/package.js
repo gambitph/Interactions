@@ -312,6 +312,16 @@ async function packagePlugin() {
 		}
 	}
 
+	// Rename interactions.php to plugin.php for premium builds only
+	if ( IS_PREMIUM_BUILD ) {
+		const oldPath = path.join( BUILD_DIR, 'interactions.php' )
+		const newPath = path.join( BUILD_DIR, 'plugin.php' )
+		if ( fs.existsSync( oldPath ) ) {
+			fs.renameSync( oldPath, newPath )
+			console.log( '📝 Renamed interactions.php to plugin.php for premium build' )
+		}
+	}
+
 	console.log( '📁 Copying source directories...' )
 	// Pass isSrcRoot = true for the top-level src folder
 	copyDir( 'src', path.join( BUILD_DIR, 'src' ), true )
