@@ -12,7 +12,7 @@ Add animations and interactivity to your blocks. Choose from ready-made effects 
 
 == Description ==
 
-**Interactions – WordPress Animations, Effects & Functionality for Gutenberg Blocks**  
+**Interactions – WordPress Animations, Interactive Experiences for Gutenberg Blocks**  
 
 Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the block editor.  
 
