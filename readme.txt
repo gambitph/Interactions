@@ -133,8 +133,9 @@ The free version includes basic animations and interactions. Premium adds advanc
 
 == Screenshots ==
 
-1. Interaction Library – Pre-built animations and effects.
+1. Adding from the Interaction Library – Pre-built animations and effects.
 2. Advanced trigger and action timeline builder – Create custom interactions with flexible logic and multiple steps.
+3. Interaction Library contents – Pre-built animations and effects.
 
 == Source ==
 
