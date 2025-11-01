@@ -1,4 +1,4 @@
-=== Interactions ===
+=== Interactions - Create Interactive Experiences in the Block Editor ===
 Contributors: bfintal, gambitph
 Tags: interaction, interactivity, trigger, blocks, gutenberg
 Requires at least: 6.6.4
