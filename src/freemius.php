@@ -601,7 +601,7 @@ if ( ! class_exists( 'Interact_Freemius_Admin' ) ) {
 			</table>
 			<div class="description result"></div>
 			<p class="submit">
-				<button type="button" class="button close" onClick="dialog.close()">Cancel</button>
+				<button type="button" class="button close">Cancel</button>
 				<button type="button" class="button button-primary activate">{$esc_attr( $this->labels['activate_button'] )}</button>
 				<button type="button" class="button button-primary deactivate">{$esc_attr( $this->labels['deactivate_button'] )}</button>
 				<img src="{$esc_attr( includes_url( 'images/spinner.gif' ) )}" aria-hidden="true" class="busy-spinner"/>
@@ -610,68 +610,70 @@ if ( ! class_exists( 'Interact_Freemius_Admin' ) ) {
 	</div>
 </dialog>
 <script>
-const dialog = document.querySelector('#dialog-{$esc_attr( $this->freemius->plugin_id )}');
-dialog.addEventListener( 'click', function( event ) {
-    if ( event.target === dialog ) {
-		if ( ! dialog.classList.contains( 'busy' ) ) {
-        	dialog.close();
+(function() {
+	const dialog = document.querySelector('#dialog-{$esc_attr( $this->freemius->plugin_id )}');
+	dialog.addEventListener( 'click', function( event ) {
+		if ( event.target === dialog ) {
+			if ( ! dialog.classList.contains( 'busy' ) ) {
+				dialog.close();
+			}
 		}
-    }
-} );
-dialog.querySelector( 'button.close' ).addEventListener( 'click', function() { dialog.close() } );
-dialog.querySelector( 'button.activate' ).addEventListener( 'click', function() {
-	const result = dialog.querySelector( '.result' )
-	const hasLicenseKey = dialog.querySelector( '.license-key' ).validity.valid
-	if ( ! hasLicenseKey ) {
-		result.classList.add( 'err' )
-		result.classList.remove( 'success' )
-		result.textContent = "{$esc_attr( $this->labels['no_license_key'] )}";
-		return;
-	}
-	const licenseKey = dialog.querySelector( 'input.license-key' ).value;
-	if ( licenseKey ) {
+	} );
+	dialog.querySelector( 'button.close' ).addEventListener( 'click', function() { dialog.close() } );
+	dialog.querySelector( 'button.activate' ).addEventListener( 'click', function() {
+		const result = dialog.querySelector( '.result' )
+		const hasLicenseKey = dialog.querySelector( '.license-key' ).validity.valid
+		if ( ! hasLicenseKey ) {
+			result.classList.add( 'err' )
+			result.classList.remove( 'success' )
+			result.textContent = "{$esc_attr( $this->labels['no_license_key'] )}";
+			return;
+		}
+		const licenseKey = dialog.querySelector( 'input.license-key' ).value;
+		if ( licenseKey ) {
+			dialog.classList.add( 'busy' )
+			dialog.querySelector( 'button.close' ).disabled = true
+			dialog.querySelector( 'button.activate' ).disabled = true
+			wp.ajax.post( 'interactfa_activate', { license_key: btoa( licenseKey ), nonce: "{$esc_attr( $nonce )}" } ).done( function( success ) {
+				result.classList.remove( 'err' )
+				result.classList.add( 'success' )
+				result.textContent = success;
+				console.log('result', result);
+				dialog.classList.remove( 'busy' )
+				setTimeout( function() { window.location.reload() }, 1000 )
+			}).fail( function ( error ) {
+				result.classList.remove( 'success' )
+				result.classList.add( 'err' )
+				result.textContent = error;
+				dialog.classList.remove( 'busy' )
+				dialog.querySelector( 'button.close' ).disabled = false
+				dialog.querySelector( 'button.activate' ).disabled = false
+			});
+		}
+	} );
+
+	dialog.querySelector( 'button.deactivate' ).addEventListener( 'click', function() {
+		const result = dialog.querySelector( '.result' )
 		dialog.classList.add( 'busy' )
 		dialog.querySelector( 'button.close' ).disabled = true
-		dialog.querySelector( 'button.activate' ).disabled = true
-		wp.ajax.post( 'interactfa_activate', { license_key: btoa( licenseKey ), nonce: "{$esc_attr( $nonce )}" } ).done( function( success ) {
+		dialog.querySelector( 'button.deactivate' ).disabled = true
+		wp.ajax.post( 'interactfa_deactivate', { nonce: "{$esc_attr( $nonce )}" } ).done( function( success ) {
 			result.classList.remove( 'err' )
 			result.classList.add( 'success' )
 			result.textContent = success;
 			console.log('result', result);
 			dialog.classList.remove( 'busy' )
 			setTimeout( function() { window.location.reload() }, 1000 )
-		}).fail( function ( error ) {
+		}).fail( function( error ) {
 			result.classList.remove( 'success' )
 			result.classList.add( 'err' )
 			result.textContent = error;
 			dialog.classList.remove( 'busy' )
 			dialog.querySelector( 'button.close' ).disabled = false
-			dialog.querySelector( 'button.activate' ).disabled = false
+			dialog.querySelector( 'button.deactivate' ).disabled = false
 		});
-	}
-} );
-
-dialog.querySelector( 'button.deactivate' ).addEventListener( 'click', function() {
-	const result = dialog.querySelector( '.result' )
-	dialog.classList.add( 'busy' )
-	dialog.querySelector( 'button.close' ).disabled = true
-	dialog.querySelector( 'button.deactivate' ).disabled = true
-	wp.ajax.post( 'interactfa_deactivate', { nonce: "{$esc_attr( $nonce )}" } ).done( function( success ) {
-		result.classList.remove( 'err' )
-		result.classList.add( 'success' )
-		result.textContent = success;
-		console.log('result', result);
-		dialog.classList.remove( 'busy' )
-		setTimeout( function() { window.location.reload() }, 1000 )
-	}).fail( function( error ) {
-		result.classList.remove( 'success' )
-		result.classList.add( 'err' )
-		result.textContent = error;
-		dialog.classList.remove( 'busy' )
-		dialog.querySelector( 'button.close' ).disabled = false
-		dialog.querySelector( 'button.deactivate' ).disabled = false
-	});
-} );
+	} );
+})();
 
 </script>
 LINK;
