@@ -151,6 +151,8 @@ The free version includes basic animations and interactions. Premium adds advanc
 
 = 1.3.1 =
 
+* Fixed: Updated readme info
+* Fixed: Updated long name in the plugins page
 * Fixed: License activation issue
 
 = 1.3.0 =

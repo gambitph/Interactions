@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Interactions - Create Interactive Experiences in the Block Editor
+ * Plugin Name: Interactions
  * Plugin URI: https://wpinteractions.com/
  * Description: Add animations and interactivity to your blocks. Choose from ready-made effects like scroll & hover in the Interactions Library, or build your own.
  * Author: Gambit Technologies, Inc
