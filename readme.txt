@@ -12,22 +12,23 @@ Add animations and interactivity to your blocks. Choose from ready-made effects 
 
 == Description ==
 
-**Interactions – WordPress Animations, Interactive Experiences for Gutenberg Blocks**  
+**Interactions – WordPress Animations, Interactive Experiences for Gutenberg Blocks**
 
-Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the block editor.  
+[Visit our website](https://wpinteractions.com) to learn more about how Interactions work.
+
+Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the block editor. Check our [samples page here](https://wpinteractions.com/samples/) to see a glimpse of what type of interactions you can create. 
 
 You don't need coding skills or complex tools. With Interactions, you can:
 
-- **Pick from the Interactions Library** – A collection of pre-built animations and effects (like images that move upon scrolling down the page, buttons that glow when hovered, and more). Just click and apply.
-- **Build your own custom effects** – Use a simple **Trigger → Action** system. Example: "On scroll → Fade in block", or "On click → Play video".
-- **Add functional features** – Securely update post data, handle form submissions, display user info, copy text to clipboard, and more without coding.
+- **Pick from the [Interactions Library](https://docs.wpinteractions.com/article/744-how-to-use-interactions-library)** – A collection of pre-built animations and effects (like images that move upon scrolling down the page, buttons that glow when hovered, and more). Just click and apply. [Learn more](https://docs.wpinteractions.com/article/744-how-to-use-interactions-library)
+- **Build your own custom effects** – Use a simple **Trigger → Action** system. Example: "On scroll → Fade in block", or "On click → Play video". [Learn more](https://docs.wpinteractions.com/article/577-what-is-wp-interactions-and-how-does-it-work)
+- **Add functional features** – Securely update post data, handle form submissions, display user info, copy text to clipboard, and more without coding. [Learn more](https://docs.wpinteractions.com/category/729-interactions)
 
-Whether you want subtle hover effects, attention-grabbing story-telling animations, playful micro-interactions, or powerful functional features, Interactions makes it possible.
+Whether you want subtle hover effects, attention-grabbing story-telling animations, playful micro-interactions, or powerful functional features, [Interactions](https://wpinteractions.com) makes it possible.
 
 ### 🚀 Features
 
-Create custom interactions easily with a simple Trigger → Action builder. Features include:
-
+Create [custom interactions](https://docs.wpinteractions.com/article/571-what-are-interactions) easily with a simple Trigger → Action builder. Features include:
 
 **Animations & Visual Effects:**
 
@@ -69,6 +70,8 @@ Create custom interactions easily with a simple Trigger → Action builder. Feat
 - Anyone building **modern interactive websites** in WordPress  
 
 ### 💎 What's in Premium?
+
+[Check our pricing page](https://wpinteractions.com/pricing/) to learn more about what's in Interactions premium.
 
 **Advanced Interactions:**
 
@@ -145,6 +148,10 @@ The free version includes basic animations and interactions. Premium adds advanc
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 1.3.1 =
+
+* Fixed: License activation issue
 
 = 1.3.0 =
 
