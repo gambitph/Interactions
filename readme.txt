@@ -98,6 +98,11 @@ Create custom interactions easily with a simple Trigger → Action builder. Feat
 - **Regular Updates** – New features and improvements
 - **Commercial License** – Use in client projects
 
+**Source Code:**
+
+The source code for this plugin is available on GitHub:
+https://github.com/gambitph/Interactions
+
 == Installation ==
 
 1. Install “Interactions” from the WordPress Plugin Directory, or upload it to `/wp-content/plugins/interactions/`.
@@ -137,10 +142,7 @@ The free version includes basic animations and interactions. Premium adds advanc
 2. Advanced trigger and action timeline builder – Create custom interactions with flexible logic and multiple steps.
 3. Interaction Library contents – Pre-built animations and effects.
 
-== Source ==
-
-The source code for this plugin is available on GitHub:
-https://github.com/gambitph/Interactions
+== Upgrade Notice ==
 
 == Changelog ==
 
