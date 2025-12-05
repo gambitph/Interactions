@@ -7,7 +7,7 @@
  * Author URI: http://gambit.ph
  * License: GPLv2 or later
  * Text Domain: interactions
- * Version: 1.3.1
+ * Version: 1.3.2
  *
  * @fs_premium_only /freemius.php, /freemius/
  */
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 defined( 'INTERACT_BUILD' ) || define( 'INTERACT_BUILD', 'free' );
-defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.3.1' );
+defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.3.2' );
 defined( 'INTERACT_FILE' ) || define( 'INTERACT_FILE', __FILE__ );
 
 /**
