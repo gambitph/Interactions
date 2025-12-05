@@ -58,6 +58,21 @@ if ( ! class_exists( 'Interact_Action_Type_Move' ) ) {
 
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			// Ensure x, y, z are sanitized as numeric (including negatives and decimals), otherwise set to null (but leave blank as is)
+			foreach ( [ 'x', 'y', 'z' ] as $key ) {
+				if ( isset( $value[ $key ] ) && $value[ $key ] !== '' ) {
+					// Allow negative/positive/decimal
+					if ( is_numeric( $value[ $key ] ) ) {
+						$value[ $key ] = $value[ $key ] + 0; // Cast to int or float
+					} else {
+						$value[ $key ] = null;
+					}
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'move', 'Interact_Action_Type_Move' );

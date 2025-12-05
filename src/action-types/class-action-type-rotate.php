@@ -63,6 +63,37 @@ if ( ! class_exists( 'Interact_Action_Type_Rotate' ) ) {
 
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['rotate'] ) ) {
+				if ( is_numeric( $value['rotate'] ) ) {
+					$value['rotate'] = $value['rotate'] + 0;
+				} else {
+					$value['rotate'] = null;
+				}
+			}
+
+			if ( is_array( $value ) && isset( $value['transformOrigin'] ) ) {
+				$allowed_transform_origins = [
+					'center',
+					'top',
+					'right',
+					'bottom',
+					'left',
+					'top left',
+					'top right',
+					'bottom left',
+					'bottom right',
+					'custom',
+				];
+				if ( ! in_array( $value['transformOrigin'], $allowed_transform_origins, true ) ) {
+					$value['transformOrigin'] = 'center';
+				}
+			}
+
+			$value['customTransformOrigin'] = $this->sanitize_style_value( $value['customTransformOrigin'] );
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'rotate', 'Interact_Action_Type_Rotate' );

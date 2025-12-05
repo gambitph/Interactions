@@ -33,6 +33,11 @@ if ( ! class_exists( 'Interact_Action_Type_Background_Image' ) ) {
 
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			$value['image'] = $this->sanitize_style_value( $value['image'] );
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'backgroundImage', 'Interact_Action_Type_Background_Image' );

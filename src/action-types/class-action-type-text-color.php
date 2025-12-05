@@ -34,6 +34,13 @@ if ( ! class_exists( 'Interact_Action_Type_Text_Color' ) ) {
 
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['color'] ) ) {
+				$value['color'] = $this->sanitize_style_value( $value['color'] );
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'textColor', 'Interact_Action_Type_Text_Color' );

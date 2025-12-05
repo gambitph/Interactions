@@ -256,5 +256,37 @@ if ( ! class_exists( 'Interact_Abstract_Action_Type' ) ) {
 
 			return $action;
 		}
+
+		/**
+		 * Sanitizes the action's value before saving.
+		 *
+		 * Override this in a child class to implement specific sanitization.
+		 *
+		 * @param mixed $value The action value to sanitize.
+		 * @return mixed The sanitized action value.
+		 */
+		public function sanitize_data_for_saving( $value ) {
+			// By default, no sanitization is applied.
+			return $value;
+		}
+
+		/**
+		 * Remove any `expression(...)` and `javascript:` content from a CSS style string for security.
+		 *
+		 * @param string $string
+		 * @return string
+		 */
+		public function sanitize_style_value( $string ) {
+			if ( ! is_string( $string ) ) {
+				return $string;
+			}
+			// Remove all expression(...) (case-insensitive).
+			$string = preg_replace( '/expression\s*\((?:[^\(\)]|(?R))*\)/i', '', $string );
+
+			// Remove all javascript: URIs (case-insensitive).
+			$string = preg_replace( '/javascript\s*:/i', '', $string );
+
+			return $string;
+		}
 	}
 }

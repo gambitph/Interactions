@@ -10,6 +10,7 @@ import {
 	TextControl,
 	TextareaControl,
 	ToggleControl,
+	Tooltip,
 	__experimentalNumberControl as NumberControl,
 	__experimentalHStack as HStack,
 } from '@wordpress/components'
@@ -17,7 +18,7 @@ import { __ } from '@wordpress/i18n'
 import { clamp } from 'lodash'
 import ColorControl from '../color-control'
 import SVGBolt from './images/bolt.svg'
-import { plan } from 'interactions'
+import { plan, currentUserCanUnfilteredHtml } from 'interactions'
 
 const NOOP = () => {}
 const EMPTYARR = []
@@ -48,6 +49,29 @@ export const PropertyControl = props => {
 	let help = property.help ? (
 		<span dangerouslySetInnerHTML={ { __html: property.help } } />
 	) : null
+
+	// Add a restriction notice.
+	if ( property.restrictedNotice && ! currentUserCanUnfilteredHtml ) {
+		help = (
+			<>
+				{ help }{ ' ' }
+				<Tooltip
+					delay={ 0 }
+					text={ <span style={ { maxWidth: 300, display: 'block' } }>{ property.restrictedNotice.replace( /<[^>]+>/g, '' ) }</span> }
+				>
+					<span
+						style={ {
+							color: '#FFA500',
+							borderBottom: '1px dotted rgb(208, 135, 0)',
+							cursor: 'help',
+						} }
+					>
+						{ __( 'Has restrictions', 'interactions' ) }
+					</span>
+				</Tooltip>
+			</>
+		)
+	}
 
 	// Allow the property to override the config for if the option is dynamic.
 	const {

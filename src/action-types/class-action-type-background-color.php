@@ -52,6 +52,11 @@ if ( ! class_exists( 'Interact_Action_Type_Background_Color' ) ) {
 
 		// 	return parent::initilize_action( $action, $animation_data );
 		// }
+
+		public function sanitize_data_for_saving( $value ) {
+			$value['color'] = $this->sanitize_style_value( $value['color'] );
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'backgroundColor', 'Interact_Action_Type_Background_Color' );
