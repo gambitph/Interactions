@@ -54,7 +54,9 @@ if ( ! class_exists( 'Interact_Action_Type_Background_Color' ) ) {
 		// }
 
 		public function sanitize_data_for_saving( $value ) {
-			$value['color'] = $this->sanitize_style_value( $value['color'] );
+			if ( is_array( $value ) && isset( $value['color'] ) ) {
+				$value['color'] = $this->sanitize_style_value( $value['color'] );
+			}
 			return $value;
 		}
 	}
