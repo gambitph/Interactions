@@ -53,7 +53,7 @@ if ( ! class_exists( 'Interact_Action_Type_Toggle_Class' ) ) {
 
 		public function sanitize_data_for_saving( $value ) {
 			if ( is_array( $value ) && isset( $value['class'] ) ) {
-				$value['class'] = sanitize_key( $value['class'] );
+				$value['class'] = sanitize_html_class( $value['class'] );
 			}
 
 			if ( is_array( $value ) && isset( $value['action'] ) ) {

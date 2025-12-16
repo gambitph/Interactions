@@ -91,7 +91,9 @@ if ( ! class_exists( 'Interact_Action_Type_Rotate' ) ) {
 				}
 			}
 
-			$value['customTransformOrigin'] = $this->sanitize_style_value( $value['customTransformOrigin'] );
+			if ( isset( $value['customTransformOrigin'] ) ) {
+				$value['customTransformOrigin'] = $this->sanitize_style_value( $value['customTransformOrigin'] );
+			}
 			return $value;
 		}
 	}
