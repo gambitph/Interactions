@@ -59,6 +59,33 @@ if ( ! class_exists( 'Interact_Action_Type_Update_Attribute' ) ) {
 			$this->has_easing = false;
 		}
 
+		public function is_dangerous_attribute( $attribute_name ) {
+			if ( empty( $attribute_name ) || ! is_string( $attribute_name ) ) {
+				return false;
+			}
+	
+			$attribute_name = strtolower( trim( $attribute_name ) );
+	
+			// Event handler attributes (onclick, onerror, onload, etc.)
+			if ( preg_match( '/^on[a-z]+/', $attribute_name ) ) {
+				return true;
+			}
+	
+			// Attributes that can contain JavaScript URIs or code
+			$dangerous_attributes = [
+				'href',
+				'src',
+				'action',
+				'formaction',
+				// 'style', // Can contain CSS with expression() or javascript: URIs
+				'form',
+				'formmethod',
+				'formtarget',
+			];
+	
+			return in_array( $attribute_name, $dangerous_attributes, true );
+		}
+
 		public function sanitize_data_for_saving( $value ) {
 			// Sanitize action value: ensure $value is an array and attribute/value are strings.
 			if ( ! is_array( $value ) ) {
