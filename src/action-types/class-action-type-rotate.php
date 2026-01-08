@@ -47,7 +47,7 @@ if ( ! class_exists( 'Interact_Action_Type_Rotate' ) ) {
 						[ 'label' => __( 'Bottom Right', 'interactions' ), 'value' => 'bottom right' ],
 						[ 'label' => __( 'Custom', 'interactions' ), 'value' => 'custom' ],
 					],
-					'default' => 'block',
+					'default' => 'center',
 				],
 				'customTransformOrigin' => [
 					'name' => __( 'Custom Transform Origin', 'interactions' ),
@@ -91,7 +91,9 @@ if ( ! class_exists( 'Interact_Action_Type_Rotate' ) ) {
 				}
 			}
 
-			$value['customTransformOrigin'] = $this->sanitize_style_value( $value['customTransformOrigin'] );
+			if ( isset( $value['customTransformOrigin'] ) ) {
+				$value['customTransformOrigin'] = $this->sanitize_style_value( $value['customTransformOrigin'] );
+			}
 			return $value;
 		}
 	}

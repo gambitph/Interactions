@@ -172,7 +172,7 @@ export const PropertyControl = props => {
 	const propsToPass = {}
 	if ( property.type === 'id' ) {
 		const idHelp = __( 'Give this data a unique name to make it available to other actions. Can only be lowercase letters, numbers and underscore.', 'interactions' )
-		if ( property.help ) {
+		if ( help ) {
 			help = <>{ help } { idHelp }</>
 		} else {
 			help = idHelp

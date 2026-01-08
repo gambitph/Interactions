@@ -35,7 +35,9 @@ if ( ! class_exists( 'Interact_Action_Type_Background_Image' ) ) {
 		}
 
 		public function sanitize_data_for_saving( $value ) {
-			$value['image'] = $this->sanitize_style_value( $value['image'] );
+			if ( is_array( $value ) && isset( $value['image'] ) ) {
+				$value['image'] = $this->sanitize_style_value( $value['image'] );
+			}
 			return $value;
 		}
 	}

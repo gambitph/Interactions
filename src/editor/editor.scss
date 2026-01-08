@@ -117,6 +117,14 @@
 	// margin: 0 !important;
 }
 
+// Adjust the location of the suffix of number controls since they're too on the side.
+.interact-popover,
+.interact-sidebar {
+	.components-input-control__suffix {
+		margin-right: 6px;
+	}
+}
+
 .interact-warning-text {
 	color: #d63638;
 	font-weight: 600;

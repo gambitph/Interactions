@@ -288,5 +288,123 @@ if ( ! class_exists( 'Interact_Abstract_Action_Type' ) ) {
 
 			return $string;
 		}
+
+		/**
+		 * Detect if an HTML tag is considered dangerous (can execute scripts or
+		 * otherwise modify page behavior).
+		 *
+		 * @param string $tag_name
+		 * @return bool
+		 */
+		public function is_dangerous_tag( $tag_name ) {
+			if ( empty( $tag_name ) || ! is_string( $tag_name ) ) {
+				return false;
+			}
+
+			$tag_name = strtolower( trim( $tag_name ) );
+
+			// Tags that can execute scripts or modify page behavior
+			$dangerous_tags = [
+				'script',
+				'iframe',
+				'object',
+				'embed',
+				'applet',
+				'meta',
+				'link',
+				'style',
+				'base',
+				'form',
+			];
+
+			return in_array( $tag_name, $dangerous_tags, true );
+		}
+
+		/**
+		 * Detect if an HTML attribute is considered dangerous (event handlers,
+		 * attributes that can contain JS URIs, form actions, etc.).
+		 *
+		 * @param string $attribute_name
+		 * @return bool
+		 */
+		public function is_dangerous_attribute( $attribute_name ) {
+			if ( empty( $attribute_name ) || ! is_string( $attribute_name ) ) {
+				return false;
+			}
+
+			$attribute_name = strtolower( trim( $attribute_name ) );
+
+			// Event handler attributes (onclick, onerror, onload, etc.)
+			if ( preg_match( '/^on[a-z]+/', $attribute_name ) ) {
+				return true;
+			}
+
+			// Attributes that can contain JavaScript URIs or code
+			$dangerous_attributes = [
+				'href',
+				'src',
+				'action',
+				'formaction',
+				'form',
+				'formmethod',
+				'formtarget',
+			];
+
+			return in_array( $attribute_name, $dangerous_attributes, true );
+		}
+
+		/**
+		 * Validate an HTML snippet for dangerous tags, attributes or protocols.
+		 * Returns true when safe, or a WP_Error describing the violation.
+		 *
+		 * @param string $html
+		 * @return true|WP_Error
+		 */
+		public function validate_html_for_saving( $html ) {
+			if ( ! is_string( $html ) ) {
+				return new WP_Error(
+					'invalid_html',
+					__( 'HTML must be a string.', 'interactions' )
+				);
+			}
+
+			// Detect dangerous tags
+			if ( preg_match_all( '/<\s*([a-z0-9\-]+)/i', $html, $matches ) ) {
+				foreach ( $matches[1] as $tag ) {
+					if ( $this->is_dangerous_tag( $tag ) ) {
+						return new WP_Error(
+							'invalid_tag',
+							sprintf( __( 'The HTML tag "%s" is not allowed.', 'interactions' ), esc_html( $tag ) )
+						);
+					}
+				}
+			}
+
+			// Detect dangerous attributes
+			if ( preg_match_all( '/<[^>]+>/i', $html, $tagMatches ) ) {
+				foreach ( $tagMatches[0] as $tagString ) {
+					if ( preg_match_all( '/([a-zA-Z0-9:\-]+)\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', $tagString, $attrMatches ) ) {
+						foreach ( $attrMatches[1] as $attr ) {
+							if ( $this->is_dangerous_attribute( $attr ) ) {
+								return new WP_Error(
+									'invalid_attribute',
+									sprintf( __( 'The HTML attribute "%s" is not allowed.', 'interactions' ), esc_html( $attr ) )
+								);
+							}
+						}
+					}
+				}
+			}
+
+			// Detect disallowed protocols
+			if ( preg_match( '/javascript:\s*/i', $html ) || preg_match( '/data:\s*text\//i', $html ) ) {
+				return new WP_Error(
+					'invalid_protocol',
+					__( 'The HTML contains disallowed protocols (javascript: or data:).', 'interactions' )
+				);
+			}
+
+			return true;
+		}
 	}
 }

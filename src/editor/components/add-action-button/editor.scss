@@ -1,6 +1,8 @@
 .interact-action-list-popover.interact-popover .components-panel__body {
 	max-width: 100%;
 	width: 900px;
+	max-height: 100vh;
+	overflow: auto;
 }
 .interact-popover-help {
 	font-size: 12px;

@@ -42,7 +42,9 @@ if ( ! class_exists( 'Interact_Action_Type_Css_Rule' ) ) {
 		}
 
 		public function sanitize_data_for_saving( $value ) {
-			$value['value'] = $this->sanitize_style_value( $value['value'] );
+			if ( is_array( $value ) && isset( $value['value'] ) ) {
+				$value['value'] = $this->sanitize_style_value( $value['value'] );
+			}
 			return $value;
 		}
 	}
