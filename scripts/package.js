@@ -292,6 +292,34 @@ function cleanupEmptyDirectories( dir ) {
 	}
 }
 
+function updatePluginHeaderVersion( buildDir, suffix ) {
+	if ( ! suffix ) {
+		return
+	}
+
+	const pluginFileName = IS_PREMIUM_BUILD ? 'plugin.php' : 'interactions.php'
+	const pluginFilePath = path.join( buildDir, pluginFileName )
+
+	if ( ! fs.existsSync( pluginFilePath ) ) {
+		return
+	}
+
+	let content = fs.readFileSync( pluginFilePath, 'utf8' )
+	// Append folder suffix to version in plugin header
+	content = content.replace(
+		/^(\s*\*\s*Version:\s*)([^\r\n]+)/m,
+		( match, prefix, version ) => {
+			// Only append if suffix is not already present
+			if ( ! version.includes( suffix ) ) {
+				return prefix + version + '-' + suffix
+			}
+			return match
+		}
+	)
+	fs.writeFileSync( pluginFilePath, content )
+	console.log( `📝 Updated version in ${ pluginFileName } to include suffix: ${ suffix }` )
+}
+
 async function packagePlugin() {
 	console.log( '🚀 Starting plugin packaging...' )
 	console.log( `📦 Build type: ${ IS_PREMIUM_BUILD ? 'Premium' : 'Free' }` )
@@ -331,6 +359,9 @@ async function packagePlugin() {
 
 	console.log( '🔒 Adding security index.php files...' )
 	addSecurityFiles( BUILD_DIR )
+
+	console.log( '📝 Updating plugin header version...' )
+	updatePluginHeaderVersion( BUILD_DIR, folderSuffix )
 
 	console.log( '🧹 Cleaning up empty directories...' )
 	cleanupEmptyDirectories( BUILD_DIR )
