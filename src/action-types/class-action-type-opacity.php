@@ -36,6 +36,17 @@ if ( ! class_exists( 'Interact_Action_Type_Opacity' ) ) {
 
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['opacity'] ) ) {
+				if ( is_numeric( $value['opacity'] ) ) {
+					$value['opacity'] = $value['opacity'] + 0;
+				} else {
+					$value['opacity'] = null;
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'opacity', 'Interact_Action_Type_Opacity' );

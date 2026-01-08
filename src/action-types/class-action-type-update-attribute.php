@@ -30,6 +30,7 @@ if ( ! class_exists( 'Interact_Action_Type_Update_Attribute' ) ) {
 					'name' => 'Attribute name',
 					'type' => 'text',
 					'default' => '',
+					'restrictedNotice' => __( 'Some attribute names and values are disallowed unless you are an administrator with unfiltered_html capability for security reasons.', 'interactions' ),
 				],
 				'value' => [
 					'name' => 'Value',
@@ -56,6 +57,52 @@ if ( ! class_exists( 'Interact_Action_Type_Update_Attribute' ) ) {
 			$this->has_starting_state = false;
 			$this->has_duration = false;
 			$this->has_easing = false;
+		}
+
+		public function sanitize_data_for_saving( $value ) {
+			// Sanitize action value: ensure $value is an array and attribute/value are strings.
+			if ( ! is_array( $value ) ) {
+				return new WP_Error(
+					'invalid_structure',
+					__( 'Value must be an array containing attribute and value keys.', 'interactions' )
+				);
+			}
+
+			// Sanitize attribute name
+			if ( isset( $value['attribute'] ) && is_string( $value['attribute'] ) ) {
+				$value['attribute'] = sanitize_key( $value['attribute'] );
+			}
+
+			// Sanitize value if present, and convert to string.
+			if ( isset( $value['value'] ) ) {
+				$value['value'] = $this->sanitize_style_value( $value['value'] );
+			}
+
+			// Sanitize action field for select option.
+			if ( isset( $value['action'] ) ) {
+				$allowed_actions = [ 'update', 'remove', 'toggle' ];
+				if ( ! in_array( $value['action'], $allowed_actions, true ) ) {
+					$value['action'] = 'update';
+				}
+			}
+
+			if ( current_user_can( 'unfiltered_html' ) ) {
+				return $value;
+			}
+
+			if ( ! empty( $value['attribute'] ) && $this->is_dangerous_attribute( $value['attribute'] ) ) {
+				// Only allow dangerous attributes if user has unfiltered_html capability
+				return new WP_Error(
+					'invalid_attribute',
+					sprintf(
+						// Translators: %s is the attribute name.
+						__( 'The attribute "%s" requires administrator privileges with unfiltered_html capability to prevent security vulnerabilities.', 'interactions' ),
+						esc_html( $value['attribute'] )
+					)
+				);
+			}
+
+			return $value;
 		}
 	}
 

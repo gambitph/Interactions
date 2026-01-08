@@ -46,6 +46,24 @@ if ( ! class_exists( 'Interact_Action_Type_Scale' ) ) {
 
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['x'] ) ) {
+				if ( is_numeric( $value['x'] ) ) {
+					$value['x'] = $value['x'] + 0;
+				} else {
+					$value['x'] = null;
+				}
+			}
+			if ( is_array( $value ) && isset( $value['y'] ) ) {
+				if ( is_numeric( $value['y'] ) ) {
+					$value['y'] = $value['y'] + 0;
+				} else {
+					$value['y'] = null;
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'scale', 'Interact_Action_Type_Scale' );

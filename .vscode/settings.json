@@ -40,5 +40,8 @@
 		"editor.codeActionsOnSave": {
 			"source.fixAll.stylelint": "never"
 		}
+	},
+	"search.exclude": {
+		"**/pro__premium_only": false
 	}
 }
