@@ -55,6 +55,29 @@ if ( ! class_exists( 'Interact_Action_Type_Display' ) ) {
 			$this->has_duration = false;
 			$this->has_easing = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['display'] ) ) {
+				$allowed_values = [
+					'block',
+					'none',
+					'inline',
+					'inline-block',
+					'flex',
+					'inline-flex',
+					'grid',
+					'inline-grid',
+					'initial',
+					'inherit',
+					'revert',
+					'unset',
+				];
+				if ( ! in_array( $value['display'], $allowed_values, true ) ) {
+					$value['display'] = 'block';
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'display', 'Interact_Action_Type_Display' );

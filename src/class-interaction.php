@@ -59,13 +59,18 @@ if ( ! class_exists( 'Interact_Interaction' ) ) {
 		 * @return int|WP_Error
 		 */
 		public static function update( $interaction_data ) {
+			$sanitized_data = self::secure_interaction_data( $interaction_data );
+			if ( is_wp_error( $sanitized_data ) ) {
+				return $sanitized_data;
+			}
+
 			$post_arr = [
 				'ID' => self::get_post_id_from_key( $interaction_data['key'] ),
 				'post_type' => 'interact-interaction',
 				'post_name' => $interaction_data['key'],
 				'post_title' => $interaction_data['title'],
 				// TODO: emojis do not work somehow.
-				'post_content' => wp_slash( maybe_serialize( self::secure_interaction_data( $interaction_data ) ) ),
+				'post_content' => wp_slash( maybe_serialize( $sanitized_data ) ),
 				'post_status' => $interaction_data['active'] ? 'publish' : 'interact-inactive',
 			];
 			$result = $post_arr['ID'] === 0 ? wp_insert_post( $post_arr ) : wp_update_post( $post_arr );
@@ -76,6 +81,30 @@ if ( ! class_exists( 'Interact_Interaction' ) ) {
 			}
 			
 			return $result;
+		}
+
+		/**
+		 * Sanitizes the interaction value
+		 *
+		 * @param mixed $value
+		 * @return mixed
+		 */
+		public static function sanitize_interaction_value( $value ) {
+			if ( current_user_can( 'unfiltered_html' ) ) {
+				return $value;
+			}
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $key => $val ) {
+					$value[ $key ] = self::sanitize_interaction_value( $val );
+				}
+			}
+
+			if ( is_string( $value ) ) {
+				$value = wp_kses_post( $value );
+			}
+
+			return $value;
 		}
 
 		/**
@@ -92,8 +121,19 @@ if ( ! class_exists( 'Interact_Interaction' ) ) {
 					$action_type = $action['type'];
 
 					$action_config = interact_get_action_type( $action_type );
-					$action_value = $action['value'];
 
+					// Sanitize the action value for saving.
+					$action_value = self::sanitize_interaction_value( $action['value'] );
+					// Sanitize for specific action type.
+					$action_value = $action_config->sanitize_data_for_saving( $action_value );
+
+					// If the action value is a WP_Error, return the error.
+					if ( is_wp_error( $action_value ) ) {
+						return $action_value;
+					}
+
+					$interaction_data['timelines'][ $timeline_index ]['actions'][ $action_index ]['value'] = $action_value;
+					
 					if ( $action_config->verify_integrity ) {
 						$signature = hash_hmac( 'sha256', wp_json_encode( $action_value ), interact_salt() );
 
