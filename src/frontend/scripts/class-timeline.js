@@ -46,7 +46,7 @@ export class Timeline {
 	createInstance( options ) {
 		// If triggered only once, then we don't create anymore animations.
 		const currentTrigger = this.interaction.getCurrentTrigger()
-		if ( this.getRunner().isFrontend && currentTrigger && this.timelineData.onceOnly ) {
+		if ( this.getRunner().isFrontend && currentTrigger && this._onceOnly ) {
 			if ( this.timelineData._playedTriggers.has( currentTrigger ) ) {
 				return null
 			}
