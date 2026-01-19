@@ -25,8 +25,10 @@ export class Timeline {
 			this._onceOnly = !! timelineData.onceOnly
 			this._actionStarts = {}
 
-			// Used to track if the timeline is played per each trigger.
-			this.timelineData._playedTriggers = new WeakSet()
+			// Only track played triggers if onceOnly is enabled.
+			if ( this._onceOnly && ! this.timelineData._playedTriggers ) {
+				this.timelineData._playedTriggers = new Set()
+			}
 		}
 
 		this._targets = []
@@ -44,13 +46,12 @@ export class Timeline {
 	createInstance( options ) {
 		// If triggered only once, then we don't create anymore animations.
 		const currentTrigger = this.interaction.getCurrentTrigger()
-		if ( this.getRunner().isFrontend ) {
-			if ( this.timelineData.onceOnly && this.timelineData._playedTriggers.has( currentTrigger ) ) {
+		if ( this.getRunner().isFrontend && currentTrigger && this._onceOnly ) {
+			if ( this.timelineData._playedTriggers.has( currentTrigger ) ) {
 				return null
 			}
+			this.timelineData._playedTriggers.add( currentTrigger )
 		}
-
-		this.timelineData._playedTriggers.add( currentTrigger )
 
 		// We have to empty the promises here because we are creating a new timeline.
 		// This is to prevent the promises from the previous timeline from affecting the new one.
