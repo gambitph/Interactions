@@ -1,4 +1,4 @@
-import { useEffect } from '@wordpress/element'
+import { useEffect, useRef } from '@wordpress/element'
 import { createHigherOrderComponent } from '@wordpress/compose'
 import { addFilter } from '@wordpress/hooks'
 
@@ -10,22 +10,37 @@ const CLIENT_IDS = []
 // ALL the time.
 const withTrackedAnchors = createHigherOrderComponent( BlockEdit => {
 	return props => {
+		const prevAnchorRef = useRef()
+
 		useEffect( () => {
-			if ( props.attributes.anchor ) {
-				// Remove any previous anchor selector for this clientId.
-				const index = CLIENT_IDS.indexOf( props.clientId )
-				if ( index !== -1 ) {
-					CLIENT_IDS.splice( index, 1 )
-					ANCHORS.splice( index, 1 )
-				}
-				// Keep track of the clientId-anchor pair
-				CLIENT_IDS.push( props.clientId )
-				ANCHORS.push( props.attributes.anchor )
+			const anchor = props.attributes?.anchor
+			if ( ! anchor ) {
+				return
 			}
-		}, [
-			props.clientId,
-			props.attributes?.anchor,
-		] )
+
+			// If this block had a previous anchor, remove it.
+			if ( prevAnchorRef.current ) {
+				const oldIndex = ANCHORS.indexOf( prevAnchorRef.current )
+				if ( oldIndex !== -1 ) {
+					ANCHORS.splice( oldIndex, 1 )
+					CLIENT_IDS.splice( oldIndex, 1 )
+				}
+			}
+
+			// Remove any existing entry for this anchor.
+			// This ensures no duplication when the blocks are re-rendered.
+			const existingIndex = ANCHORS.indexOf( anchor )
+			if ( existingIndex !== -1 ) {
+				ANCHORS.splice( existingIndex, 1 )
+				CLIENT_IDS.splice( existingIndex, 1 )
+			}
+
+			ANCHORS.push( anchor )
+			CLIENT_IDS.push( props.clientId )
+
+			// Store anchor for next render
+			prevAnchorRef.current = anchor
+		}, [ props.clientId, props.attributes?.anchor ] )
 
 		return <BlockEdit { ...props } />
 	}
