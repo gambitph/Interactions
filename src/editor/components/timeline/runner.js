@@ -6,6 +6,7 @@ import { useRef, useMemo } from '@wordpress/element'
 import { cloneDeep } from 'lodash'
 import { getBlockClientId } from './with-tracked-anchors'
 import { doAction } from '@wordpress/hooks'
+import { select } from '@wordpress/data'
 
 // Create the runner.
 const runner = new InteractEditorRunner()
@@ -36,6 +37,8 @@ doAction( 'interact.interaction.types.loaded' )
 
 export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
 	const runnerRef = useRef( null )
+	const renderingMode = select( 'core/editor' ).getRenderingMode()
+	const prevRenderingMode = useRef( renderingMode )
 
 	// Initialize the runner
 	const initialStyles = useMemo( () => {
@@ -52,16 +55,26 @@ export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
 			actions: cloneDeep( actions ),
 		} ]
 
-		// This replaces all block anchors with the block's ID. The editor
-		// doesn't show block anchors, since it's always in the format of
-		// "block-clientId"
-		replaceBlockAnchorsForEditor( isolatedInteraction )
+		const initRunner = () => {
+			// This replaces all block anchors with the block's ID. The editor
+			// doesn't show block anchors, since it's always in the format of
+			// "block-clientId"
+			replaceBlockAnchorsForEditor( isolatedInteraction )
+			runnerRef.current?.configure( [ isolatedInteraction ] )
+			runnerRef.current?.init()
+		}
 
-		runnerRef.current?.configure( [ isolatedInteraction ] )
-		runnerRef.current?.init()
+		// If the rendering mode changed, we need to delay the init to
+		// avoid race condition tracking the anchors.
+		if ( prevRenderingMode.current !== renderingMode ) {
+			setTimeout( initRunner, 0 )
+		} else {
+			initRunner()
+		}
+		prevRenderingMode.current = renderingMode
 
 		return runnerRef.current?.getStartingActionStyles() || ''
-	}, [ interaction, timelineIndex, actions ] )
+	}, [ interaction, timelineIndex, actions, renderingMode ] )
 
 	return [ runnerRef, initialStyles ]
 }
