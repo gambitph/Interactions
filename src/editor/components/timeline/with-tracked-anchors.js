@@ -40,7 +40,18 @@ const withTrackedAnchors = createHigherOrderComponent( BlockEdit => {
 
 			// Store anchor for next render
 			prevAnchorRef.current = anchor
+
+			// Cleanup function to remove the entry when the block is unmounted
+			return () => {
+				const index = ANCHORS.indexOf( anchor )
+				if ( index !== -1 ) {
+					ANCHORS.splice( index, 1 )
+					CLIENT_IDS.splice( index, 1 )
+				}
+			}
 		}, [ props.clientId, props.attributes?.anchor ] )
+
+		console.log( ANCHORS, CLIENT_IDS )
 
 		return <BlockEdit { ...props } />
 	}
