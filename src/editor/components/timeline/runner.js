@@ -2,7 +2,9 @@
  * The timeline runner that runs the animation when previewing.
  */
 import InteractEditorRunner from './class-runner'
-import { useRef, useMemo } from '@wordpress/element'
+import {
+	useRef, useState, useEffect,
+} from '@wordpress/element'
 import { cloneDeep } from 'lodash'
 import { getBlockClientId } from './with-tracked-anchors'
 import { doAction } from '@wordpress/hooks'
@@ -37,11 +39,13 @@ doAction( 'interact.interaction.types.loaded' )
 
 export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
 	const runnerRef = useRef( null )
+	const [ initialStyles, setInitialStyles ] = useState( '' )
+
 	const renderingMode = select( 'core/editor' ).getRenderingMode()
 	const prevRenderingMode = useRef( renderingMode )
 
 	// Initialize the runner
-	const initialStyles = useMemo( () => {
+	useEffect( () => {
 		// We will need to spawn a new runner for each timeline. Spawning will
 		// create a new running with the same configuration.
 		if ( ! runnerRef.current ) {
@@ -62,18 +66,18 @@ export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
 			replaceBlockAnchorsForEditor( isolatedInteraction )
 			runnerRef.current?.configure( [ isolatedInteraction ] )
 			runnerRef.current?.init()
+			setInitialStyles( runnerRef.current?.getStartingActionStyles() || '' )
 		}
 
 		// If the rendering mode changed, we need to delay the init to
 		// avoid race condition tracking the anchors.
 		if ( prevRenderingMode.current !== renderingMode ) {
-			setTimeout( initRunner, 0 )
+			requestAnimationFrame( initRunner )
 		} else {
 			initRunner()
 		}
-		prevRenderingMode.current = renderingMode
 
-		return runnerRef.current?.getStartingActionStyles() || ''
+		prevRenderingMode.current = renderingMode
 	}, [ interaction, timelineIndex, actions, renderingMode ] )
 
 	return [ runnerRef, initialStyles ]
