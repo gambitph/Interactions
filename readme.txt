@@ -151,6 +151,7 @@ The free version includes basic animations and interactions. Premium adds advanc
 
 = 1.3.2 =
 
+* Fixed: Interaction preview now works when Show Templates is enabled #5
 * Fixed: Added restrictions for users without unfiltered_html capabilities #6 #7
 * Fixed: If interaction trigger matched multiple elements, play once will not work on the next match #5
 * Fixed: Added additional input sanitization #6 #7
