@@ -1,6 +1,6 @@
 === Interactions - Create Interactive Experiences in the Block Editor ===
 Contributors: bfintal, gambitph
-Tags: interaction, interactivity, trigger, blocks, gutenberg
+Tags: animation, interaction, interactivity, blocks, gutenberg
 Requires at least: 6.7.4
 Tested up to: 6.9
 Requires PHP: 8.0
@@ -151,8 +151,10 @@ The free version includes basic animations and interactions. Premium adds advanc
 
 = 1.3.2 =
 
-* Fixed: Added restrictions for users without unfiltered_html capabilities
-* Fixed: Added additional input sanitization
+* Fixed: Added restrictions for users without unfiltered_html capabilities #6 #7
+* Fixed: If interaction trigger matched multiple elements, play once will not work on the next match #5
+* Fixed: Added additional input sanitization #6 #7
+* Fixed: Editor error someitmes with the CSS rule action #8
 
 = 1.3.1 =
 
