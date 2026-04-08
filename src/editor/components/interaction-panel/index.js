@@ -390,6 +390,7 @@ const InteractionPanel = props => {
 					{ interactionConfig.options.map( option => {
 						const { type, condition } = option
 						const propsToPass = {}
+						const optionToPass = { ...option }
 
 						const Tag = type === 'number' ? NumberControl
 							: type === 'select' ? SelectControl
@@ -404,7 +405,7 @@ const InteractionPanel = props => {
 							}
 							// Wordpress 7.0 Compatibility
 							// ToggleControl is messed up in Wordpress 7.0 when type prop is added.
-							delete option.type
+							delete optionToPass.type
 						}
 
 						// Conditionally display the option.
@@ -419,7 +420,7 @@ const InteractionPanel = props => {
 
 						return (
 							<Tag
-								{ ...option }
+								{ ...optionToPass }
 								key={ option.name }
 								value={ editedInteraction.options?.[ option.name ] || '' }
 								onChange={ value => {
