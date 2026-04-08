@@ -204,6 +204,7 @@ const TargetSelector = props => {
 					<FlexLayout justifyContent="start">
 						{ isHorizontal && targetButton }
 						<TextControl
+							className="interact-target-block-input"
 							id="interact-target-block-input"
 							label={ __( 'Block Anchor / ID', 'interactions' ) }
 							value={ value.value }

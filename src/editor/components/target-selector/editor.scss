@@ -69,3 +69,10 @@
 		}
 	}
 }
+
+/* Wordpress 7.0 compatibility */
+
+// Text control losses its margin bottom.
+.interact-target-block-input .components-base-control__field {
+	margin-bottom: 8px;
+}

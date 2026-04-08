@@ -83,3 +83,7 @@ h4.components-menu-group__label {
 .interface-interface-skeleton__header:has(.interact-add-interaction-popover) {
 	z-index: 99 !important;
 }
+
+.interact-add-interaction-popover .components-toggle-group-control{
+	height: 84px;
+}

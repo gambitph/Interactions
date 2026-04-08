@@ -138,3 +138,24 @@
 .interact-add-interaction-button-wrapper {
 	--wp-components-color-accent: #05f;
 }
+
+/* Wordpress 7.0 compatibility */
+
+// Toggle control loses its margin bottom.
+.components-toggle-control {
+	margin-bottom: 12px;
+}
+
+// Text control min-height changed from 30px to 40px.
+.components-text-control__input {
+	min-height: 30px !important;
+}
+
+// Select control field loses its margin bottom.
+.components-select-control .components-base-control__field {
+	margin-bottom: 8px;
+}
+
+.interact-property-control .components-base-control__field {
+	margin-bottom: 8px;
+}

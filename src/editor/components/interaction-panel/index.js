@@ -402,6 +402,9 @@ const InteractionPanel = props => {
 							} else { // Default value
 								propsToPass.checked = option.placeholder || false
 							}
+							// Wordpress 7.0 Compatibility
+							// ToggleControl is messed up in Wordpress 7.0 when type prop is added.
+							delete option.type
 						}
 
 						// Conditionally display the option.
