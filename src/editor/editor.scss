@@ -141,21 +141,23 @@
 
 /* Wordpress 7.0 compatibility */
 
-// Toggle control loses its margin bottom.
-.components-toggle-control {
-	margin-bottom: 12px;
-}
+.interact-sidebar, .interact-popover {
+	// Toggle control loses its margin bottom.
+	.components-toggle-control {
+		margin-bottom: 12px;
+	}
 
-// Text control min-height changed from 30px to 40px.
-.components-text-control__input {
-	min-height: 30px !important;
-}
+	// Text control min-height changed from 30px to 40px.
+	.components-text-control__input {
+		min-height: 30px !important;
+	}
 
-// Select control field loses its margin bottom.
-.components-select-control .components-base-control__field {
-	margin-bottom: 8px;
-}
+	// Select control field loses its margin bottom.
+	.components-select-control .components-base-control__field {
+		margin-bottom: 8px;
+	}
 
-.interact-property-control .components-base-control__field {
-	margin-bottom: 8px;
+	.interact-property-control .components-base-control__field {
+		margin-bottom: 8px;
+	}
 }
