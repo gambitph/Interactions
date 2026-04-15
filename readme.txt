@@ -1,10 +1,10 @@
 === Interactions - Create Interactive Experiences in the Block Editor ===
 Contributors: bfintal, gambitph
 Tags: animation, interaction, interactivity, blocks, gutenberg
-Requires at least: 6.7.4
-Tested up to: 6.9
+Requires at least: 6.7.5
+Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -148,6 +148,11 @@ The free version includes basic animations and interactions. Premium adds advanc
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 1.3.3 =
+
+* New: WordPress 7.0 compatibility
+* New: Confetti action - added location option
 
 = 1.3.2 =
 

@@ -43,6 +43,26 @@ async function getAvailableWordPressVersions() {
 	} )
 }
 
+/**
+ * Compare two dotted version strings (e.g. WordPress "5.0" vs "4.5").
+ * @param {string} a
+ * @param {string} b
+ * @return {number} negative if a < b, 0 if equal, positive if a > b
+ */
+function compareVersionStrings( a, b ) {
+	const aParts = String( a ).trim().split( '.' ).map( n => parseInt( n, 10 ) || 0 )
+	const bParts = String( b ).trim().split( '.' ).map( n => parseInt( n, 10 ) || 0 )
+	const len = Math.max( aParts.length, bParts.length )
+	for ( let i = 0; i < len; i++ ) {
+		const av = aParts[ i ] || 0
+		const bv = bParts[ i ] || 0
+		if ( av !== bv ) {
+			return av - bv
+		}
+	}
+	return 0
+}
+
 function calculateMinVersion( latestVersion, availableVersions ) {
 	const parts = latestVersion.split( '.' )
 	if ( parts.length >= 2 ) {
@@ -126,10 +146,17 @@ async function syncVersions() {
 				console.log( '✅ readme.txt stable tag updated successfully' )
 			}
 			const testedUpToMatch = readmeTxt.match( /^Tested up to:\s*([^\r\n]+)/m )
-			if ( testedUpToMatch && testedUpToMatch[ 1 ].trim() !== latestWordPressVersion ) {
-				const updated = ( fs.readFileSync( 'readme.txt', 'utf8' ) ).replace( /^Tested up to:\s*[^\r\n]+/m, `Tested up to: ${ latestWordPressVersion }` )
-				fs.writeFileSync( 'readme.txt', updated )
-				console.log( '✅ readme.txt tested up to updated successfully' )
+			if ( testedUpToMatch ) {
+				const currentTestedUpTo = testedUpToMatch[ 1 ].trim()
+				// Only bump "Tested up to" when the API version is newer; keep a higher manual value.
+				if (
+					currentTestedUpTo !== latestWordPressVersion &&
+					compareVersionStrings( currentTestedUpTo, latestWordPressVersion ) < 0
+				) {
+					const updated = ( fs.readFileSync( 'readme.txt', 'utf8' ) ).replace( /^Tested up to:\s*[^\r\n]+/m, `Tested up to: ${ latestWordPressVersion }` )
+					fs.writeFileSync( 'readme.txt', updated )
+					console.log( '✅ readme.txt tested up to updated successfully' )
+				}
 			}
 			const requiresAtLeastMatch = readmeTxt.match( /^Requires at least:\s*([^\r\n]+)/m )
 			if ( requiresAtLeastMatch && requiresAtLeastMatch[ 1 ].trim() !== minWordPressVersion ) {
