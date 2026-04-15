@@ -27,7 +27,22 @@ if ( ! class_exists( 'Interact_Action_Type_Confetti' ) ) {
 
 			$this->keywords = [];
 
-			$this->properties = [];
+			$this->properties = [ 'location' => [
+					'name' => __( 'Location', 'interactions' ),
+					'type' => 'select',
+					'options' => [
+						[ 'label' => __( 'Center', 'interactions' ), 'value' => 'center' ],
+						[ 'label' => __( 'Top', 'interactions' ), 'value' => 'top' ],
+						[ 'label' => __( 'Right', 'interactions' ), 'value' => 'right' ],
+						[ 'label' => __( 'Bottom', 'interactions' ), 'value' => 'bottom' ],
+						[ 'label' => __( 'Left', 'interactions' ), 'value' => 'left' ],
+						[ 'label' => __( 'Top Left', 'interactions' ), 'value' => 'top-left' ],
+						[ 'label' => __( 'Top Right', 'interactions' ), 'value' => 'top-right' ],
+						[ 'label' => __( 'Bottom Left', 'interactions' ), 'value' => 'bottom-left' ],
+						[ 'label' => __( 'Bottom Right', 'interactions' ), 'value' => 'bottom-right' ],
+					],
+					'default' => 'center',
+				] ];
 
 			$this->targets = [
 				[ 'value' => 'trigger' ],
