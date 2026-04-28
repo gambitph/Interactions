@@ -138,6 +138,52 @@ const processSourceDir = sourceDir => {
 				}
 			} )
 	}
+
+	// Stackable intergration interaction types
+	fs.readdirSync( path.resolve( __dirname, '../src/integrations/stackable/interaction-types/frontend' ) )
+		.filter( file => file.endsWith( '.js' ) )
+		.forEach( async file => {
+			const type = file.replace( '.js', '' )
+			const scriptPath = path.resolve( __dirname, `../src/integrations/stackable//interaction-types/frontend/${ file }` )
+			const scriptPathRelative = path.relative( path.resolve( __dirname, '../' ), scriptPath )
+			const outputFile = path.resolve( __dirname, `../dist/frontend/interactions/${ type }.php` )
+			const content = fs.readFileSync( scriptPath, 'utf8' )
+
+			if ( buildType === 'development' ) {
+				writeFile( content, outputFile, scriptPathRelative )
+			} else {
+				await minify( {
+					compressor: uglifyJS,
+					content,
+					output: outputFile,
+				} ).then( min => {
+					writeFile( min, outputFile, scriptPathRelative )
+				} )
+			}
+		} )
+
+	// Stackable intergration action types
+	fs.readdirSync( path.resolve( __dirname, '../src/integrations/stackable/action-types/frontend' ) )
+		.filter( file => file.endsWith( '.js' ) )
+		.forEach( async file => {
+			const type = file.replace( '.js', '' )
+			const scriptPath = path.resolve( __dirname, `../src/integrations/stackable/action-types/frontend/${ file }` )
+			const scriptPathRelative = path.relative( path.resolve( __dirname, '../' ), scriptPath )
+			const outputFile = path.resolve( __dirname, `../dist/frontend/actions/${ type }.php` )
+			const content = fs.readFileSync( scriptPath, 'utf8' )
+
+			if ( buildType === 'development' ) {
+				writeFile( content, outputFile, scriptPathRelative )
+			} else {
+				await minify( {
+					compressor: uglifyJS,
+					content,
+					output: outputFile,
+				} ).then( min => {
+					writeFile( min, outputFile, scriptPathRelative )
+				} )
+			}
+		} )
 }
 
 // Process all source directories

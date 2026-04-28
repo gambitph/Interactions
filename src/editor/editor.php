@@ -123,6 +123,7 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				'entrance' => __( 'Entrance', 'interactions' ),
 				'keyboard' => __( 'Keyboard', 'interactions' ),
 				'misc' => __( 'Miscellaneous', 'interactions' ),
+				'stackable' => __( 'Stackable', 'interactions' ),
 			];
 
 			$page_categories = [
@@ -220,6 +221,7 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				'flow' => __( 'Logic Flow', 'interactions' ),
 				'pageState' => __( 'Page State', 'interactions' ),
 				'misc' => __( 'Miscellaneous', 'interactions' ),
+				'stackable' => __( 'Stackable', 'interactions' ),
 			];
 
 			$action_categories = [];
