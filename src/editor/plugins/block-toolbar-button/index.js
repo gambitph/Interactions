@@ -27,11 +27,23 @@ import useBlockHasInteraction from './use-block-has-interaction'
 
 const withBlockToolbarButton = createHigherOrderComponent( BlockEdit => {
 	return props => {
+		// If the Sidebar isn't available, then do not render the toolbar button
+		// because we will have no place to edit interactions.
+		if ( ! dispatch( 'core/edit-post' ) && ! dispatch( 'core/edit-site' ) ) {
+			return <BlockEdit { ...props } />
+		}
+
 		const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
 
 		const hasAnchorAttribute = useSelect( select => {
 			return !! select( 'core/blocks' ).getBlockType( props.name )?.attributes?.anchor
 		}, [ props.name ] )
+
+		// Only blocks that have an anchor attribute can have interactions.
+		// because we need the ID of the block to be able to target it.
+		if ( ! hasAnchorAttribute ) {
+			return <BlockEdit { ...props } />
+		}
 
 		const { interactions, deleteInteraction } = useInteractions()
 		const interactionKeys = useBlockHasInteraction( props.attributes.anchor )
@@ -79,18 +91,6 @@ const withBlockToolbarButton = createHigherOrderComponent( BlockEdit => {
 				setInteractionLibraryMode( 'apply' )
 			}
 		}, [ isPopoverOpen, popoverMode, props.clientId, props.name, setInteractionLibraryTarget, setInteractionLibraryMode ] )
-
-		// If the Sidebar isn't available, then do not render the toolbar button
-		// because we will have no place to edit interactions.
-		if ( ! dispatch( 'core/edit-post' ) && ! dispatch( 'core/edit-site' ) ) {
-			return <BlockEdit { ...props } />
-		}
-
-		// Only blocks that have an anchor attribute can have interactions.
-		// because we need the ID of the block to be able to target it.
-		if ( ! hasAnchorAttribute ) {
-			return <BlockEdit { ...props } />
-		}
 
 		const onAddInteractionHandler = interactionType => {
 			// Open the sidebar
