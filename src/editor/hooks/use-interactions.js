@@ -244,19 +244,22 @@ const useInteractions = () => {
 		}
 
 		const interactions = select( 'interact/interactions' ).getInteractions()
-		const interactionsFiltered = interactions.filter( interaction => isInteractionShown( interaction, select ) )
 
 		return {
 			interactions,
-			interactionsFiltered,
 			setInteractions,
 			updateInteraction,
 			deleteInteraction,
 		}
 	}, [] )
 
+	const interactionsFiltered = useSelect( select => {
+		return data.interactions.filter( interaction => isInteractionShown( interaction, select ) )
+	}, [ data ] )
+
 	return {
 		loadingError: useSelect( select => select( 'interact/interactions' ).getLoadingError(), [] ),
+		interactionsFiltered,
 		...data,
 	}
 }
