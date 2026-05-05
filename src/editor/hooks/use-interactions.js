@@ -255,7 +255,7 @@ const useInteractions = () => {
 
 	const interactionsFiltered = useSelect( select => {
 		return data.interactions.filter( interaction => isInteractionShown( interaction, select ) )
-	}, [ data ] )
+	}, [ data.interactions ] )
 
 	return {
 		loadingError: useSelect( select => select( 'interact/interactions' ).getLoadingError(), [] ),
