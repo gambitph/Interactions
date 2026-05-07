@@ -16,6 +16,10 @@ import {
 	setBlockAnchorIfPossible,
 	openInteractionsSidebar,
 } from '~interact/editor/util'
+import {
+	getCurrentSelectedTarget,
+	isElementorEditor,
+} from '~interact/editor/editors'
 import { cloneDeep, first } from 'lodash'
 
 import {
@@ -56,21 +60,24 @@ const AddInteractionPopover = props => {
 	const [ selected, setSelected ] = useState( initialSelected )
 	const [ showDescription, setShowDescription ] = useState( null )
 	const [ hidden, setHidden ] = useState( false )
+	const isElementor = isElementorEditor()
 
 	const {
 		getBlockNamesByClientId,
 		getSelectedBlockClientId,
 	} = useSelect( select => {
+		const blockEditorStore = select( 'core/block-editor' )
 		return {
-			getBlockNamesByClientId: select( 'core/block-editor' ).getBlockNamesByClientId,
-			getSelectedBlockClientId: select( 'core/block-editor' ).getSelectedBlockClientId,
+			getBlockNamesByClientId: blockEditorStore?.getBlockNamesByClientId || ( () => [] ),
+			getSelectedBlockClientId: blockEditorStore?.getSelectedBlockClientId || ( () => null ),
 		}
 	} )
 
 	const [ target, setTarget ] = useState( {
-		type: 'block',
-		value: getOrGenerateBlockAnchor( getSelectedBlockClientId(), false ) || '',
-		blockName: first( getBlockNamesByClientId( getSelectedBlockClientId() ) ) || '',
+		type: getCurrentSelectedTarget()?.type || ( isElementor ? 'selector' : 'block' ),
+		value: getCurrentSelectedTarget()?.value || getOrGenerateBlockAnchor( getSelectedBlockClientId(), false ) || '',
+		blockName: getCurrentSelectedTarget()?.blockName || first( getBlockNamesByClientId( getSelectedBlockClientId() ) ) || '',
+		options: getCurrentSelectedTarget()?.options || '',
 	} )
 
 	const libraryTitle = ! showElementOption && showPageOption ? __( 'My Page Interactions', 'interactions' )
@@ -94,7 +101,7 @@ const AddInteractionPopover = props => {
 		return acc
 	}, { elementInteractions: [], pageInteractions: [] } )
 
-	if ( hidden ) {
+	if ( hidden && ! isElementor ) {
 		return (
 			<BlockPickerPopover
 				offset={ offset }
@@ -226,8 +233,12 @@ const AddInteractionPopover = props => {
 					<TargetSelector
 						value={ target }
 						onChange={ setTarget }
-						hasPickerPopover={ false }
-						onBlockSelectClick={ () => setHidden( true ) }
+						hasPickerPopover={ ! isElementor }
+						onBlockSelectClick={ () => {
+							if ( ! isElementor ) {
+								setHidden( true )
+							}
+						} }
 					/>
 				) }
 

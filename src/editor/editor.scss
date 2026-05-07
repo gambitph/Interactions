@@ -139,6 +139,66 @@
 	--wp-components-color-accent: #05f;
 }
 
+.interact-elementor-launcher {
+	position: fixed !important;
+	right: 32px;
+	bottom: 32px;
+	z-index: 100000;
+	border-radius: 999px !important;
+	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+.interact-elementor-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(17, 24, 39, 0.18);
+	z-index: 99998;
+}
+
+.interact-elementor-panel {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: min(420px, calc(100vw - 48px));
+	background: #fff;
+	box-shadow: -24px 0 48px rgba(15, 23, 42, 0.18);
+	transform: translateX(100%);
+	transition: transform 180ms ease;
+	z-index: 99999;
+	display: flex;
+	flex-direction: column;
+}
+
+.interact-elementor-panel.is-open {
+	transform: translateX(0);
+}
+
+.interact-elementor-panel__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 18px;
+	border-bottom: 1px solid #e5e7eb;
+	background: #f8fafc;
+}
+
+.interact-elementor-panel__title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+}
+
+.interact-elementor-panel__body {
+	flex: 1;
+	overflow: auto;
+}
+
+.interact-elementor-sidebar {
+	min-height: 100%;
+}
+
 /* Wordpress 7.0 compatibility */
 
 .interact-sidebar, .interact-popover {

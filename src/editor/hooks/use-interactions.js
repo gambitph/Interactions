@@ -10,6 +10,7 @@ import { domReady } from '~interact/shared/dom-ready.js'
 import apiFetch from '@wordpress/api-fetch'
 import { __ } from '@wordpress/i18n'
 import { ensureInteractionDefaults } from '../util'
+import { getCurrentEditorPostContext, getEditorMode } from '~interact/editor/editors'
 
 const DEFAULT_STATE = {
 	interactions: [],
@@ -92,16 +93,12 @@ register( createReduxStore( 'interact/interactions', {
  * Whether or not the interaction should be shown in the editor based on what's
  * currently beign edited in the Block Editor.
  *
- * @param {Array}  interaction
- * @param {Object} select      wp.data.select
+ * @param {Array} interaction
  *
  * @return {boolean} Whether or not the interaction should be shown in the editor.
  */
-export const isInteractionShown = ( interaction, select ) => {
-	// If the editor is not available (e.g. in Widgets editor), don't do anything.
-	if ( ! select( 'core/editor' ) ) {
-		return false
-	}
+export const isInteractionShown = interaction => {
+	const currentContext = getCurrentEditorPostContext()
 	return interaction.locations.some(	locationGroup => {
 		return locationGroup.every( location => {
 			const {
@@ -113,15 +110,15 @@ export const isInteractionShown = ( interaction, select ) => {
 				case 'page': {
 					// If blank, then it's all posts/pages.
 					if ( ! value || isNaN( +value ) ) {
-						const postType = select( 'core/editor' ).getCurrentPostType()
+						const postType = currentContext.postType
 						const postTypeParam = value || param
 						return operator === '==' ? postType === postTypeParam : postType !== postTypeParam
 					}
-					const match = value.toString() === select( 'core/editor' ).getCurrentPostId()?.toString()
+					const match = value.toString() === currentContext.postId?.toString()
 					return operator === '==' ? match : ! match
 				}
 				case 'post_type': {
-					const match = value.toString() === select( 'core/editor' ).getCurrentPostType()?.toString()
+					const match = value.toString() === currentContext.postType?.toString()
 					return operator === '==' ? match : ! match
 				}
 				case 'post_status':
@@ -131,20 +128,20 @@ export const isInteractionShown = ( interaction, select ) => {
 					return true
 				case 'post_template':
 				case 'page_template': {
-					const match = value.toString() === select( 'core/editor' ).getCurrentPost()?.template.toString()
+					const match = value.toString() === currentContext.postTemplate?.toString()
 					return operator === '==' ? match : ! match
 				}
 				case 'post_parent':
 				case 'page_parent': {
-					const match = value.toString() === select( 'core/editor' ).getCurrentPost()?.parent.toString()
+					const match = value.toString() === currentContext.postParent?.toString()
 					return operator === '==' ? match : ! match
 				}
 				case 'all': // Entire website
 					return true
 				case 'wp_template': // Site editor templates: home, 404, etc
-					const currentPostType = select( 'core/editor' ).getCurrentPostType()
+					const currentPostType = currentContext.postType
 					if ( currentPostType === 'wp_template' ) {
-						const match = value.toString() === select( 'core/editor' ).getCurrentPostId()?.toString()
+						const match = value.toString() === currentContext.postId?.toString()
 						return operator === '==' ? match : ! match
 					}
 					break
@@ -177,7 +174,7 @@ const useInteractions = () => {
 		const updateInteraction = newInteraction => {
 			// Check if we updated any anchors/attributes, if we did, then we need to ask whether to also update the post.
 			const didModifyPostContent = select( 'interact/interactions' ).didModifyPostContent()
-			if ( didModifyPostContent ) {
+			if ( didModifyPostContent && getEditorMode() !== 'elementor' ) {
 				if ( confirm( __( 'Some block anchors have been updated for your interactions to work correctly. Do you want to save these post changes? (Any modified synced patterns will also be saved)', 'interactions' ) ) ) { // eslint-disable-line no-alert
 					dispatch( 'interact/interactions' ).setDidModifyPostContent( false )
 					// Save the post.
@@ -244,7 +241,7 @@ const useInteractions = () => {
 		}
 
 		const interactions = select( 'interact/interactions' ).getInteractions()
-		const interactionsFiltered = interactions.filter( interaction => isInteractionShown( interaction, select ) )
+		const interactionsFiltered = interactions.filter( interaction => isInteractionShown( interaction ) )
 
 		return {
 			interactions,

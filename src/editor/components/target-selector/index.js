@@ -1,6 +1,11 @@
 import TargetSVG from '~interact/editor/assets/target.svg'
 
 import { GridLayout, FlexLayout } from '~interact/editor/components'
+import {
+	getSelectedBlockAnchor,
+	isElementorEditor,
+	startElementorElementPicker,
+} from '~interact/editor/editors'
 import { getOrGenerateBlockAnchor, getOrGenerateBlockClass } from '~interact/editor/util'
 import {
 	SelectControl,
@@ -40,6 +45,9 @@ const TargetSelector = props => {
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
 	const [ buttonRef, setButtonRef ] = useState( null )
 	const prevValueRef = useRef( {} )
+	const elementPickerStopRef = useRef( null )
+	const isElementor = isElementorEditor()
+	const hasBlockEditor = !! select( 'core/block-editor' )?.getSelectedBlockClientId
 
 	const targetButton = (
 		<>
@@ -50,14 +58,24 @@ const TargetSelector = props => {
 				ref={ setButtonRef }
 				onClick={ () => {
 					onBlockSelectClick()
-					if ( hasPickerPopover && ! isPopoverOpen ) {
+					if ( isElementor ) {
+						elementPickerStopRef.current?.()
+						elementPickerStopRef.current = startElementorElementPicker( {
+							targetType: value.type === 'class' ? 'class' : 'selector',
+							onPick: target => {
+								onChange( target )
+								onBlockSelectDone()
+							},
+							onCancel: onBlockSelectDone,
+						} )
+					} else if ( hasPickerPopover && ! isPopoverOpen ) {
 						setIsPopoverOpen( true )
 					} else if ( hasPickerPopover && isPopoverOpen ) {
 						setIsPopoverOpen( false )
 					}
 				} }
 			/>
-			{ hasPickerPopover && isPopoverOpen && (
+			{ hasPickerPopover && isPopoverOpen && ! isElementor && (
 				<BlockPickerPopover
 					anchor={ anchor || buttonRef }
 					placement="left"
@@ -148,6 +166,18 @@ const TargetSelector = props => {
 		targetOptions = targetOptions.filter( target => target.value !== 'trigger' )
 	}
 
+	if ( isElementor ) {
+		targetOptions = targetOptions.filter( target =>
+			[ 'trigger', 'class', 'selector' ].includes( target.value )
+		)
+	}
+
+	useEffect( () => {
+		return () => {
+			elementPickerStopRef.current?.()
+		}
+	}, [] )
+
 	// Watch for warnings, we need to throttle this because we are subscribed to
 	// the editor and changes can be fast.
 	const [ targetWarning, setTargetWarning ] = useState( getTargetSelectorWarning( value.type, value.value ) )
@@ -176,7 +206,7 @@ const TargetSelector = props => {
 						const newTarget = { ...value, type }
 
 						// Use any previous values we may have already entered.
-						if ( type === 'block-name' ) {
+						if ( type === 'block-name' && hasBlockEditor ) {
 							if ( prevValueRef.current[ type ] ) {
 								newTarget.value = prevValueRef.current[ type ]
 							} else {
@@ -207,7 +237,7 @@ const TargetSelector = props => {
 							className="interact-target-block-input"
 							id="interact-target-block-input"
 							label={ __( 'Block Anchor / ID', 'interactions' ) }
-							value={ value.value }
+							value={ value.value || ( isElementor ? '' : getSelectedBlockAnchor() || '' ) }
 							// When typing, the previous blockName should be invalid
 							onChange={ targetValue => onChange( {
 								...value, blockName: '', value: targetValue,

@@ -18,17 +18,38 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 		 */
 		function __construct() {
 			if ( is_admin() ) {
-				add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor' ) );
+				add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_gutenberg_editor' ) );
+				add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
 				add_action( 'enqueue_block_assets', array( $this, 'enqueue_assets' ) );
 			}
 		}
 
 		/**
-		 * Loads the editor script.
+		 * Loads the editor script inside the Gutenberg editor.
 		 *
 		 * @return void
 		 */
-		public function enqueue_editor() {
+		public function enqueue_gutenberg_editor() {
+			$this->enqueue_editor( 'gutenberg' );
+		}
+
+		/**
+		 * Loads the editor script inside the Elementor editor.
+		 *
+		 * @return void
+		 */
+		public function enqueue_elementor_editor() {
+			$this->enqueue_editor( 'elementor' );
+		}
+
+		/**
+		 * Loads the editor script.
+		 *
+		 * @param string $editor_mode Current editor mode.
+		 *
+		 * @return void
+		 */
+		public function enqueue_editor( $editor_mode = 'gutenberg' ) {
 			// Load the required interaciton and action types.
 			interact_require_types();
 
@@ -63,6 +84,7 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 			[ $actions, $action_categories ] = $this->get_action_types_config();
 
 			global $wp_version;
+			$post = get_post();
 			$args = apply_filters( 'interact/localize_script', array(
 				'interactions' => $interactions,
 				'interactionCategories' => $interaction_categories,
@@ -77,6 +99,14 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				'restNonce' => wp_create_nonce( 'wp_rest' ), // This needs to be 'wp_rest' to use the built-in nonce verification.
 				'srcUrl' => untrailingslashit( plugins_url( '/', INTERACT_FILE ) ),
 				'currentUserCanUnfilteredHtml' => current_user_can( 'unfiltered_html' ),
+				// Keep the current editor and document context available to the
+				// shared editor app so integrations can resolve targets and
+				// location rules correctly.
+				'editorMode' => $editor_mode,
+				'currentPostId' => $post ? (int) $post->ID : 0,
+				'currentPostType' => $post ? $post->post_type : '',
+				'currentPostTemplate' => $post ? get_page_template_slug( $post->ID ) : '',
+				'currentPostParent' => $post ? (int) $post->post_parent : 0,
 			) );
 			wp_localize_script( 'interact-editor', 'interactions', $args );
 		}
