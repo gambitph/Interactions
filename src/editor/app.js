@@ -31,6 +31,15 @@ import { useSelect, useDispatch } from '@wordpress/data'
 
 import useOnPostPreview from './use-on-post-save'
 
+const getDismissedErrors = () => {
+	try {
+		const dismissedErrors = JSON.parse( localStorage.getItem( 'interact-dismissed-errors' ) || '[]' )
+		return Array.isArray( dismissedErrors ) ? dismissedErrors : []
+	} catch ( error ) {
+		return []
+	}
+}
+
 const InteractionsApp = ( {
 	selectedBlockAnchor = null,
 	enablePostPreviewGuard = true,
@@ -136,7 +145,7 @@ const InteractionsApp = ( {
 	}, [ selectedInteraction ] )
 
 	useEffect( () => {
-		const dismissedErrors = JSON.parse( localStorage.getItem( 'interact-dismissed-errors' ) || '[]' )
+		const dismissedErrors = getDismissedErrors()
 		const errorKey = loadingError?.interactionKey
 
 		if ( ! loadingError?.interactionKey ) {
@@ -196,7 +205,7 @@ const InteractionsApp = ( {
 							variant="secondary"
 							size="small"
 							onClick={ () => {
-								const dismissedErrors = JSON.parse( localStorage.getItem( 'interact-dismissed-errors' ) || '[]' )
+								const dismissedErrors = getDismissedErrors()
 								const errorKey = loadingError?.interactionKey
 								localStorage.setItem( 'interact-dismissed-errors', JSON.stringify( [ ...dismissedErrors, errorKey ] ) )
 								setIsShowingError( false )
