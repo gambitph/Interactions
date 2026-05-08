@@ -31,12 +31,38 @@ import { useSelect, useDispatch } from '@wordpress/data'
 
 import useOnPostPreview from './use-on-post-save'
 
+// Get dismissed errors from localStorage with error handling.
 const getDismissedErrors = () => {
 	try {
 		const dismissedErrors = JSON.parse( localStorage.getItem( 'interact-dismissed-errors' ) || '[]' )
 		return Array.isArray( dismissedErrors ) ? dismissedErrors : []
 	} catch ( error ) {
 		return []
+	}
+}
+
+// Normalize imported interaction data to ensure it has the expected structure, even if some fields are missing.
+const normalizeImportedInteraction = data => {
+	const timelines = data.timelines || []
+
+	return {
+		...data,
+		timelines: timelines.map( timeline => {
+			const actionsToImport = timeline.actions || []
+			const actions = actionsToImport.map( action => (
+				createNewAction( {
+					actionType: action.type ?? '',
+					start: action.timing?.start ?? 0,
+					targetType: action.target?.type ?? '',
+					props: { ...action },
+				} )
+			) )
+
+			return {
+				...timeline,
+				actions,
+			}
+		} ),
 	}
 }
 
@@ -262,7 +288,9 @@ const InteractionsApp = ( {
 										) }</p>
 									</> ),
 									importLabel: __( 'Import interaction', 'interactions' ),
-									onImport: onAddInteractionHandler,
+									onImport: ( type, target, data ) => {
+										onAddInteractionHandler( type, target, normalizeImportedInteraction( data ) )
+									},
 								} ) }
 							/>
 							<AddInteractionButton
@@ -324,21 +352,7 @@ const InteractionsApp = ( {
 									</> ),
 									importLabel: __( 'Import interaction', 'interactions' ),
 									onImport: ( type, target, data ) => {
-										const timelines = data.timelines || []
-										timelines.forEach( ( timeline, i ) => {
-											const actionsToImport = timeline.actions || []
-											const newActions = actionsToImport.map( action => (
-												createNewAction( {
-													actionType: action.type ?? '',
-													start: action.timing?.start ?? 0,
-													targetType: action.target?.type ?? '',
-													props: { ...action },
-												} )
-											) )
-											data.timelines[ i ] = { ...timeline, actions: newActions }
-										} )
-
-										onAddInteractionHandler( type, target, data )
+										onAddInteractionHandler( type, target, normalizeImportedInteraction( data ) )
 									},
 								} ) }
 							/>
