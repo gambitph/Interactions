@@ -73,11 +73,16 @@ const AddInteractionPopover = props => {
 		}
 	} )
 
-	const [ target, setTarget ] = useState( {
-		type: getCurrentSelectedTarget()?.type || ( isElementor ? 'selector' : 'block' ),
-		value: getCurrentSelectedTarget()?.value || getOrGenerateBlockAnchor( getSelectedBlockClientId(), false ) || '',
-		blockName: getCurrentSelectedTarget()?.blockName || first( getBlockNamesByClientId( getSelectedBlockClientId() ) ) || '',
-		options: getCurrentSelectedTarget()?.options || '',
+	const [ target, setTarget ] = useState( () => {
+		const current = getCurrentSelectedTarget()
+		const clientId = getSelectedBlockClientId()
+
+		return {
+			type: current?.type || ( isElementor ? 'selector' : 'block' ),
+			value: current?.value || getOrGenerateBlockAnchor( clientId, false ) || '',
+			blockName: current?.blockName || first( getBlockNamesByClientId( clientId ) ) || '',
+			options: current?.options || '',
+		}
 	} )
 
 	const libraryTitle = ! showElementOption && showPageOption ? __( 'My Page Interactions', 'interactions' )
