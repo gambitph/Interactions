@@ -19,9 +19,10 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 		function __construct() {
 			if ( is_admin() ) {
 				add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_gutenberg_editor' ) );
-				add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
 				add_action( 'enqueue_block_assets', array( $this, 'enqueue_assets' ) );
 			}
+
++			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
 		}
 
 		/**
