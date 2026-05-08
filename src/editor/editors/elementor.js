@@ -43,14 +43,6 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 				return () => window.removeEventListener( 'interact/open-elementor-sidebar', openHandler )
 			}, [] )
 
-			const Wrapper = ( {
-				children,
-			} ) => (
-				<div className="interact-sidebar interact-elementor-sidebar">
-					{ children }
-				</div>
-			)
-
 			return (
 				<>
 					<Button
@@ -83,9 +75,9 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 							/>
 						</div>
 						<div className="interact-elementor-panel__body">
-							<Wrapper>
+							<div className="interact-sidebar interact-elementor-sidebar">
 								<InteractionsApp enablePostPreviewGuard={ false } />
-							</Wrapper>
+							</div>
 						</div>
 					</div>
 				</>

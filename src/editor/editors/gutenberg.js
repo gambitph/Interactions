@@ -10,21 +10,6 @@ import {
 	select,
 } from '@wordpress/data'
 
-// Stable Gutenberg sidebar shell used to keep the shared app mounted.
-const GutenbergSidebarWrapper = ( {
-	children,
-	SideBar,
-} ) => (
-	<SideBar
-		name="sidebar"
-		title={ __( 'Interactions', 'interactions' ) }
-		className="interact-sidebar"
-		icon={ <IconSVG width="20" height="20" /> }
-	>
-		{ children }
-	</SideBar>
-)
-
 // Gutenberg editor adapter.
 class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 	getEditorMode() {
@@ -53,12 +38,17 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			}
 
 			return (
-				<GutenbergSidebarWrapper SideBar={ SideBar }>
+				<SideBar
+					name="sidebar"
+					title={ __( 'Interactions', 'interactions' ) }
+					className="interact-sidebar"
+					icon={ <IconSVG width="20" height="20" /> }
+				>
 					<InteractionsApp
 						selectedBlockAnchor={ selectedBlockAnchor }
 						enablePostPreviewGuard
 					/>
-				</GutenbergSidebarWrapper>
+				</SideBar>
 			)
 		}
 
