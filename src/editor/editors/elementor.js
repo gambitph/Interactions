@@ -96,7 +96,7 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 	// Return the Elementor preview canvas document.
 	getCanvasDocument() {
 		const iframe = document.querySelector( '#elementor-preview-iframe' )
-		return iframe?.contentDocument || document
+		return iframe?.contentDocument || null
 	}
 
 	// Open the Interactions sidebar in Elementor.
@@ -178,12 +178,13 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			} )
 		}
 
-		[
+		const actions = [
 			'panel/open_editor/section',
 			'panel/open_editor/column',
 			'panel/open_editor/container',
 			'panel/open_editor/widget',
-		].forEach( register )
+		]
+		actions.forEach( register )
 
 		return NOOP
 	}
@@ -260,11 +261,13 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			clearHighlight()
 			previewDocument.removeEventListener( 'mousemove', mouseMoveHandler, true )
 			previewDocument.removeEventListener( 'click', clickHandler, true )
+			previewDocument.removeEventListener( 'keydown', keyHandler, true )
 			document.removeEventListener( 'keydown', keyHandler, true )
 		}
 
 		previewDocument.addEventListener( 'mousemove', mouseMoveHandler, true )
 		previewDocument.addEventListener( 'click', clickHandler, true )
+		previewDocument.addEventListener( 'keydown', keyHandler, true )
 		document.addEventListener( 'keydown', keyHandler, true )
 
 		return stop
