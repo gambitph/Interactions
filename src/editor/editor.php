@@ -21,8 +21,7 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_gutenberg_editor' ) );
 				add_action( 'enqueue_block_assets', array( $this, 'enqueue_assets' ) );
 			}
-
-+			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
+			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
 		}
 
 		/**
@@ -40,10 +39,12 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 		 * @return void
 		 */
 		public function enqueue_elementor_editor() {
-			// Loads the core WordPress editor styles needed by the elementor editor UI.
-			if ( wp_style_is( 'wp-components', 'registered' ) ) {
-				wp_enqueue_style( 'wp-components' );
-			}
+			wp_enqueue_style(
+				'interact-editor-wp-components',
+				plugins_url( 'dist/wp-components.css', INTERACT_FILE ),
+				array(),
+				INTERACT_VERSION
+			);
 
 			$this->enqueue_editor( 'elementor' );
 		}
