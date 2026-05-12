@@ -1165,13 +1165,15 @@ const ActionDropGap = props => {
 
 	const [ isHighlighted, setIsHighlighted ] = useState( false )
 
-	const onDragOverHandler = () => {
+	const onDragOverHandler = ev => {
+		ev.preventDefault()
 		setIsHighlighted( true )
 	}
 	const onDragLeaveHandler = () => {
 		setIsHighlighted( false )
 	}
 	const onDragDropHandler = ev => {
+		ev.preventDefault()
 		const actionKeyDrop = ev.dataTransfer.getData( 'text/plain' )
 		onDrop( actionKeyDrop )
 		setIsHighlighted( false )
@@ -1270,6 +1272,7 @@ const ActionItem = props => {
 	}
 
 	const onDragOverHandler = ev => {
+		ev.preventDefault()
 		const rect = dragItemRef.current.getBoundingClientRect()
 		if ( ev.clientY < rect.top + ( rect.height / 2 ) ) {
 			setHighlightLocation( 'top' )
@@ -1283,6 +1286,7 @@ const ActionItem = props => {
 	}
 
 	const onDragDropHandler = ev => {
+		ev.preventDefault()
 		const actionKeyDrop = ev.dataTransfer.getData( 'text/plain' )
 		onDrop( actionKeyDrop, highlightLocation )
 		setHighlightLocation( null )
