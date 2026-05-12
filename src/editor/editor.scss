@@ -165,6 +165,15 @@
 	z-index: 99999;
 	display: flex;
 	flex-direction: column;
+
+	h2 {
+		font-size: 13px;
+		margin: 1.33em;
+	}
+
+	p {
+		margin: 1em 0;
+	}
 }
 
 .interact-elementor-panel.is-open {
@@ -194,6 +203,20 @@
 
 .interact-elementor-sidebar {
 	min-height: 100%;
+}
+
+.interact-popover {
+	color: #3c434a;
+	line-height: 1.4em;
+
+	h2 {
+		font-size: 13px;
+		margin: 1.33em;
+	}
+
+	p {
+		margin: 1em 0;
+	}
 }
 
 /* Wordpress 7.0 compatibility */
