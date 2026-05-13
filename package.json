@@ -13,7 +13,8 @@
 		"build": "node scripts/update-build-type.js free && node scripts/sync-version.js ${npm_config_suffix} && npx wp-scripts build && npm run build:css && npm run build:frontend-php && npm run optimize-videos && BUILD_TYPE=free npm run package ${npm_config_suffix}",
 		"build:frontend-php": "node scripts/generate-frontend-php-scripts.mjs production free",
 		"build:frontend-php:premium": "node scripts/generate-frontend-php-scripts.mjs production premium",
-		"build:css": "webpack --config webpack.css.config.js && npm run clean:css-js",
+		"build:css": "webpack --config webpack.css.config.js && npm run build:css:wp-components-scoped && npm run clean:css-js",
+		"build:css:wp-components-scoped": "node scripts/build-scoped-wp-components-css.mjs",
 		"clean:css-js": "rm -f dist/*.css.js",
 		"start": "node scripts/update-build-type.js free && concurrently \"wp-scripts start\" \"webpack --config webpack.css.config.js --watch\"",
 		"lint:js": "wp-scripts lint-js",
@@ -25,7 +26,7 @@
 		"optimize-videos": "node scripts/optimize-videos.js",
 		"package": "node scripts/package.js",
 		"sync-version": "node scripts/sync-version.js",
-		"build:premium": "node scripts/update-build-type.js premium && node scripts/sync-version.js ${npm_config_suffix} && npm run clean:css-js && npx wp-scripts build --config pro__premium_only/webpack.config.js && npx webpack --config pro__premium_only/webpack.css.config.js && npm run build:frontend-php:premium && npm run optimize-videos && BUILD_TYPE=premium npm run package ${npm_config_suffix}",
+		"build:premium": "node scripts/update-build-type.js premium && node scripts/sync-version.js ${npm_config_suffix} && npm run clean:css-js && npx wp-scripts build --config pro__premium_only/webpack.config.js && npx webpack --config pro__premium_only/webpack.css.config.js && npm run build:css:wp-components-scoped && npm run build:frontend-php:premium && npm run optimize-videos && BUILD_TYPE=premium npm run package ${npm_config_suffix}",
 		"start:premium": "cd pro__premium_only && npm run start",
 		"lint:premium": "cd pro__premium_only && npm run lint",
 		"lint:premium:fix": "cd pro__premium_only && npm run lint:fix"

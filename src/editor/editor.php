@@ -39,9 +39,12 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 		 * @return void
 		 */
 		public function enqueue_elementor_editor() {
-			if ( wp_style_is( 'wp-components', 'registered' ) ) {
-				wp_enqueue_style( 'wp-components' );
-			}
+			wp_enqueue_style(
+				'interact-editor-wp-components-scoped',
+				plugins_url( 'dist/wp-components-scoped.css', INTERACT_FILE ),
+				array(),
+				INTERACT_VERSION
+			);
 
 			$this->enqueue_editor( 'elementor' );
 		}
