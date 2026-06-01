@@ -54,6 +54,23 @@ if ( ! class_exists( 'Interact_Action_Type_Toggle_Video' ) ) {
 			$this->has_duration = false;
 			$this->has_easing = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['mode'] ) ) {
+				$allowed_modes = [ 'play', 'pause', 'toggle' ];
+				if ( ! in_array( $value['mode'], $allowed_modes, true ) ) {
+					$value['mode'] = 'play';
+				}
+			}
+			if ( is_array( $value ) && isset( $value['startTime'] ) ) {
+				if ( is_numeric( $value['startTime'] ) ) {
+					$value['startTime'] = $value['startTime'] + 0;
+				} else {
+					$value['startTime'] = null;
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'toggleVideo', 'Interact_Action_Type_Toggle_Video' );

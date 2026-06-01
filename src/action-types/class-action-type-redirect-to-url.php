@@ -37,6 +37,17 @@ if ( ! class_exists( 'Interact_Action_Type_Redirect_To_Url' ) ) {
 			$this->has_easing = false;
 			$this->has_preview = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['url'] ) ) {
+				if ( is_string( $value['url'] ) ) {
+					$value['url'] = esc_url( $value['url'] );
+				} else {
+					$value['url'] = null;
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'redirectToUrl', 'Interact_Action_Type_Redirect_To_Url' );

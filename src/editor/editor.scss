@@ -117,6 +117,14 @@
 	// margin: 0 !important;
 }
 
+// Adjust the location of the suffix of number controls since they're too on the side.
+.interact-popover,
+.interact-sidebar {
+	.components-input-control__suffix {
+		margin-right: 6px;
+	}
+}
+
 .interact-warning-text {
 	color: #d63638;
 	font-weight: 600;
@@ -129,4 +137,27 @@
 
 .interact-add-interaction-button-wrapper {
 	--wp-components-color-accent: #05f;
+}
+
+/* Wordpress 7.0 compatibility */
+
+.interact-sidebar, .interact-popover {
+	// Toggle control loses its margin bottom.
+	.components-toggle-control {
+		margin-bottom: 12px;
+	}
+
+	// Text control min-height changed from 30px to 40px.
+	.components-text-control__input {
+		min-height: 30px !important;
+	}
+
+	// Select control field loses its margin bottom.
+	.components-select-control .components-base-control__field {
+		margin-bottom: 8px;
+	}
+
+	.interact-property-control .components-base-control__field {
+		margin-bottom: 8px;
+	}
 }

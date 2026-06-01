@@ -1148,9 +1148,7 @@ const Timeline = props => {
 							return ! value
 						} )
 					} }
-				>
-					{ __( 'Live Preview', 'interactions' ) }
-				</ToggleControl>
+				/>
 			) }
 		</BaseControl>
 	)

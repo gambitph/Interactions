@@ -7,7 +7,7 @@
  * Author URI: http://gambit.ph
  * License: GPLv2 or later
  * Text Domain: interactions
- * Version: 1.3.0
+ * Version: 1.3.3
  *
  * @fs_premium_only /freemius.php, /freemius/
  */
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 defined( 'INTERACT_BUILD' ) || define( 'INTERACT_BUILD', 'free' );
-defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.3.0' );
+defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.3.3' );
 defined( 'INTERACT_FILE' ) || define( 'INTERACT_FILE', __FILE__ );
 
 /**
@@ -31,8 +31,8 @@ if ( ! function_exists( 'interact_on_activation' ) ) {
 		// Run migration if version not set or outdated
 		if ( ! $saved_version || version_compare( $saved_version, INTERACT_VERSION, '<' ) ) {
 			do_action( 'interact/on_plugin_update', $saved_version, INTERACT_VERSION );
-			update_option( 'interact_plugin_version', INTERACT_VERSION );
 		}
+		update_option( 'interact_plugin_version', INTERACT_VERSION );
 	}
 }
 register_activation_hook( __FILE__, 'interact_on_activation' );

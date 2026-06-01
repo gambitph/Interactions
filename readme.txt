@@ -1,10 +1,10 @@
-=== Interactions ===
+=== Interactions - Create Interactive Experiences in the Block Editor ===
 Contributors: bfintal, gambitph
-Tags: interaction, interactivity, trigger, blocks, gutenberg
-Requires at least: 6.6.4
-Tested up to: 6.8.3
+Tags: animation, interaction, interactivity, blocks, gutenberg
+Requires at least: 6.7.5
+Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.3.0
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,22 +12,23 @@ Add animations and interactivity to your blocks. Choose from ready-made effects 
 
 == Description ==
 
-**Interactions – WordPress Animations, Effects & Functionality for Gutenberg Blocks**  
+**Interactions – WordPress Animations, Interactive Experiences for Gutenberg Blocks**
 
-Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the block editor.  
+[Visit our website](https://wpinteractions.com) to learn more about how Interactions work.
+
+Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the block editor. Check our [samples page here](https://wpinteractions.com/samples/) to see a glimpse of what type of interactions you can create. 
 
 You don't need coding skills or complex tools. With Interactions, you can:
 
-- **Pick from the Interactions Library** – A collection of pre-built animations and effects (like images that move upon scrolling down the page, buttons that glow when hovered, and more). Just click and apply.
-- **Build your own custom effects** – Use a simple **Trigger → Action** system. Example: "On scroll → Fade in block", or "On click → Play video".
-- **Add functional features** – Securely update post data, handle form submissions, display user info, copy text to clipboard, and more without coding.
+- **Pick from the [Interactions Library](https://docs.wpinteractions.com/article/744-how-to-use-interactions-library)** – A collection of pre-built animations and effects (like images that move upon scrolling down the page, buttons that glow when hovered, and more). Just click and apply. [Learn more](https://docs.wpinteractions.com/article/744-how-to-use-interactions-library)
+- **Build your own custom effects** – Use a simple **Trigger → Action** system. Example: "On scroll → Fade in block", or "On click → Play video". [Learn more](https://docs.wpinteractions.com/article/577-what-is-wp-interactions-and-how-does-it-work)
+- **Add functional features** – Securely update post data, handle form submissions, display user info, copy text to clipboard, and more without coding. [Learn more](https://docs.wpinteractions.com/category/729-interactions)
 
-Whether you want subtle hover effects, attention-grabbing story-telling animations, playful micro-interactions, or powerful functional features, Interactions makes it possible.
+Whether you want subtle hover effects, attention-grabbing story-telling animations, playful micro-interactions, or powerful functional features, [Interactions](https://wpinteractions.com) makes it possible.
 
 ### 🚀 Features
 
-Create custom interactions easily with a simple Trigger → Action builder. Features include:
-
+Create [custom interactions](https://docs.wpinteractions.com/article/571-what-are-interactions) easily with a simple Trigger → Action builder. Features include:
 
 **Animations & Visual Effects:**
 
@@ -70,6 +71,8 @@ Create custom interactions easily with a simple Trigger → Action builder. Feat
 
 ### 💎 What's in Premium?
 
+[Check our pricing page](https://wpinteractions.com/pricing/) to learn more about what's in Interactions premium.
+
 **Advanced Interactions:**
 
 - **Scroll Strength** – Measure scroll intensity
@@ -97,6 +100,11 @@ Create custom interactions easily with a simple Trigger → Action builder. Feat
 - **Priority Support** – Faster response times
 - **Regular Updates** – New features and improvements
 - **Commercial License** – Use in client projects
+
+**Source Code:**
+
+The source code for this plugin is available on GitHub:
+https://github.com/gambitph/Interactions
 
 == Installation ==
 
@@ -133,23 +141,40 @@ The free version includes basic animations and interactions. Premium adds advanc
 
 == Screenshots ==
 
-1. Interaction Library – Pre-built animations and effects.
+1. Adding from the Interaction Library – Pre-built animations and effects.
 2. Advanced trigger and action timeline builder – Create custom interactions with flexible logic and multiple steps.
+3. Interaction Library contents – Pre-built animations and effects.
 
-== Source ==
-
-The source code for this plugin is available on GitHub:
-https://github.com/gambitph/Interactions
+== Upgrade Notice ==
 
 == Changelog ==
+
+= 1.3.3 =
+
+* New: WordPress 7.0 compatibility
+* New: Confetti action - added location option
+
+= 1.3.2 =
+
+* Fixed: Interaction preview now works when Show Templates is enabled #5
+* Fixed: Added restrictions for users without unfiltered_html capabilities #6 #7
+* Fixed: If interaction trigger matched multiple elements, play once will not work on the next match #5
+* Fixed: Added additional input sanitization #6 #7
+* Fixed: Editor error someitmes with the CSS rule action #8
+
+= 1.3.1 =
+
+* Fixed: Updated readme info
+* Fixed: Updated long name in the plugins page
+* Fixed: License activation issue
 
 = 1.3.0 =
 
 * New: Interaction library
-* New: Initial release in the WordPress Plugin Directory!
 * New: Block name field is now searchable #70
 * New: Import / export functionality #71
 * New: Box shadow action #81
+* New: 3D Rotate - new transform origin option
 * Fixed: Hover interaction glitches when hovering too fast #9
 * Fixed: On enter viewport doesn't always trigger when on mobile #23
 * Fixed: Confetti action - selecting window will no longer show a display target warning message #74

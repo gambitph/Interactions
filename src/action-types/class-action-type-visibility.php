@@ -40,6 +40,16 @@ if ( ! class_exists( 'Interact_Action_Type_Visibility' ) ) {
 			$this->has_easing = false;
 			$this->has_dynamic = false;
 		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['visibility'] ) ) {
+				$allowed_visibilities = [ 'toggle', 'hide', 'show' ];
+				if ( ! in_array( $value['visibility'], $allowed_visibilities, true ) ) {
+					$value['visibility'] = 'toggle';
+				}
+			}
+			return $value;
+		}
 	}
 
 	interact_add_action_type( 'visibility', 'Interact_Action_Type_Visibility' );

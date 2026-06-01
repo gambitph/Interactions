@@ -24,6 +24,11 @@ export class Timeline {
 			this._resetAtStart = !! timelineData.reset
 			this._onceOnly = !! timelineData.onceOnly
 			this._actionStarts = {}
+
+			// Only track played triggers if onceOnly is enabled.
+			if ( this._onceOnly && ! this.timelineData._playedTriggers ) {
+				this.timelineData._playedTriggers = new Set()
+			}
 		}
 
 		this._targets = []
@@ -40,18 +45,17 @@ export class Timeline {
 
 	createInstance( options ) {
 		// If triggered only once, then we don't create anymore animations.
-		// We reference timelineData._played here so that it persists across other timeline instances.
-		if ( this.getRunner().isFrontend ) {
-			if ( this.timelineData.onceOnly && this.timelineData._played ) {
+		const currentTrigger = this.interaction.getCurrentTrigger()
+		if ( this.getRunner().isFrontend && currentTrigger && this._onceOnly ) {
+			if ( this.timelineData._playedTriggers.has( currentTrigger ) ) {
 				return null
 			}
+			this.timelineData._playedTriggers.add( currentTrigger )
 		}
 
 		// We have to empty the promises here because we are creating a new timeline.
 		// This is to prevent the promises from the previous timeline from affecting the new one.
 		this._funcPromises = {}
-
-		this.timelineData._played = true
 
 		const propsToPass = {}
 		if ( this.type === 'percentage' ) {

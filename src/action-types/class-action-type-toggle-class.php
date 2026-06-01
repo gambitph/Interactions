@@ -35,20 +35,35 @@ if ( ! class_exists( 'Interact_Action_Type_Toggle_Class' ) ) {
 					'name' => 'Action',
 					'type' => 'select',
 					'default' => 'add',
-				'options' => [
-					// Translators: %s is the word 'class'.
-					[ 'value' => 'add', 'label' => sprintf( __( 'Add %s', 'interactions' ), __( 'class', 'interactions' ) ) ],
-					// Translators: %s is the word 'class'.
-					[ 'value' => 'remove', 'label' => sprintf( __( 'Remove %s', 'interactions' ), __( 'class', 'interactions' ) ) ],
-					// Translators: %s is the word 'class'.
-					[ 'value' => 'toggle', 'label' => sprintf( __( 'Toggle %s', 'interactions' ), __( 'class', 'interactions' ) ) ],
-				]
+					'options' => [
+						// Translators: %s is the word 'class'.
+						[ 'value' => 'add', 'label' => sprintf( __( 'Add %s', 'interactions' ), __( 'class', 'interactions' ) ) ],
+						// Translators: %s is the word 'class'.
+						[ 'value' => 'remove', 'label' => sprintf( __( 'Remove %s', 'interactions' ), __( 'class', 'interactions' ) ) ],
+						// Translators: %s is the word 'class'.
+						[ 'value' => 'toggle', 'label' => sprintf( __( 'Toggle %s', 'interactions' ), __( 'class', 'interactions' ) ) ],
+					]
 				],
 			];
 
 			$this->has_starting_state = false;
 			$this->has_duration = false;
 			$this->has_easing = false;
+		}
+
+		public function sanitize_data_for_saving( $value ) {
+			if ( is_array( $value ) && isset( $value['class'] ) ) {
+				$value['class'] = sanitize_html_class( $value['class'] );
+			}
+
+			if ( is_array( $value ) && isset( $value['action'] ) ) {
+				$allowed_actions = [ 'add', 'remove', 'toggle' ];
+				if ( ! in_array( $value['action'], $allowed_actions, true ) ) {
+					$value['action'] = 'add';
+				}
+			}
+
+			return $value;
 		}
 	}
 

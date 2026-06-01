@@ -76,6 +76,7 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				'restUrl' => trailingslashit( esc_url_raw( rest_url() ) ), // We need to know how to access the REST API.
 				'restNonce' => wp_create_nonce( 'wp_rest' ), // This needs to be 'wp_rest' to use the built-in nonce verification.
 				'srcUrl' => untrailingslashit( plugins_url( '/', INTERACT_FILE ) ),
+				'currentUserCanUnfilteredHtml' => current_user_can( 'unfiltered_html' ),
 			) );
 			wp_localize_script( 'interact-editor', 'interactions', $args );
 		}
