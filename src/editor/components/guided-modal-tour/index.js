@@ -23,6 +23,9 @@ import {
 	useEffect, useState, lazy, Suspense, memo,
 } from '@wordpress/element'
 
+// Only lazy-load ModalTour when we're actually going to render it
+const ModalTour = lazy( () => import( /* webpackChunkName: "modal-tour" */ '../modal-tour' ) )
+
 // The main tour component.
 const GuidedModalTour = memo( props => {
 	const {
@@ -68,9 +71,6 @@ const GuidedModalTour = memo( props => {
 			return null
 		}
 	}
-
-	// Only lazy-load ModalTour when we're actually going to render it
-	const ModalTour = lazy( () => import( /* webpackChunkName: "modal-tour" */ '../modal-tour' ) )
 
 	return (
 		<Suspense fallback={ null }>
