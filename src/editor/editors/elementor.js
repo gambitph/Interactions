@@ -46,7 +46,7 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			return (
 				<>
 					<Button
-						className="interact-elementor-launcher"
+						className={ `interact-elementor-launcher${ isOpen ? ' is-hidden' : '' }` }
 						variant="primary"
 						icon={ <IconSVG width="18" height="18" /> }
 						onClick={ () => setIsOpen( value => ! value ) }
@@ -86,7 +86,10 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 
 		const mountNode = document.createElement( 'div' )
 		mountNode.id = mountNodeId
+		mountNode.className = 'interact-builder-root interact-elementor-root'
 		document.body.appendChild( mountNode )
+		document.body.classList.add( 'interact-builder-editor' )
+		document.body.classList.add( 'interact-elementor-editor' )
 		this.registerSelectionTracking()
 		createRoot( mountNode ).render( <ElementorInteractionsEditorComponent /> )
 
@@ -103,6 +106,19 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 	openPanel() {
 		window.dispatchEvent( new CustomEvent( 'interact/open-elementor-sidebar' ) )
 		return null
+	}
+
+	getWidgetContentTargetSelector( targetElement, elementId ) {
+		if ( ! targetElement || ! elementId ) {
+			return ''
+		}
+
+		const interactiveDescendant = targetElement.querySelector( `[data-interaction-id="${ elementId }"]` )
+		if ( interactiveDescendant ) {
+			return `[data-interaction-id="${ elementId }"]`
+		}
+
+		return ''
 	}
 
 	// Build an interaction target from a selected Elementor element.
@@ -126,14 +142,20 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 		const label = widgetType || elementType || 'elementor-element'
 		const wrapperSelector = `.elementor-element.elementor-element-${ elementId }`
 		const classValue = `elementor-element-${ elementId }`
-		const targetValue = targetType === 'class'
+		const widgetContentSelector = elementType === 'widget'
+			? this.getWidgetContentTargetSelector( targetElement, elementId )
+			: ''
+		const targetTargetType = targetType === 'class' && widgetContentSelector
+			? 'selector'
+			: targetType
+		const targetValue = targetTargetType === 'class'
 			? classValue
 			: elementType === 'widget'
-				? `${ wrapperSelector } > *`
+				? widgetContentSelector || wrapperSelector
 				: wrapperSelector
 
 		return {
-			type: targetType,
+			type: targetTargetType,
 			value: targetValue,
 			blockName: label,
 		}

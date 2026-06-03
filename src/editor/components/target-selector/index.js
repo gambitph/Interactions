@@ -43,6 +43,7 @@ const TargetSelector = props => {
 	} = props
 
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
+	const [ isPickerActive, setIsPickerActive ] = useState( false )
 	const [ buttonRef, setButtonRef ] = useState( null )
 	const prevValueRef = useRef( {} )
 	const elementPickerStopRef = useRef( null )
@@ -52,7 +53,7 @@ const TargetSelector = props => {
 	const targetButton = (
 		<>
 			<Button
-				className="interact-target-block-button"
+				className={ `interact-target-block-button${ isElementor && isPickerActive ? ' is-picking' : '' }` }
 				icon={ <TargetSVG width="16" height="16" /> }
 				variant="secondary"
 				ref={ setButtonRef }
@@ -60,13 +61,18 @@ const TargetSelector = props => {
 					onBlockSelectClick()
 					if ( isElementor ) {
 						elementPickerStopRef.current?.()
+						setIsPickerActive( true )
 						elementPickerStopRef.current = startElementorElementPicker( {
 							targetType: value.type === 'class' ? 'class' : 'selector',
 							onPick: target => {
+								setIsPickerActive( false )
 								onChange( target )
 								onBlockSelectDone()
 							},
-							onCancel: onBlockSelectDone,
+							onCancel: () => {
+								setIsPickerActive( false )
+								onBlockSelectDone()
+							},
 						} )
 					} else if ( hasPickerPopover && ! isPopoverOpen ) {
 						setIsPopoverOpen( true )
@@ -175,6 +181,7 @@ const TargetSelector = props => {
 	useEffect( () => {
 		return () => {
 			elementPickerStopRef.current?.()
+			setIsPickerActive( false )
 		}
 	}, [] )
 
@@ -287,14 +294,18 @@ const TargetSelector = props => {
 					/>
 				) }
 				{ value.type === 'selector' && (
-					<TextControl
-						label={ __( 'CSS Selector', 'interactions' ) }
-						value={ value.value }
-						// When typing, the previous blockName should be invalid
-						onChange={ targetValue => onChange( {
-							...value, blockName: '', value: targetValue,
-						} ) }
-					/>
+					<FlexLayout justifyContent="start">
+						{ isHorizontal && isElementor && targetButton }
+						<TextControl
+							label={ __( 'CSS Selector', 'interactions' ) }
+							value={ value.value }
+							// When typing, the previous blockName should be invalid
+							onChange={ targetValue => onChange( {
+								...value, blockName: '', value: targetValue,
+							} ) }
+						/>
+						{ ! isHorizontal && isElementor && targetButton }
+					</FlexLayout>
 				) }
 			</GridLayout>
 			{ value.type === 'trigger' && (

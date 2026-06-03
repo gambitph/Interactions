@@ -150,6 +150,11 @@
 	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
 }
 
+.interact-elementor-launcher.is-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
 .interact-elementor-panel {
 	position: fixed;
 	top: 0;
@@ -203,6 +208,23 @@
 
 .interact-elementor-sidebar {
 	min-height: 100%;
+
+	h2, h4 {
+		font-size: 1em;
+   		margin: 1.33em 0;
+	}
+
+	.components-panel__body > .components-panel__body-title {
+		display: block;
+		font-size: inherit;
+		margin-bottom: 0;
+		margin-top: 0;
+		padding: 0;
+	}
+
+	.components-panel__body.is-opened > .components-panel__body-title {
+   		margin: -16px -16px 5px;
+	}
 }
 
 .interact-popover {
