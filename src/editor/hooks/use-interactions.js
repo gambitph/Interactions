@@ -174,7 +174,7 @@ const useInteractions = () => {
 		const updateInteraction = newInteraction => {
 			// Check if we updated any anchors/attributes, if we did, then we need to ask whether to also update the post.
 			const didModifyPostContent = select( 'interact/interactions' ).didModifyPostContent()
-			if ( didModifyPostContent && getEditorMode() !== 'elementor' ) {
+			if ( didModifyPostContent && getEditorMode() === 'gutenberg' ) {
 				if ( confirm( __( 'Some block anchors have been updated for your interactions to work correctly. Do you want to save these post changes? (Any modified synced patterns will also be saved)', 'interactions' ) ) ) { // eslint-disable-line no-alert
 					dispatch( 'interact/interactions' ).setDidModifyPostContent( false )
 					// Save the post.

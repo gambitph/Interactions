@@ -79,6 +79,15 @@ if ( ! is_admin() ) {
 if ( is_admin() ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'src/admin/admin.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'src/editor/editor.php' );
+} else {
+	add_action( 'after_setup_theme', function() {
+		if (
+			( function_exists( 'bricks_is_builder_main' ) && bricks_is_builder_main() ) ||
+			( function_exists( 'bricks_is_builder' ) && bricks_is_builder() )
+		) {
+			require_once( plugin_dir_path( __FILE__ ) . 'src/editor/editor.php' );
+		}
+	} );
 }
 
 /**

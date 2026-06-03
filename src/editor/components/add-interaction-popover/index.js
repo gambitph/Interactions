@@ -17,7 +17,7 @@ import {
 } from '~interact/editor/util'
 import {
 	getCurrentSelectedTarget,
-	isElementorEditor,
+	isBuilderEditor,
 } from '~interact/editor/editors'
 import { cloneDeep, first } from 'lodash'
 
@@ -57,7 +57,7 @@ const AddInteractionPopover = props => {
 
 	const [ selected, setSelected ] = useState( initialSelected )
 	const [ showDescription, setShowDescription ] = useState( null )
-	const isElementor = isElementorEditor()
+	const isBuilder = isBuilderEditor()
 
 	const {
 		getBlockNamesByClientId,
@@ -75,7 +75,7 @@ const AddInteractionPopover = props => {
 		const clientId = getSelectedBlockClientId()
 
 		return {
-			type: current?.type || ( isElementor ? 'selector' : 'block' ),
+			type: current?.type || ( isBuilder ? 'selector' : 'block' ),
 			value: current?.value || getOrGenerateBlockAnchor( clientId, false ) || '',
 			blockName: current?.blockName || first( getBlockNamesByClientId( clientId ) ) || '',
 			options: current?.options || '',

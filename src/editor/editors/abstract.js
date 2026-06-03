@@ -29,8 +29,16 @@ class InteractionsEditorAbstract {
 		return this.getEditorMode() === 'elementor'
 	}
 
+	isBricks() {
+		return this.getEditorMode() === 'bricks'
+	}
+
 	isGutenberg() {
-		return ! this.isElementor()
+		return this.getEditorMode() === 'gutenberg'
+	}
+
+	isBuilder() {
+		return this.isElementor() || this.isBricks()
 	}
 
 	// Return the current document context for location rule matching.

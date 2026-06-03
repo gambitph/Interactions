@@ -3,8 +3,9 @@ import TargetSVG from '~interact/editor/assets/target.svg'
 import { GridLayout, FlexLayout } from '~interact/editor/components'
 import {
 	getSelectedBlockAnchor,
+	isBricksEditor,
 	isElementorEditor,
-	startElementorElementPicker,
+	startEditorElementPicker,
 } from '~interact/editor/editors'
 import { getOrGenerateBlockAnchor, getOrGenerateBlockClass } from '~interact/editor/util'
 import {
@@ -47,22 +48,23 @@ const TargetSelector = props => {
 	const [ buttonRef, setButtonRef ] = useState( null )
 	const prevValueRef = useRef( {} )
 	const elementPickerStopRef = useRef( null )
-	const isElementor = isElementorEditor()
+
+	const isBuilder = isBricksEditor() || isElementorEditor()
 	const hasBlockEditor = !! select( 'core/block-editor' )?.getSelectedBlockClientId
 
 	const targetButton = (
 		<>
 			<Button
-				className={ `interact-target-block-button${ isElementor && isPickerActive ? ' is-picking' : '' }` }
+				className={ `interact-target-block-button${ isBuilder && isPickerActive ? ' is-picking' : '' }` }
 				icon={ <TargetSVG width="16" height="16" /> }
 				variant="secondary"
 				ref={ setButtonRef }
 				onClick={ () => {
 					onBlockSelectClick()
-					if ( isElementor ) {
+					if ( isBuilder ) {
 						elementPickerStopRef.current?.()
 						setIsPickerActive( true )
-						elementPickerStopRef.current = startElementorElementPicker( {
+						elementPickerStopRef.current = startEditorElementPicker( {
 							targetType: value.type === 'class' ? 'class' : 'selector',
 							onPick: target => {
 								setIsPickerActive( false )
@@ -81,7 +83,7 @@ const TargetSelector = props => {
 					}
 				} }
 			/>
-			{ hasPickerPopover && isPopoverOpen && ! isElementor && (
+			{ hasPickerPopover && isPopoverOpen && ! isBuilder && (
 				<BlockPickerPopover
 					anchor={ anchor || buttonRef }
 					placement="left"
@@ -172,10 +174,14 @@ const TargetSelector = props => {
 		targetOptions = targetOptions.filter( target => target.value !== 'trigger' )
 	}
 
-	if ( isElementor ) {
-		targetOptions = targetOptions.filter( target =>
-			[ 'trigger', 'class', 'selector' ].includes( target.value )
-		)
+	if ( isElementorEditor() ) {
+		const elementorTargetTypes = [ 'trigger', 'class', 'selector' ]
+		targetOptions = targetOptions.filter( target => elementorTargetTypes.includes( target.value ) )
+	}
+
+	if ( isBricksEditor() ) {
+		const bricksTargetTypes = [ 'trigger', 'selector' ]
+		targetOptions = targetOptions.filter( target => bricksTargetTypes.includes( target.value ) )
 	}
 
 	useEffect( () => {
@@ -244,7 +250,7 @@ const TargetSelector = props => {
 							className="interact-target-block-input"
 							id="interact-target-block-input"
 							label={ __( 'Block Anchor / ID', 'interactions' ) }
-							value={ value.value || ( isElementor ? '' : getSelectedBlockAnchor() || '' ) }
+							value={ value.value || ( isBuilder ? '' : getSelectedBlockAnchor() || '' ) }
 							// When typing, the previous blockName should be invalid
 							onChange={ targetValue => onChange( {
 								...value, blockName: '', value: targetValue,
@@ -295,7 +301,7 @@ const TargetSelector = props => {
 				) }
 				{ value.type === 'selector' && (
 					<FlexLayout justifyContent="start">
-						{ isHorizontal && isElementor && targetButton }
+						{ isHorizontal && isBuilder && targetButton }
 						<TextControl
 							label={ __( 'CSS Selector', 'interactions' ) }
 							value={ value.value }
@@ -304,7 +310,7 @@ const TargetSelector = props => {
 								...value, blockName: '', value: targetValue,
 							} ) }
 						/>
-						{ ! isHorizontal && isElementor && targetButton }
+						{ ! isHorizontal && isBuilder && targetButton }
 					</FlexLayout>
 				) }
 			</GridLayout>

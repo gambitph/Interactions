@@ -1,6 +1,7 @@
 import { editorMode } from 'interactions'
 import GutenbergInteractionsEditor from './gutenberg'
 import ElementorInteractionsEditor from './elementor'
+import BricksInteractionsEditor from './bricks'
 
 let activeEditor = null
 
@@ -8,7 +9,9 @@ let activeEditor = null
 const createInteractionsEditor = () => {
 	return editorMode === 'elementor'
 		? new ElementorInteractionsEditor()
-		: new GutenbergInteractionsEditor()
+		: editorMode === 'bricks'
+			? new BricksInteractionsEditor()
+			: new GutenbergInteractionsEditor()
 }
 
 // Return the memoized editor adapter instance.
@@ -23,7 +26,11 @@ export const getEditorMode = () => getInteractionsEditor().getEditorMode()
 
 export const isElementorEditor = () => getInteractionsEditor().isElementor()
 
+export const isBricksEditor = () => getInteractionsEditor().isBricks()
+
 export const isGutenbergEditor = () => getInteractionsEditor().isGutenberg()
+
+export const isBuilderEditor = () => getInteractionsEditor().isBuilder()
 
 export const getCurrentEditorPostContext = () => getInteractionsEditor().getCurrentPostContext()
 
@@ -37,6 +44,6 @@ export const openInteractionsSidebar = () => getInteractionsEditor().openInterac
 
 export const getCurrentSelectedTarget = () => getInteractionsEditor().getCurrentSelectedTarget()
 
-export const registerElementorSelectionTracking = () => getInteractionsEditor().registerSelectionTracking()
+export const registerEditorSelectionTracking = () => getInteractionsEditor().registerSelectionTracking()
 
-export const startElementorElementPicker = args => getInteractionsEditor().startElementPicker( args )
+export const startEditorElementPicker = args => getInteractionsEditor().startElementPicker( args )

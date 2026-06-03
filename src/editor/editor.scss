@@ -141,7 +141,8 @@
 
 /* Interaction Elementor Editor Panel Styles */
 
-.interact-elementor-launcher {
+.interact-elementor-launcher,
+.interact-bricks-launcher {
 	position: fixed !important;
 	right: 32px;
 	bottom: 32px;
@@ -150,12 +151,14 @@
 	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
 }
 
-.interact-elementor-launcher.is-hidden {
+.interact-elementor-launcher.is-hidden,
+.interact-bricks-launcher.is-hidden {
 	opacity: 0;
 	pointer-events: none;
 }
 
-.interact-elementor-panel {
+.interact-elementor-panel,
+.interact-bricks-panel {
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -181,11 +184,13 @@
 	}
 }
 
-.interact-elementor-panel.is-open {
+.interact-elementor-panel.is-open,
+.interact-bricks-panel.is-open {
 	transform: translateX(0);
 }
 
-.interact-elementor-panel__header {
+.interact-elementor-panel__header,
+.interact-bricks-panel__header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -194,19 +199,22 @@
 	background: #f8fafc;
 }
 
-.interact-elementor-panel__title {
+.interact-elementor-panel__title,
+.interact-bricks-panel__title {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 	font-weight: 600;
 }
 
-.interact-elementor-panel__body {
+.interact-elementor-panel__body,
+.interact-bricks-panel__body {
 	flex: 1;
 	overflow: auto;
 }
 
-.interact-elementor-sidebar {
+.interact-elementor-sidebar,
+.interact-bricks-sidebar {
 	min-height: 100%;
 
 	h2, h4 {
@@ -224,6 +232,14 @@
 
 	.components-panel__body.is-opened > .components-panel__body-title {
    		margin: -16px -16px 5px;
+	}
+}
+
+.interact-bricks-sidebar {
+	.components-toggle-control__label,
+	.components-base-control__label {
+		color: inherit;
+		margin-bottom: 0;
 	}
 }
 

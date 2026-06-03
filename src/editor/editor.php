@@ -22,6 +22,7 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				add_action( 'enqueue_block_assets', array( $this, 'enqueue_assets' ) );
 			}
 			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_bricks_editor' ) );
 		}
 
 		/**
@@ -39,14 +40,40 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 		 * @return void
 		 */
 		public function enqueue_elementor_editor() {
+			$this->enqueue_builder_editor_styles();
+
+			$this->enqueue_editor( 'elementor' );
+		}
+
+		/**
+		 * Loads the editor script inside the Bricks builder.
+		 *
+		 * @return void
+		 */
+		public function enqueue_bricks_editor() {
+			$is_bricks_builder = ( function_exists( 'bricks_is_builder_main' ) && bricks_is_builder_main() ) ||
+				( function_exists( 'bricks_is_builder' ) && bricks_is_builder() );
+
+			if ( ! $is_bricks_builder ) {
+				return;
+			}
+
+			$this->enqueue_builder_editor_styles();
+			$this->enqueue_editor( 'bricks' );
+		}
+
+		/**
+		 * Loads the scoped wp-components styles for visual builders.
+		 *
+		 * @return void
+		 */
+		private function enqueue_builder_editor_styles() {
 			wp_enqueue_style(
 				'interact-editor-wp-components-scoped',
 				plugins_url( 'dist/wp-components-scoped.css', INTERACT_FILE ),
 				array(),
 				INTERACT_VERSION
 			);
-
-			$this->enqueue_editor( 'elementor' );
 		}
 
 		/**

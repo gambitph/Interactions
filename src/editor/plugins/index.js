@@ -1,6 +1,6 @@
 import { editorMode } from 'interactions'
 
-if ( editorMode !== 'elementor' ) {
+if ( editorMode === 'gutenberg' ) {
 	require( './block-toolbar-button' )
 	require( './top-toolbar-button' )
 	require( './block-highlight' )

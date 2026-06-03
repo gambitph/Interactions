@@ -14,10 +14,10 @@ const INPUT_CSS = path.join(
 const OUTPUT_CSS = path.join( ROOT, 'dist', 'wp-components-scoped.css' )
 
 const COMPONENT_SCOPES = [
-	'#interact-elementor-root',
+	'.interact-builder-root',
 	'.interact-popover',
 ]
-const BODY_SCOPE = 'body.interact-elementor-editor'
+const BODY_SCOPE = 'body.interact-builder-editor'
 const PORTAL_PATTERNS = [
 	'.components-modal',
 	'.components-snackbar',
