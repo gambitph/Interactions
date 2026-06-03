@@ -14,6 +14,7 @@ if ( ! class_exists( 'Interact_Getting_Started_Screen' ) ) {
             // Register settings.
             add_action( 'admin_init', array( $this, 'register_settings' ) );
             add_action( 'rest_api_init', array( $this, 'register_settings' ) );
+            add_action( 'rest_api_init', array( $this, 'register_route' ) );
             
             if ( is_admin() ) {
                 add_filter( 'interact/localize_script', array( $this, 'add_localize_script' ) );
@@ -51,8 +52,42 @@ if ( ! class_exists( 'Interact_Getting_Started_Screen' ) ) {
             return array_map( 'sanitize_text_field', $input );
         }
 
+        public function register_route() {
+            // Use a custom route because /wp/v2/settings requires manage_options.
+            // Editors can complete tours, so they need a capability-appropriate save path.
+            register_rest_route( 'interact/v1', '/guided_tour_states', array(
+                'methods' => 'POST',
+                'callback' => array( $this, 'update_guided_tour_states' ),
+                'permission_callback' => function () {
+                    return current_user_can( 'edit_posts' );
+                },
+                'args' => array(
+                    'states' => array(
+                        'required' => true,
+                        'type' => 'array',
+                        'items' => array(
+                            'type' => 'string',
+                        ),
+                    ),
+                ),
+            ) );
+        }
+
+        public function update_guided_tour_states( $request ) {
+            // Store completion per user so each editor sees each tour only once.
+            $states = $this->sanitize_array_setting( $request->get_param( 'states' ) );
+            update_user_meta( get_current_user_id(), 'interact_guided_tour_states', $states );
+
+            return rest_ensure_response( $states );
+        }
+
         public function add_localize_script( $args ) {
-            $args['guidedTourStates'] = get_option( 'interact_guided_tour_states', array() );
+            $user_states = get_user_meta( get_current_user_id(), 'interact_guided_tour_states', true );
+            // Include legacy option-based states and current-user states.
+            $args['guidedTourStates'] = array_values( array_unique( array_merge(
+                get_option( 'interact_guided_tour_states', array() ),
+                is_array( $user_states ) ? $user_states : array()
+            ) ) );
             return $args;
         }
 	}

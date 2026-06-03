@@ -346,7 +346,7 @@ const ModalTour = memo( props => {
 				const targetRect = target.getBoundingClientRect()
 
 				// Estimate the size of the glow target based on the size of the target.
-				const glowTargetSize = targetRect.width > 300 || targetRect.height > 200 ? 'large'
+				const glowTargetSize = targetRect.width > 600 || targetRect.height > 200 ? 'large'
 					: targetRect.width > 300 || targetRect.height > 100 ? 'medium'
 						: 'small'
 

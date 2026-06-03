@@ -18,7 +18,7 @@ import { guidedTourStates } from 'interactions'
 /**
  * WordPress dependencies
  */
-import { models } from '@wordpress/api'
+import apiFetch from '@wordpress/api-fetch'
 import {
 	useEffect, useState, lazy, Suspense, memo,
 } from '@wordpress/element'
@@ -83,11 +83,13 @@ const GuidedModalTour = memo( props => {
 					// Clear the active tour
 					clearActiveTour()
 
-					// Update the interact_guided_tour_states setting
+					// Persist through our route because /wp/v2/settings is admin-only.
 					if ( ! guidedTourStates.includes( tourId ) ) {
-						// eslint-disable-next-line camelcase
-						const settings = new models.Settings( { interact_guided_tour_states: [ ...guidedTourStates, tourId ] } )
-						settings.save().catch( error => {
+						apiFetch( {
+							path: '/interact/v1/guided_tour_states',
+							method: 'POST',
+							data: { states: [ ...guidedTourStates, tourId ] },
+						} ).catch( error => {
 							console.error( 'Error saving guided tour state:', error ) // eslint-disable-line no-console
 						} )
 					}

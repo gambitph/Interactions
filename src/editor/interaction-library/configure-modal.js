@@ -84,7 +84,7 @@ export const ConfigureModal = props => {
 					if ( mode === 'insert' ) {
 						const block = parse( selectedPreset.serializedBlockExample ?? '' )[ 0 ]
 						if ( ! block ) {
-							return
+							throw new Error( 'Error: Invalid block example provided for this interaction.' )
 						}
 						dispatch( 'core/block-editor' ).insertBlocks( block )
 
