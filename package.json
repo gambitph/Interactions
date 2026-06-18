@@ -16,7 +16,7 @@
 		"build:css": "webpack --config webpack.css.config.js && npm run build:css:wp-components-scoped && npm run clean:css-js",
 		"build:css:wp-components-scoped": "node scripts/build-scoped-wp-components-css.mjs",
 		"clean:css-js": "rm -f dist/*.css.js",
-		"start": "node scripts/update-build-type.js free && concurrently \"wp-scripts start\" \"webpack --config webpack.css.config.js --watch\"",
+		"start": "npm run build:css:wp-components-scoped && node scripts/update-build-type.js free && concurrently \"wp-scripts start\" \"webpack --config webpack.css.config.js --watch\"",
 		"lint:js": "wp-scripts lint-js",
 		"lint:js:fix": "wp-scripts lint-js --fix",
 		"lint:css": "wp-scripts lint-style",
