@@ -1,6 +1,7 @@
 import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
+import { InteractionLibrary } from '../interaction-library'
 
 import { registerPlugin } from '@wordpress/plugins'
 import { __ } from '@wordpress/i18n'
@@ -52,8 +53,19 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			)
 		}
 
+		const GutenbergInteractionLibraryComponent = () => {
+			const interactionLibraryMode = useSelect( select =>
+				select( 'interact/interaction-library-modal' ).getMode(),
+			[] )
+
+			return interactionLibraryMode ? <InteractionLibrary /> : null
+		}
+
 		registerPlugin( 'interact-editor', {
 			render: GutenbergInteractionsEditorComponent,
+		} )
+		registerPlugin( 'interact-editor-library', {
+			render: GutenbergInteractionLibraryComponent,
 		} )
 
 		return super.init()
@@ -102,7 +114,7 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 				type: 'block',
 				value: this.getSelectedBlockAnchor() || '',
 				blockName: block.name || '',
-				options: { clientId },
+				options: '',
 			}
 		}
 
@@ -111,7 +123,7 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			type: 'class',
 			value: className,
 			blockName: block.name || '',
-			options: { clientId },
+			options: '',
 		}
 	}
 }

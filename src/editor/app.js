@@ -9,8 +9,6 @@ import {
 import { createNewInteraction, createNewAction } from './util'
 import { useInteractions } from './hooks'
 import { interactions as interactionsConfig, manageInteractionsUrl } from 'interactions'
-import { InteractionLibrary } from './interaction-library'
-import { isGutenbergEditor } from '~interact/editor/editors'
 
 import { __ } from '@wordpress/i18n'
 import { upload } from '@wordpress/icons'
@@ -70,7 +68,6 @@ const InteractionsApp = ( {
 	selectedBlockAnchor = null,
 	enablePostPreviewGuard = true,
 } ) => {
-	const isGutenberg = isGutenbergEditor()
 	const interactionLibraryMode = useSelect( select =>
 		select( 'interact/interaction-library-modal' ).getMode(),
 	[] )
@@ -187,15 +184,11 @@ const InteractionsApp = ( {
 
 	// Interaction library can only be opened if the current interaction is not dirty.
 	useEffect( () => {
-		if ( ! isGutenberg ) {
-			return
-		}
-
 		if ( selectedInteraction && isDirtyRef.current && interactionLibraryMode ) {
 			setInteractionLibraryMode( null )
 			alert( __( 'You are currently editing an interaction, please save or discard your changes first.', 'interactions' ) )// eslint-disable-line no-alert
 		}
-	}, [ isGutenberg, selectedInteraction, isDirtyRef, interactionLibraryMode, setInteractionLibraryMode ] )
+	}, [ selectedInteraction, isDirtyRef, interactionLibraryMode, setInteractionLibraryMode ] )
 
 	const { elementInteractions, pageInteractions } = interactions.reduce( ( acc, interaction ) => {
 		const interactionConfig = interactionsConfig[ interaction.type ]
@@ -416,7 +409,6 @@ const InteractionsApp = ( {
 		{ importExportModalProps &&
 			<ImportExportModal { ...importExportModalProps } onClose={ onCloseImportExportModal } />
 		}
-		{ isGutenberg && interactionLibraryMode && <InteractionLibrary /> }
 	</>
 }
 

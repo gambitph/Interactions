@@ -44,7 +44,7 @@ const TargetSelector = props => {
 	} = props
 
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
-	const [ isPickerActive, setIsPickerActive ] = useState( false )
+	const [ pendingBuilderTarget, setPendingBuilderTarget ] = useState( null )
 	const [ buttonRef, setButtonRef ] = useState( null )
 	const prevValueRef = useRef( {} )
 	const elementPickerStopRef = useRef( null )
@@ -55,7 +55,7 @@ const TargetSelector = props => {
 	const targetButton = (
 		<>
 			<Button
-				className={ `interact-target-block-button${ isBuilder && isPickerActive ? ' is-picking' : '' }` }
+				className={ `interact-target-block-button${ isBuilder && isPopoverOpen && ! pendingBuilderTarget ? ' is-picking' : '' }` }
 				icon={ <TargetSVG width="16" height="16" /> }
 				variant="secondary"
 				ref={ setButtonRef }
@@ -63,16 +63,16 @@ const TargetSelector = props => {
 					onBlockSelectClick()
 					if ( isBuilder ) {
 						elementPickerStopRef.current?.()
-						setIsPickerActive( true )
+						setPendingBuilderTarget( null )
+						setIsPopoverOpen( true )
 						elementPickerStopRef.current = startEditorElementPicker( {
 							targetType: value.type === 'class' ? 'class' : 'selector',
 							onPick: target => {
-								setIsPickerActive( false )
-								onChange( target )
-								onBlockSelectDone()
+								setPendingBuilderTarget( target )
 							},
 							onCancel: () => {
-								setIsPickerActive( false )
+								setIsPopoverOpen( false )
+								setPendingBuilderTarget( null )
 								onBlockSelectDone()
 							},
 						} )
@@ -121,6 +121,32 @@ const TargetSelector = props => {
 					} }
 					onClose={ () => {
 						setIsPopoverOpen( false )
+						onBlockSelectDone()
+					} }
+				/>
+			) }
+			{ isBuilder && isPopoverOpen && (
+				<BlockPickerPopover
+					anchor={ anchor || buttonRef }
+					placement="left"
+					offset={ offset }
+					noArrow={ noArrow }
+					isSmall
+					description={ __( 'Please select an element in the editor area to add this interaction to.', 'interactions' ) }
+					primaryLabel={ __( 'Select Element', 'interactions' ) }
+					primaryDisabled={ ! pendingBuilderTarget }
+					enableBlockSelectMode={ false }
+					onBlockSelect={ () => {
+						onChange( pendingBuilderTarget )
+						setIsPopoverOpen( false )
+						setPendingBuilderTarget( null )
+						onBlockSelectDone()
+					} }
+					onClose={ () => {
+						elementPickerStopRef.current?.()
+						elementPickerStopRef.current = null
+						setIsPopoverOpen( false )
+						setPendingBuilderTarget( null )
 						onBlockSelectDone()
 					} }
 				/>
@@ -187,7 +213,7 @@ const TargetSelector = props => {
 	useEffect( () => {
 		return () => {
 			elementPickerStopRef.current?.()
-			setIsPickerActive( false )
+			setPendingBuilderTarget( null )
 		}
 	}, [] )
 
