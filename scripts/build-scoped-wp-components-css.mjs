@@ -68,7 +68,12 @@ const scopeRootSelector = selector => {
 		return [ selector.replace( /(^|[\s>+~])\.components-popover(?![a-zA-Z0-9_-])/g, `$1${ wrapScope( '.interact-popover.components-popover' ) }` ) ]
 	}
 
-	return COMPONENT_SCOPES.map( scope => `${ wrapScope( scope ) } ${ selector }` )
+	// Generate both root-scoped selectors for inline UI and a body-scoped selector
+	// for modal portal content that is rendered outside the sidebar mount node.
+	return [
+		...COMPONENT_SCOPES.map( scope => `${ wrapScope( scope ) } ${ selector }` ),
+		`${ wrapScope( BODY_SCOPE ) } ${ selector }`,
+	]
 }
 
 const css = fs.readFileSync( INPUT_CSS, 'utf8' )

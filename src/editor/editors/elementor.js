@@ -1,6 +1,11 @@
 import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
+import {
+	normalizeElementorExample,
+	serializeElementorExample,
+	logNormalizedElementorExample,
+} from '../interaction-library/elementor-example'
 
 import { __ } from '@wordpress/i18n'
 import { Button } from '@wordpress/components'
@@ -90,6 +95,11 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 		document.body.appendChild( mountNode )
 		document.body.classList.add( 'interact-builder-editor' )
 		document.body.classList.add( 'interact-elementor-editor' )
+		window.interactElementorExample = {
+			normalize: normalizeElementorExample,
+			serialize: serializeElementorExample,
+			log: logNormalizedElementorExample,
+		}
 		this.registerSelectionTracking()
 		createRoot( mountNode ).render( <ElementorInteractionsEditorComponent /> )
 
@@ -119,6 +129,27 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 		}
 
 		return ''
+	}
+
+	buildTargetFromContainer( container, targetType = 'selector' ) {
+		const resolvedContainer = container?.lookup?.() || container
+		const element = resolvedContainer?.view?.$el?.get?.( 0 ) || null
+		return this.buildTargetFromElement( element, targetType )
+	}
+
+	// Build a child selector target relative to an inserted Elementor widget.
+	buildChildSelectorTarget( container, targetConfig = {} ) {
+		const baseTarget = this.buildTargetFromContainer( container )
+		if ( ! baseTarget ) {
+			return null
+		}
+
+		return {
+			type: targetConfig.type || 'selector',
+			value: targetConfig.value || '',
+			blockName: targetConfig.blockName || baseTarget.blockName,
+			options: targetConfig.options || 'children',
+		}
 	}
 
 	// Build an interaction target from a selected Elementor element.
@@ -182,6 +213,138 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 	// Return the currently selected Elementor target.
 	getCurrentSelectedTarget() {
 		return this.buildTargetFromElement( this.selectedElement?.element || null )
+	}
+
+	canInsertPreset( preset ) {
+		return Array.isArray( preset?.elementorExample ) && preset.elementorExample.length > 0
+	}
+
+	getInsertContainer() {
+		let container =
+			this.selectedElement?.view?.getContainer?.() ||
+			window.elementor?.getCurrentElement?.()?.getContainer?.() ||
+			window.elementor?.getPreviewContainer?.() ||
+			window.elementor?.getPreviewView?.()?.getContainer?.() ||
+			null
+
+		container = container?.lookup?.() || container
+		if ( ! container ) {
+			return null
+		}
+
+		const elementType = container.model?.get?.( 'elType' ) || ''
+		if ( elementType === 'widget' ) {
+			return container.parent || null
+		}
+
+		return container
+	}
+
+	getFirstInsertedContainer( inserted ) {
+		if ( Array.isArray( inserted ) ) {
+			for ( const item of inserted ) {
+				const firstInsertedContainer = this.getFirstInsertedContainer( item )
+				if ( firstInsertedContainer ) {
+					return firstInsertedContainer
+				}
+			}
+			return null
+		}
+
+		return inserted?.lookup?.() || inserted || null
+	}
+
+	// Find an inserted Elementor preview element by its data-id.
+	getInsertedElementById( elementId ) {
+		if ( ! elementId ) {
+			return null
+		}
+
+		return this.getCanvasDocument()?.querySelector( `.elementor-element[data-id="${ elementId }"]` ) || null
+	}
+
+	// Resolve an inserted Elementor target ref into a standard interaction target.
+	resolveInsertedTargetMapping( mapping = {}, inserted, elementorTargetRefs = {} ) {
+		const targetRefConfig = elementorTargetRefs?.[ mapping.targetRef ]
+		const elementId = targetRefConfig?.id
+		if ( elementId ) {
+			const element = this.getInsertedElementById( elementId )
+			if ( ! element ) {
+				return null
+			}
+
+			if ( targetRefConfig?.target ) {
+				return this.buildChildSelectorTarget( { view: { $el: { get: () => element } } }, targetRefConfig.target )
+			}
+
+			return this.buildTargetFromElement( element )
+		}
+
+		const targetPath = Array.isArray( targetRefConfig )
+			? targetRefConfig
+			: targetRefConfig?.path
+		if ( ! Array.isArray( targetPath ) ) {
+			return null
+		}
+
+		const container = targetPath.reduce( ( currentValue, key ) => currentValue?.[ key ], inserted )
+		if ( ! container ) {
+			return null
+		}
+
+		if ( targetRefConfig?.target ) {
+			return this.buildChildSelectorTarget( container, targetRefConfig.target )
+		}
+
+		return this.buildTargetFromContainer( container )
+	}
+
+	// Insert a preset into Elementor through its paste command so the builder
+	// can create any required wrapper containers automatically.
+	async insertPresetContent( preset ) {
+		if ( ! this.canInsertPreset( preset ) || ! window.$e ) {
+			return null
+		}
+
+		const container = this.getInsertContainer()
+		if ( ! container ) {
+			return null
+		}
+
+		const normalizedExample = normalizeElementorExample( preset.elementorExample )
+		if ( normalizedExample.length === 0 ) {
+			return null
+		}
+
+		const inserted = await window.$e.run( 'document/elements/paste', {
+			container,
+			rebuild: true,
+			storageType: 'json',
+			data: JSON.stringify( {
+				type: 'elementor',
+				elements: normalizedExample,
+			} ),
+			options: {
+				at: container.view?.collection?.length,
+			},
+		} )
+
+		const firstInsertedContainer = this.getFirstInsertedContainer( inserted )
+		if ( ! firstInsertedContainer ) {
+			return null
+		}
+
+		window.$e.internal?.( 'document/save/set-is-modified', { status: true } )
+
+		return {
+			targetMappingsSource: inserted,
+			resolveTargetMappingTarget: mapping => this.resolveInsertedTargetMapping(
+				mapping,
+				inserted,
+				preset.elementorTargetRefs
+			),
+			defaultTarget: this.buildTargetFromContainer( firstInsertedContainer ),
+		}
 	}
 
 	// Track the current Elementor selection from the editor panel.

@@ -288,7 +288,9 @@ export class Interaction {
 		} catch ( err ) {
 		}
 
-		return options ? this._filterTargets( targets, options, currentTrigger ) : targets
+		return typeof options === 'string' && options
+			? this._filterTargets( targets, options, currentTrigger )
+			: targets
 	}
 
 	/**
@@ -387,7 +389,9 @@ export class Interaction {
 				: type === 'block-name' ? this._getBlockNameSelector( value )
 					: value
 
-		return options ? this._filterTargetsSelector( targetSelector, options, triggerSelector ) : targetSelector
+		return typeof options === 'string' && options
+			? this._filterTargetsSelector( targetSelector, options, triggerSelector )
+			: targetSelector
 	}
 
 	/**

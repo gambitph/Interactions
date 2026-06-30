@@ -4,6 +4,7 @@ import InteractionsEditorAbstract from './abstract'
 
 import { registerPlugin } from '@wordpress/plugins'
 import { __ } from '@wordpress/i18n'
+import { parse } from '@wordpress/blocks'
 import {
 	useSelect,
 	dispatch,
@@ -102,7 +103,7 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 				type: 'block',
 				value: this.getSelectedBlockAnchor() || '',
 				blockName: block.name || '',
-				options: { clientId },
+				options: '',
 			}
 		}
 
@@ -111,7 +112,26 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			type: 'class',
 			value: className,
 			blockName: block.name || '',
-			options: { clientId },
+			options: '',
+		}
+	}
+
+	canInsertPreset( preset ) {
+		return !! preset?.serializedBlockExample
+	}
+
+	// Insert the preset block tree and return it so target mappings can resolve
+	// against the freshly inserted Gutenberg blocks.
+	insertPresetContent( preset ) {
+		const block = parse( preset?.serializedBlockExample ?? '' )[ 0 ]
+		if ( ! block ) {
+			return null
+		}
+
+		dispatch( 'core/block-editor' )?.insertBlocks?.( block )
+
+		return {
+			targetMappingsSource: block,
 		}
 	}
 }

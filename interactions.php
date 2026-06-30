@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-defined( 'INTERACT_BUILD' ) || define( 'INTERACT_BUILD', 'free' );
+defined( 'INTERACT_BUILD' ) || define( 'INTERACT_BUILD', 'premium' );
 defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.3.3' );
 defined( 'INTERACT_FILE' ) || define( 'INTERACT_FILE', __FILE__ );
 

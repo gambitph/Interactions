@@ -1,4 +1,5 @@
 import IconSVG from '~interact/editor/assets/icon.svg'
+import { openInteractionsSidebar } from '~interact/editor/editors'
 
 import { ToolbarButton } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
@@ -10,16 +11,19 @@ const AddInteractionButton = () => {
 		setMode: setInteractionLibraryMode,
 	} = useDispatch( 'interact/interaction-library-modal' )
 
+	const openInteractionLibrary = () => {
+		openInteractionsSidebar()
+		setInteractionLibraryMode( 'insert' )
+	}
+
 	return (
 		<>
 			<ToolbarButton
-				onClick={ () => {
-					setInteractionLibraryMode( 'insert' )
-				} }
+				onClick={ openInteractionLibrary }
 				onMouseDown={ ev => ev.preventDefault() }
 				onKeyDown={ ev => {
 					if ( ev.key === 'Enter' || ev.key === ' ' ) {
-						setInteractionLibraryMode( 'insert' )
+						openInteractionLibrary()
 						ev.preventDefault()
 					}
 				} }

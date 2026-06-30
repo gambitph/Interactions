@@ -82,6 +82,14 @@ class InteractionsEditorAbstract {
 		return NOOP
 	}
 
+	canInsertPreset() {
+		return false
+	}
+
+	insertPresetContent() {
+		return null
+	}
+
 	// Start an editor-specific target picker.
 	startElementPicker( args = {} ) {
 		const {

@@ -10,7 +10,11 @@ import { createNewInteraction, createNewAction } from './util'
 import { useInteractions } from './hooks'
 import { interactions as interactionsConfig, manageInteractionsUrl } from 'interactions'
 import { InteractionLibrary } from './interaction-library'
-import { isGutenbergEditor } from '~interact/editor/editors'
+import {
+	getCurrentSelectedTarget,
+	isElementorEditor,
+	isGutenbergEditor,
+} from '~interact/editor/editors'
 
 import { __ } from '@wordpress/i18n'
 import { upload } from '@wordpress/icons'
@@ -71,12 +75,15 @@ const InteractionsApp = ( {
 	enablePostPreviewGuard = true,
 } ) => {
 	const isGutenberg = isGutenbergEditor()
+	const isElementor = isElementorEditor()
+	const supportsInteractionLibrary = isGutenberg || isElementor
 	const interactionLibraryMode = useSelect( select =>
 		select( 'interact/interaction-library-modal' ).getMode(),
 	[] )
 	// Interaction library open modal and set target function.
 	const {
 		setMode: setInteractionLibraryMode,
+		setTarget: setInteractionLibraryTarget,
 	} = useDispatch( 'interact/interaction-library-modal' )
 
 	const [ selectedInteraction, setSelectedInteraction ] = useState( null )
@@ -187,7 +194,7 @@ const InteractionsApp = ( {
 
 	// Interaction library can only be opened if the current interaction is not dirty.
 	useEffect( () => {
-		if ( ! isGutenberg ) {
+		if ( ! supportsInteractionLibrary ) {
 			return
 		}
 
@@ -195,7 +202,7 @@ const InteractionsApp = ( {
 			setInteractionLibraryMode( null )
 			alert( __( 'You are currently editing an interaction, please save or discard your changes first.', 'interactions' ) )// eslint-disable-line no-alert
 		}
-	}, [ isGutenberg, selectedInteraction, isDirtyRef, interactionLibraryMode, setInteractionLibraryMode ] )
+	}, [ supportsInteractionLibrary, selectedInteraction, isDirtyRef, interactionLibraryMode, setInteractionLibraryMode ] )
 
 	const { elementInteractions, pageInteractions } = interactions.reduce( ( acc, interaction ) => {
 		const interactionConfig = interactionsConfig[ interaction.type ]
@@ -213,6 +220,22 @@ const InteractionsApp = ( {
 
 	const onCloseImportExportModal = () => {
 		setImportExportModalProps( null )
+	}
+
+	const openElementorInteractionLibrary = () => {
+		const selectedTarget = getCurrentSelectedTarget()
+		if ( ! selectedTarget ) {
+			alert( __( 'Please select an element in Elementor first before browsing the Interaction Library.', 'interactions' ) ) // eslint-disable-line no-alert
+			return
+		}
+
+		setInteractionLibraryTarget( selectedTarget )
+		setInteractionLibraryMode( 'apply' )
+	}
+
+	const openElementorInteractionInsertLibrary = () => {
+		setInteractionLibraryTarget( null )
+		setInteractionLibraryMode( 'insert' )
 	}
 
 	return <>
@@ -243,10 +266,33 @@ const InteractionsApp = ( {
 				</Notice>
 			</PanelBody>
 		}
-		{ allInteractions.length > 0 && selectedInteraction === null &&
+		{ selectedInteraction === null && ( allInteractions.length > 0 || isElementor ) &&
 			<PanelBody>
-				{ interactions.length > 0 && <p className="interact-editor-footer">{ __( 'These interactions are on this page because of their location rules.', 'interactions' ) }</p> }
-				{ interactions.length === 0 && <p className="interact-editor-footer">{ __( 'There are no interactions on this page because no matches were found in the location rules.', 'interactions' ) }</p> }
+				{ isElementor && (
+					<>
+						<p>{ __( 'Interaction Library', 'interactions' ) }</p>
+						<div className="interact-panel-side-buttons">
+							<Button
+								className="interact-sidebar__browse-interactions"
+								variant="secondary"
+								icon="plus-alt2"
+								onClick={ openElementorInteractionInsertLibrary }
+							>
+								{ __( 'Insert', 'interactions' ) }
+							</Button>
+							<Button
+								className="interact-sidebar__browse-interactions"
+								variant="secondary"
+								icon="admin-customizer"
+								onClick={ openElementorInteractionLibrary }
+							>
+								{ __( 'Apply', 'interactions' ) }
+							</Button>
+						</div>
+					</>
+				) }
+				{ allInteractions.length > 0 && interactions.length > 0 && <p className="interact-editor-footer">{ __( 'These interactions are on this page because of their location rules.', 'interactions' ) }</p> }
+				{ allInteractions.length > 0 && interactions.length === 0 && <p className="interact-editor-footer">{ __( 'There are no interactions on this page because no matches were found in the location rules.', 'interactions' ) }</p> }
 				<Button
 					variant="tertiary"
 					size="small"
@@ -416,7 +462,7 @@ const InteractionsApp = ( {
 		{ importExportModalProps &&
 			<ImportExportModal { ...importExportModalProps } onClose={ onCloseImportExportModal } />
 		}
-		{ isGutenberg && interactionLibraryMode && <InteractionLibrary /> }
+		{ supportsInteractionLibrary && interactionLibraryMode && <InteractionLibrary /> }
 	</>
 }
 

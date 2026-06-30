@@ -101,5 +101,15 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:paragraph -->\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula. Integer mollis quam vel euismod auctor. Donec et velit blandit, pharetra nisl et, cursus leo. Duis hendrerit leo vel nisl consectetur, eget fringilla nisi mattis. Sed ac libero luctus, condimentum ligula ac, laoreet arcu. Duis congue diam et consequat lobortis.</p>\r\n<!-- /wp:paragraph -->"
+    "serializedBlockExample": "<!-- wp:paragraph -->\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula. Integer mollis quam vel euismod auctor. Donec et velit blandit, pharetra nisl et, cursus leo. Duis hendrerit leo vel nisl consectetur, eget fringilla nisi mattis. Sed ac libero luctus, condimentum ligula ac, laoreet arcu. Duis congue diam et consequat lobortis.</p>\r\n<!-- /wp:paragraph -->",
+    "elementorExample": [
+        {
+            "id": "interact-text-fade-in-entrance",
+            "elType": "widget",
+            "widgetType": "text-editor",
+            "settings": {
+                "editor": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula.</p>"
+            }
+        }
+    ]
 }

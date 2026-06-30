@@ -183,5 +183,15 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:heading -->\r\n<h2 class=\"wp-block-heading\">Interactions</h2>\r\n<!-- /wp:heading -->"
+    "serializedBlockExample": "<!-- wp:heading -->\r\n<h2 class=\"wp-block-heading\">Interactions</h2>\r\n<!-- /wp:heading -->",
+    "elementorExample": [
+        {
+            "id": "interact-flickering-text",
+            "elType": "widget",
+            "widgetType": "text-editor",
+            "settings": {
+                "editor": "<h2>Interactions</h2>"
+            }
+        }
+    ]
 }

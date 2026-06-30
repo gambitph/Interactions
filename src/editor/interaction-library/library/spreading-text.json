@@ -173,5 +173,15 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:heading {\"textAlign\":\"center\"} -->\r\n<h2 class=\"wp-block-heading has-text-align-center\">Interactions</h2>\r\n<!-- /wp:heading -->"
+    "serializedBlockExample": "<!-- wp:heading {\"textAlign\":\"center\"} -->\r\n<h2 class=\"wp-block-heading has-text-align-center\">Interactions</h2>\r\n<!-- /wp:heading -->",
+    "elementorExample": [
+        {
+            "id": "interact-spreading-text",
+            "elType": "widget",
+            "widgetType": "text-editor",
+            "settings": {
+                "editor": "<h2 style=\"text-align:center;\">Interactions</h2>"
+            }
+        }
+    ]
 }
