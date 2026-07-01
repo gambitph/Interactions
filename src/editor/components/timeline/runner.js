@@ -38,7 +38,7 @@ const interactionTypesEditorContext = require.context(
 interactionTypesEditorContext.keys().forEach( interactionTypesEditorContext )
 doAction( 'interact.interaction.types.loaded' )
 
-export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
+export const useTimelineRunnerRef = ( interaction, actions, timelineIndex, refreshNonce = 0 ) => {
 	const runnerRef = useRef( null )
 	const [ initialStyles, setInitialStyles ] = useState( '' )
 
@@ -79,7 +79,7 @@ export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
 		}
 
 		prevRenderingMode.current = renderingMode
-	}, [ interaction, timelineIndex, actions, renderingMode ] )
+	}, [ interaction, timelineIndex, actions, renderingMode, refreshNonce ] )
 
 	return [ runnerRef, initialStyles ]
 }

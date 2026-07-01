@@ -43,14 +43,22 @@ const TargetSelector = props => {
 		noArrow = false,
 	} = props
 
+	const isBuilder = isBricksEditor() || isElementorEditor()
+	const isElementor = isElementorEditor()
+	const hasBlockEditor = !! select( 'core/block-editor' )?.getSelectedBlockClientId
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
 	const [ pendingBuilderTarget, setPendingBuilderTarget ] = useState( null )
 	const [ buttonRef, setButtonRef ] = useState( null )
+	// Keep Elementor's "Elementor Element" as a local display mode only so the
+	// saved target remains a normal selector/class target.
+	const [ elementorUiType, setElementorUiType ] = useState(
+		isElementor && value.type === 'selector' ? 'elementor-element' : null
+	)
 	const prevValueRef = useRef( {} )
 	const elementPickerStopRef = useRef( null )
-
-	const isBuilder = isBricksEditor() || isElementorEditor()
-	const hasBlockEditor = !! select( 'core/block-editor' )?.getSelectedBlockClientId
+	const displayType = isElementor && elementorUiType === 'elementor-element'
+		? 'elementor-element'
+		: value.type
 
 	const targetButton = (
 		<>
@@ -66,7 +74,7 @@ const TargetSelector = props => {
 						setPendingBuilderTarget( null )
 						setIsPopoverOpen( true )
 						elementPickerStopRef.current = startEditorElementPicker( {
-							targetType: value.type === 'class' ? 'class' : 'selector',
+							targetType: displayType === 'class' ? 'class' : 'selector',
 							onPick: target => {
 								setPendingBuilderTarget( target )
 							},
@@ -157,7 +165,7 @@ const TargetSelector = props => {
 	const isHorizontal = horizontalTypes === 'all' || horizontalTypes.includes( value.type )
 	let columns = isHorizontal ? '0.8fr 1fr' : '1fr'
 	let labelPosition = 'top'
-	if ( value.type !== 'block' && value.type !== 'selector' && value.type !== 'block-name' && value.type !== 'class' ) {
+	if ( displayType !== 'block' && displayType !== 'selector' && displayType !== 'block-name' && displayType !== 'class' && displayType !== 'elementor-element' ) {
 		columns = '1fr'
 		labelPosition = 'edge'
 	}
@@ -201,7 +209,8 @@ const TargetSelector = props => {
 	}
 
 	if ( isElementorEditor() ) {
-		const elementorTargetTypes = [ 'trigger', 'class', 'selector' ]
+		targetOptions.unshift( { value: 'elementor-element', label: __( 'Elementor Element', 'interactions' ) } )
+		const elementorTargetTypes = [ 'trigger', 'class', 'selector', 'elementor-element' ]
 		targetOptions = targetOptions.filter( target => elementorTargetTypes.includes( target.value ) )
 	}
 
@@ -223,6 +232,9 @@ const TargetSelector = props => {
 	useEffect( () => {
 		const updateTarget = () => {
 			setTargetWarning( prevValue => {
+				if ( displayType === 'elementor-element' ) {
+					return null
+				}
 				const newValue = getTargetSelectorWarning( value.type, value.value )
 				return isEqual( prevValue, newValue ) ? prevValue : newValue
 			} )
@@ -231,7 +243,7 @@ const TargetSelector = props => {
 		// We need to watch for editor changes.
 		const unsubscribe = subscribe( throttle( updateTarget, 500 ) )
 		return () => unsubscribe()
-	}, [ value.type, value.value ] )
+	}, [ displayType, value.type, value.value ] )
 
 	return (
 		<>
@@ -240,9 +252,13 @@ const TargetSelector = props => {
 					label={ label }
 					labelPosition={ labelPosition }
 					options={ targetOptions }
-					value={ value.type }
+					value={ displayType }
 					onChange={ type => {
-						const newTarget = { ...value, type }
+						const newTarget = {
+							...value,
+							type: type === 'elementor-element' ? 'selector' : type,
+						}
+						setElementorUiType( type === 'elementor-element' ? 'elementor-element' : null )
 
 						// Use any previous values we may have already entered.
 						if ( type === 'block-name' && hasBlockEditor ) {
@@ -255,21 +271,21 @@ const TargetSelector = props => {
 
 						// If we are switching from block-name to another type,
 						// we should use the other value.
-						if ( type !== 'block-name' && value.type === 'block-name' ) {
+						if ( type !== 'block-name' && displayType === 'block-name' ) {
 							if ( prevValueRef.current.other ) {
 								newTarget.value = prevValueRef.current.other
 							}
 						}
 
 						// Keep in mind the previous value.
-						const prevType = value.type === 'block-name' ? 'block-name' : 'other'
+						const prevType = displayType === 'block-name' ? 'block-name' : 'other'
 						prevValueRef.current[ prevType ] = value.value
 
 						onChange( newTarget )
 					} }
 					id="interact-target-type-select"
 				/>
-				{ value.type === 'block' && (
+				{ displayType === 'block' && (
 					<FlexLayout justifyContent="start">
 						{ isHorizontal && targetButton }
 						<TextControl
@@ -295,7 +311,7 @@ const TargetSelector = props => {
 						{ ! isHorizontal && targetButton }
 					</FlexLayout>
 				) }
-				{ value.type === 'class' && (
+				{ displayType === 'class' && (
 					<FlexLayout justifyContent="start">
 						{ isHorizontal && targetButton }
 						<TextControl
@@ -318,14 +334,14 @@ const TargetSelector = props => {
 						{ ! isHorizontal && targetButton }
 					</FlexLayout>
 				) }
-				{ value.type === 'block-name' && (
+				{ displayType === 'block-name' && (
 					<BlockPickerControl
 						label={ __( 'Block Name', 'interactions' ) }
 						value={ value.value }
 						onChange={ targetValue => onChange( { ...value, value: targetValue } ) }
 					/>
 				) }
-				{ value.type === 'selector' && (
+				{ displayType === 'selector' && (
 					<FlexLayout justifyContent="start">
 						{ isHorizontal && isBuilder && targetButton }
 						<TextControl
@@ -339,46 +355,62 @@ const TargetSelector = props => {
 						{ ! isHorizontal && isBuilder && targetButton }
 					</FlexLayout>
 				) }
+				{ displayType === 'elementor-element' && (
+					<FlexLayout justifyContent="start">
+						{ isHorizontal && isBuilder && targetButton }
+						<TextControl
+							label={ __( 'Elementor Element', 'interactions' ) }
+							value={ value.blockName || '' }
+							disabled
+						/>
+						{ ! isHorizontal && isBuilder && targetButton }
+					</FlexLayout>
+				) }
 			</GridLayout>
-			{ value.type === 'trigger' && (
+			{ displayType === 'trigger' && (
 				<label className="interact-target-selector__help" htmlFor="interact-target-type-select">
 					{ __( 'This action will be applied to the element that initially triggered the interaction.', 'interactions' ) }
 								&nbsp;
 					<a href="https://docs.wpinteractions.com/article/573-what-is-the-element-picker" target="_docs">{ __( 'Learn more', 'interactions' ) }</a>
 				</label>
 			) }
-			{ value.type === 'block' && (
+			{ displayType === 'block' && (
 				<label className="interact-target-selector__help" htmlFor="interact-target-block-input">
 					{ __( 'Enter the block id of the block that will trigger the interaction.', 'interactions' ) }
 								&nbsp;
 					<a href="https://docs.wpinteractions.com/article/573-what-is-the-element-picker" target="_docs">{ __( 'Learn more', 'interactions' ) }</a>
 				</label>
 			) }
-			{ value.type === 'block-name' && (
+			{ displayType === 'block-name' && (
 				<label className="interact-target-selector__help" htmlFor="interact-target-block-input">
 					{ __( 'Select the type of block that will trigger the interaction, this can match multiple blocks.', 'interactions' ) }
 								&nbsp;
 					<a href="https://docs.wpinteractions.com/article/573-what-is-the-element-picker" target="_docs">{ __( 'Learn more', 'interactions' ) }</a>
 				</label>
 			) }
-			{ value.type === 'class' && (
+			{ displayType === 'class' && (
 				<label className="interact-target-selector__help" htmlFor="interact-target-block-input">
 					{ __( 'Enter the class of the elements that will trigger the interaction, this can match multiple elements.', 'interactions' ) }
 								&nbsp;
 					<a href="https://docs.wpinteractions.com/article/573-what-is-the-element-picker" target="_docs">{ __( 'Learn more', 'interactions' ) }</a>
 				</label>
 			) }
-			{ value.type === 'selector' && (
+			{ displayType === 'selector' && (
 				<label className="interact-target-selector__help" htmlFor="interact-target-block-input">
 					{ __( 'Enter the CSS selector of the elements that will trigger the interaction, this can match mutiple elements.', 'interactions' ) }
 								&nbsp;
 					<a href="https://docs.wpinteractions.com/article/573-what-is-the-element-picker" target="_docs">{ __( 'Learn more', 'interactions' ) }</a>
 				</label>
 			) }
-			{ value.type === 'selector' && maybeInvalidSelector( value.value ) && (
+			{ displayType === 'selector' && maybeInvalidSelector( value.value ) && (
 				// Show a warning if the selector might be invalid.
 				<label className="interact-target-selector__help interact-target-selector__warn" htmlFor="interact-target-block-input">
 					{ __( 'You may have forgotten to add a "." or "#" in front of your selector.', 'interactions' ) }
+				</label>
+			) }
+			{ displayType === 'elementor-element' && (
+				<label className="interact-target-selector__help" htmlFor="interact-target-block-input">
+					{ __( 'Use the picker button to select an Elementor element.', 'interactions' ) }
 				</label>
 			) }
 			{ targetWarning && (

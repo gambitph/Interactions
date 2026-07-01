@@ -113,6 +113,15 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			return ''
 		}
 
+		// Special case for Elementor button widgets
+		const widgetType = targetElement.getAttribute( 'data-widget_type' ) || ''
+		if ( widgetType.startsWith( 'button.' ) ) {
+			return `.elementor-element.elementor-element-${ elementId } a.elementor-button`
+		}
+		if ( widgetType.startsWith( 'icon.' ) ) {
+			return `.elementor-element.elementor-element-${ elementId } .elementor-icon`
+		}
+
 		const interactiveDescendant = targetElement.querySelector( `[data-interaction-id="${ elementId }"]` )
 		if ( interactiveDescendant ) {
 			return `[data-interaction-id="${ elementId }"]`
