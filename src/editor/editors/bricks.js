@@ -38,11 +38,18 @@ class BricksInteractionsEditor extends InteractionsEditorAbstract {
 			return super.init()
 		}
 
+		const editor = this
 		const BricksInteractionsEditorComponent = () => {
 			const [ isOpen, setIsOpen ] = useState( false )
 
+			const openPanel = () => {
+				editor.ensureBuilderEditorStyles().then( () => {
+					setIsOpen( true )
+				} )
+			}
+
 			useEffect( () => {
-				const openHandler = () => setIsOpen( true )
+				const openHandler = () => openPanel()
 				window.addEventListener( 'interact/open-bricks-sidebar', openHandler )
 				return () => window.removeEventListener( 'interact/open-bricks-sidebar', openHandler )
 			}, [] )
@@ -53,7 +60,13 @@ class BricksInteractionsEditor extends InteractionsEditorAbstract {
 						className={ `interact-bricks-launcher${ isOpen ? ' is-hidden' : '' }` }
 						variant="primary"
 						icon={ <IconSVG width="18" height="18" /> }
-						onClick={ () => setIsOpen( value => ! value ) }
+						onClick={ () => {
+							if ( isOpen ) {
+								setIsOpen( false )
+								return
+							}
+							openPanel()
+						} }
 					>
 						{ __( 'Interactions', 'interactions' ) }
 					</Button>

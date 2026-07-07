@@ -98,6 +98,13 @@ register( createReduxStore( 'interact/interactions', {
  * @return {boolean} Whether or not the interaction should be shown in the editor.
  */
 export const isInteractionShown = interaction => {
+	// Gutenberg contexts without core/editor (e.g. widgets) previously showed
+	// no interactions. Keep that behavior while still allowing builders to use
+	// the localized post context fallback.
+	if ( getEditorMode() === 'gutenberg' && ! wp.data.select( 'core/editor' ) ) {
+		return false
+	}
+
 	const currentContext = getCurrentEditorPostContext()
 	return interaction.locations.some(	locationGroup => {
 		return locationGroup.every( location => {

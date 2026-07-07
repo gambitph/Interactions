@@ -34,22 +34,44 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			return super.init()
 		}
 
+		const editor = this
 		const ElementorInteractionsEditorComponent = () => {
 			const [ isOpen, setIsOpen ] = useState( false )
 
+			const openPanel = () => {
+				editor.ensureBuilderEditorStyles().then( () => {
+					setIsOpen( true )
+				} )
+			}
+
 			useEffect( () => {
-				const openHandler = () => setIsOpen( true )
+				const openHandler = () => openPanel()
 				window.addEventListener( 'interact/open-elementor-sidebar', openHandler )
 				return () => window.removeEventListener( 'interact/open-elementor-sidebar', openHandler )
 			}, [] )
 
+			useEffect( () => {
+				document.body.classList.toggle( 'interact-elementor-panel-open', isOpen )
+
+				return () => {
+					document.body.classList.remove( 'interact-elementor-panel-open' )
+				}
+			}, [ isOpen ] )
+
 			return (
 				<>
+
 					<Button
 						className={ `interact-elementor-launcher${ isOpen ? ' is-hidden' : '' }` }
 						variant="primary"
 						icon={ <IconSVG width="18" height="18" /> }
-						onClick={ () => setIsOpen( value => ! value ) }
+						onClick={ () => {
+							if ( isOpen ) {
+								setIsOpen( false )
+								return
+							}
+							openPanel()
+						} }
 					>
 						{ __( 'Interactions', 'interactions' ) }
 					</Button>

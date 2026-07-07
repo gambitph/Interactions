@@ -22,7 +22,12 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				add_action( 'enqueue_block_assets', array( $this, 'enqueue_assets' ) );
 			}
 			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_bricks_editor' ) );
+
+			// Only register the Bricks builder enqueue callback when Bricks is
+			// present on the request.
+			if ( function_exists( 'bricks_is_builder_main' ) || function_exists( 'bricks_is_builder' ) ) {
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_bricks_editor' ) );
+			}
 		}
 
 		/**
@@ -40,8 +45,6 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 		 * @return void
 		 */
 		public function enqueue_elementor_editor() {
-			$this->enqueue_builder_editor_styles();
-
 			$this->enqueue_editor( 'elementor' );
 		}
 
@@ -58,22 +61,13 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 				return;
 			}
 
-			$this->enqueue_builder_editor_styles();
-			$this->enqueue_editor( 'bricks' );
-		}
+			// Defense-in-depth: only load the builder editor for users who can
+			// edit content, even if the request matches Bricks' builder URL.
+			if ( ! current_user_can( 'edit_posts' ) ) {
+				return;
+			}
 
-		/**
-		 * Loads the scoped wp-components styles for visual builders.
-		 *
-		 * @return void
-		 */
-		private function enqueue_builder_editor_styles() {
-			wp_enqueue_style(
-				'interact-editor-wp-components-scoped',
-				plugins_url( 'dist/wp-components-scoped.css', INTERACT_FILE ),
-				array(),
-				INTERACT_VERSION
-			);
+			$this->enqueue_editor( 'bricks' );
 		}
 
 		/**

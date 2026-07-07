@@ -3,10 +3,13 @@ import {
 	currentPostParent,
 	currentPostTemplate,
 	currentPostType,
+	pluginVersion,
+	srcUrl,
 } from 'interactions'
 import { select } from '@wordpress/data'
 
 const NOOP = () => {}
+let builderEditorStylesPromise = null
 
 // Base editor adapter that defines the shared editor contract.
 class InteractionsEditorAbstract {
@@ -39,6 +42,32 @@ class InteractionsEditorAbstract {
 
 	isBuilder() {
 		return this.isElementor() || this.isBricks()
+	}
+
+	ensureBuilderEditorStyles() {
+		if ( ! this.isBuilder() ) {
+			return Promise.resolve()
+		}
+
+		if ( document.getElementById( 'interact-editor-wp-components-scoped-css' ) ) {
+			return Promise.resolve()
+		}
+
+		if ( builderEditorStylesPromise ) {
+			return builderEditorStylesPromise
+		}
+
+		builderEditorStylesPromise = new Promise( resolve => {
+			const link = document.createElement( 'link' )
+			link.id = 'interact-editor-wp-components-scoped-css'
+			link.rel = 'stylesheet'
+			link.href = `${ srcUrl }/dist/wp-components-scoped.css?ver=${ pluginVersion }`
+			link.onload = () => resolve()
+			link.onerror = () => resolve()
+			document.head.appendChild( link )
+		} )
+
+		return builderEditorStylesPromise
 	}
 
 	// Return the current document context for location rule matching.
