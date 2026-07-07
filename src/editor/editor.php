@@ -87,6 +87,10 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 			// Load the required interaciton and action types.
 			interact_require_types();
 
+			// Let add-ons enqueue editor-specific assets once the editor mode has
+			// been resolved.
+			do_action( 'interact/enqueue_editor_assets', $editor_mode );
+
 			$build_dir = plugin_dir_path( INTERACT_FILE ) . 'dist/';
 			$script_asset = include $build_dir . 'editor.asset.php';
 
