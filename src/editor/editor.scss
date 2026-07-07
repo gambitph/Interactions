@@ -218,6 +218,11 @@
 	height: calc(100vh - var(--editor-v2-top-bar-height));
 }
 
+.interact-bricks-panel {
+	top: var(--builder-toolbar-height);
+	height: calc(100vh - var(--builder-toolbar-height));
+}
+
 .interact-elementor-panel.is-open,
 .interact-bricks-panel.is-open {
 	transform: translateX(0);
