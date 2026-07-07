@@ -70,22 +70,22 @@ class BricksInteractionsEditor extends InteractionsEditorAbstract {
 					>
 						{ __( 'Interactions', 'interactions' ) }
 					</Button>
-					<div className={ `interact-bricks-panel${ isOpen ? ' is-open' : '' }` }>
-						<div className="interact-bricks-panel__header">
-							<div className="interact-bricks-panel__title">
+					<div className={ `interact-pagebuilder-panel interact-bricks-panel${ isOpen ? ' is-open' : '' }` }>
+						<div className="interact-pagebuilder-panel__header">
+							<div className="interact-pagebuilder-panel__title">
 								<IconSVG width="18" height="18" />
 								<span>{ __( 'Interactions', 'interactions' ) }</span>
 							</div>
 							<Button
-								className="interact-bricks-panel__close"
+								className="interact-pagebuilder-panel__close"
 								icon="no-alt"
 								variant="tertiary"
 								label={ __( 'Close Interactions', 'interactions' ) }
 								onClick={ () => setIsOpen( false ) }
 							/>
 						</div>
-						<div className="interact-bricks-panel__body">
-							<div className="interact-sidebar interact-bricks-sidebar">
+						<div className="interact-pagebuilder-panel__body">
+							<div className="interact-sidebar interact-pagebuilder-sidebar">
 								<InteractionsApp enablePostPreviewGuard={ false } />
 							</div>
 						</div>
