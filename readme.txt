@@ -1,10 +1,10 @@
 === Interactions - Create Interactive Experiences in WordPress ===
 Contributors: bfintal, gambitph
 Tags: animation, interaction, interactivity, blocks, gutenberg
-Requires at least: 6.7.5
+Requires at least: 7.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.3.3
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -164,6 +164,12 @@ The free version includes basic animations and interactions. Premium adds advanc
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 1.4.0 =
+
+* New: Added support for Elementor page builder
+* New: Added support for Bricks page builder
+* Fixed: Kadence issue where the inspector tab switches when Interactions is active #23
 
 = 1.3.3 =
 
