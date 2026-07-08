@@ -16,6 +16,7 @@ const OUTPUT_CSS = path.join( ROOT, 'dist', 'wp-components-scoped.css' )
 const COMPONENT_SCOPES = [
 	'.interact-builder-root',
 	'.interact-popover',
+	'.interact-modal',
 ]
 const BODY_SCOPE = 'body.interact-builder-editor'
 const PORTAL_PATTERNS = [

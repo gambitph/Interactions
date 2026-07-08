@@ -182,7 +182,7 @@ const ImportExportModal = props => {
 	return (
 		<Modal
 			title={ title }
-			className="interact-import-export-modal"
+			className="interact-modal interact-import-export-modal"
 			onRequestClose={ onClose }
 		>
 			<div className="interact-import-export-modal__wrapper">
