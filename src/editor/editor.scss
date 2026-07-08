@@ -220,6 +220,14 @@
 .interact-bricks-panel {
 	top: var(--builder-toolbar-height);
 	height: calc(100vh - var(--builder-toolbar-height));
+
+	.components-base-control__label {
+		color: inherit;
+	}
+	.components-toggle-control .components-toggle-control__label {
+		margin-bottom: 0;
+		color: inherit;
+	}
 }
 
 .interact-pagebuilder-panel.is-open {

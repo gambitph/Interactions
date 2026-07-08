@@ -210,12 +210,12 @@ const TargetSelector = props => {
 
 	if ( isElementorEditor() ) {
 		targetOptions.unshift( { value: 'elementor-element', label: __( 'Elementor Element', 'interactions' ) } )
-		const elementorTargetTypes = [ 'trigger', 'class', 'selector', 'elementor-element' ]
+		const elementorTargetTypes = [ 'trigger', 'class', 'selector', 'window', 'elementor-element' ]
 		targetOptions = targetOptions.filter( target => elementorTargetTypes.includes( target.value ) )
 	}
 
 	if ( isBricksEditor() ) {
-		const bricksTargetTypes = [ 'trigger', 'selector' ]
+		const bricksTargetTypes = [ 'trigger', 'selector', 'window' ]
 		targetOptions = targetOptions.filter( target => bricksTargetTypes.includes( target.value ) )
 	}
 
