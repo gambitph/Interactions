@@ -164,6 +164,7 @@ class BricksInteractionsEditor extends InteractionsEditorAbstract {
 	registerSelectionTracking() {
 		let isBound = false
 		let observer = null
+		let observerTimeoutId = null
 
 		const handleSelection = element => {
 			this.selectedElement = {
@@ -203,9 +204,19 @@ class BricksInteractionsEditor extends InteractionsEditorAbstract {
 		}
 
 		if ( ! bindListeners() ) {
+			const stopObserving = () => {
+				observer?.disconnect()
+				observer = null
+
+				if ( observerTimeoutId ) {
+					window.clearTimeout( observerTimeoutId )
+					observerTimeoutId = null
+				}
+			}
+
 			observer = new MutationObserver( () => {
 				if ( bindListeners() ) {
-					observer?.disconnect()
+					stopObserving()
 				}
 			} )
 
@@ -213,9 +224,21 @@ class BricksInteractionsEditor extends InteractionsEditorAbstract {
 				childList: true,
 				subtree: true,
 			} )
+
+			// Bricks should expose the preview iframe quickly. If it doesn't,
+			// stop watching the whole builder DOM for the rest of the session.
+			observerTimeoutId = window.setTimeout( () => {
+				stopObserving()
+			}, 10000 )
 		}
 
-		return () => observer?.disconnect()
+		return () => {
+			observer?.disconnect()
+
+			if ( observerTimeoutId ) {
+				window.clearTimeout( observerTimeoutId )
+			}
+		}
 	}
 
 	startElementPicker( {
