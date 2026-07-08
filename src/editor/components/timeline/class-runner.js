@@ -1,6 +1,7 @@
 import InteractRunner from '../../../frontend/scripts/class-runner'
 import { actions as actionsConfig, interactions as interactionsConfig } from 'interactions'
 import { getBlockClientId } from './with-tracked-anchors'
+import { getEditorCanvasElement } from '~interact/editor/editors'
 
 const NOOP = () => {}
 
@@ -48,12 +49,7 @@ class InteractEditorRunner extends InteractRunner {
 	 * @return {DOMElement} The document where the interactions are being previewed.
 	 */
 	getDocument() {
-		const iframe = document.querySelector( 'iframe[name="editor-canvas"]' )
-		let editorEl = document.querySelector( '.editor-styles-wrapper' )
-		if ( iframe ) {
-			editorEl = iframe.contentDocument.querySelector( '.editor-styles-wrapper' )
-		}
-		return editorEl
+		return getEditorCanvasElement()
 	}
 
 	getTimelineType( interaction ) {

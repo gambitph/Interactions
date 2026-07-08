@@ -1,4 +1,4 @@
-=== Interactions - Create Interactive Experiences in the Block Editor ===
+=== Interactions - Create Interactive Experiences in WordPress Editors and Builders ===
 Contributors: bfintal, gambitph
 Tags: animation, interaction, interactivity, blocks, gutenberg
 Requires at least: 6.7.5
@@ -8,15 +8,15 @@ Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add animations and interactivity to your blocks. Choose from ready-made effects like scroll & hover in the Interactions Library, or build your own.
+Add animations and interactivity to your WordPress content. Choose from ready-made effects like scroll and hover in the Interactions Library, or build your own.
 
 == Description ==
 
-**Interactions – WordPress Animations, Interactive Experiences for Gutenberg Blocks**
+**Interactions – WordPress Animations and Interactive Experiences for Gutenberg, Elementor, and Bricks**
 
 [Visit our website](https://wpinteractions.com) to learn more about how Interactions work.
 
-Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the block editor. Check our [samples page here](https://wpinteractions.com/samples/) to see a glimpse of what type of interactions you can create. 
+Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside the editor or builder you already use. Check our [samples page here](https://wpinteractions.com/samples/) to see a glimpse of what type of interactions you can create. 
 
 You don't need coding skills or complex tools. With Interactions, you can:
 
@@ -65,7 +65,7 @@ Create [custom interactions](https://docs.wpinteractions.com/article/571-what-ar
 - Designers who want **scroll animations** without code  
 - Marketers who want **attention-grabbing hover effects**  
 - Bloggers who want **dynamic storytelling** with animations  
-- Site builders who want **to bring their block designs to life, or create unique micro-interactions**
+- Site builders who want **to bring their designs to life, or create unique micro-interactions**
 - Developers who need **functional features** like post meta updates and data handling
 - Anyone building **modern interactive websites** in WordPress  
 
@@ -110,11 +110,11 @@ https://github.com/gambitph/Interactions
 
 1. Install “Interactions” from the WordPress Plugin Directory, or upload it to `/wp-content/plugins/interactions/`.
 2. Activate the plugin from the “Plugins” menu.
-3. Edit a post or page with the block editor.
-4. Open the **Interactions Library** panel from the top and pick an effect.  
+3. Edit a post or page with Gutenberg, Elementor, or Bricks.
+4. In Gutenberg, open the **Interactions Library** panel from the top and pick an effect.  
    – OR –  
    Create your own using the **Trigger → Action builder**.
-5. Save and preview your interactive blocks!
+5. Save and preview your interactive elements.
 
 == Frequently Asked Questions ==
 
@@ -122,7 +122,8 @@ https://github.com/gambitph/Interactions
 No! While Interactions excels at animations, it's much more than that. It's a comprehensive interaction system that includes functional features like updating post meta, triggering DOM events, copying text to clipboard, and much more. You can build both visual effects and powerful functional features.
 
 = Does it work with Elementor or other page builders? =  
-No. Interactions is built specifically for the **WordPress block editor (Gutenberg)**.
+Yes. Interactions works in the **WordPress block editor (Gutenberg)** and also includes editor integrations for **Elementor** and **Bricks**.  
+The full **Interactions Library** browsing flow is currently available in Gutenberg, while Elementor and Bricks support creating and managing interactions directly from their builder panels.
 
 = Can I add scroll animations to WordPress with this plugin? =  
 Yes. You can animate blocks when they enter the viewport, fade in, slide in, or trigger other effects on scroll.

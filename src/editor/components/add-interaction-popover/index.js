@@ -10,12 +10,15 @@ import {
 import { useInteractions } from '~interact/editor/hooks'
 import {
 	getOrGenerateBlockAnchor,
-	getOrGenerateBlockClass,
 	getLocationForCurrentPage,
 	duplicateInteraction,
 	setBlockAnchorIfPossible,
 	openInteractionsSidebar,
 } from '~interact/editor/util'
+import {
+	getCurrentSelectedTarget,
+	isBuilderEditor,
+} from '~interact/editor/editors'
 import { cloneDeep, first } from 'lodash'
 
 import {
@@ -31,9 +34,8 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components'
 import { useState } from '@wordpress/element'
-import { useSelect, select } from '@wordpress/data'
+import { useSelect } from '@wordpress/data'
 import { __, sprintf } from '@wordpress/i18n'
-import { BlockPickerPopover } from '../target-selector'
 import { ProUpsell } from '../pro-crown'
 
 const NOOP = () => {}
@@ -55,22 +57,29 @@ const AddInteractionPopover = props => {
 
 	const [ selected, setSelected ] = useState( initialSelected )
 	const [ showDescription, setShowDescription ] = useState( null )
-	const [ hidden, setHidden ] = useState( false )
+	const isBuilder = isBuilderEditor()
 
 	const {
 		getBlockNamesByClientId,
 		getSelectedBlockClientId,
 	} = useSelect( select => {
+		const blockEditorStore = select( 'core/block-editor' )
 		return {
-			getBlockNamesByClientId: select( 'core/block-editor' ).getBlockNamesByClientId,
-			getSelectedBlockClientId: select( 'core/block-editor' ).getSelectedBlockClientId,
+			getBlockNamesByClientId: blockEditorStore?.getBlockNamesByClientId || ( () => [] ),
+			getSelectedBlockClientId: blockEditorStore?.getSelectedBlockClientId || ( () => null ),
 		}
 	} )
 
-	const [ target, setTarget ] = useState( {
-		type: 'block',
-		value: getOrGenerateBlockAnchor( getSelectedBlockClientId(), false ) || '',
-		blockName: first( getBlockNamesByClientId( getSelectedBlockClientId() ) ) || '',
+	const [ target, setTarget ] = useState( () => {
+		const current = getCurrentSelectedTarget()
+		const clientId = getSelectedBlockClientId()
+
+		return {
+			type: current?.type || ( isBuilder ? 'selector' : 'block' ),
+			value: current?.value || getOrGenerateBlockAnchor( clientId, false ) || '',
+			blockName: current?.blockName || first( getBlockNamesByClientId( clientId ) ) || '',
+			options: current?.options || '',
+		}
 	} )
 
 	const libraryTitle = ! showElementOption && showPageOption ? __( 'My Page Interactions', 'interactions' )
@@ -93,45 +102,6 @@ const AddInteractionPopover = props => {
 		}
 		return acc
 	}, { elementInteractions: [], pageInteractions: [] } )
-
-	if ( hidden ) {
-		return (
-			<BlockPickerPopover
-				offset={ offset }
-				flip={ true }
-				variant="toolbar"
-				onBlockSelect={ ( clientId, blockName ) => {
-					const valueArgs = {
-						...target,
-						blockName,
-					}
-
-					let pickerMode = target === 'block' ? 'id' : 'class'
-					if ( pickerMode === 'id' ) {
-						// If id, use the block id as the anchor. If the
-						// block doesn't support anchors is not supported,
-						// then use picker mode class.
-						const hasAnchorAttribute = !! select( 'core/blocks' ).getBlockType( blockName )?.attributes?.anchor
-						if ( hasAnchorAttribute ) {
-							valueArgs.value = getOrGenerateBlockAnchor( clientId, true )
-						} else {
-							pickerMode = 'class'
-						}
-					}
-
-					if ( pickerMode === 'class' ) {
-						// If class, use the first class name if there is one, or create a new one.
-						valueArgs.value = getOrGenerateBlockClass( clientId, true )
-						valueArgs.type = 'class'
-					}
-
-					setTarget( valueArgs )
-					setHidden( false )
-				} }
-				onClose={ () => setHidden( false ) }
-			/>
-		)
-	}
 
 	return (
 		<Popover
@@ -226,8 +196,6 @@ const AddInteractionPopover = props => {
 					<TargetSelector
 						value={ target }
 						onChange={ setTarget }
-						hasPickerPopover={ false }
-						onBlockSelectClick={ () => setHidden( true ) }
 					/>
 				) }
 

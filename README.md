@@ -6,14 +6,14 @@
 [![PHP](https://img.shields.io/badge/PHP-8.0%2B-purple.svg)](https://php.net/)
 [![WordPress](https://img.shields.io/badge/WordPress-6.6.4%2B-blue.svg)](https://wordpress.org/)
 
-A WordPress plugin that adds animations, effects, and interactivity to Gutenberg blocks.
+A WordPress plugin that adds animations, effects, and interactivity to Gutenberg, Elementor, and Bricks.
 
 ## 🔧 Requirements
 
 - **WordPress**: 6.6.4 or higher
 - **PHP**: 8.0 or higher
 - **Node.js**: 18 or higher
-- **Block Editor**: Gutenberg (built-in WordPress editor)
+- **Supported Editors**: Gutenberg (built-in WordPress editor), Elementor, and Bricks
 
 ## 🛠️ Development
 
@@ -56,7 +56,7 @@ src/
 ├── action-types/          # Available action types (PHP + JS)
 ├── interaction-types/     # Available trigger types (PHP + JS)
 ├── admin/                 # Admin interface
-├── editor/                # Block editor integration
+├── editor/                # Editor and builder integrations
 ├── frontend/              # Frontend functionality
 ├── locations/             # Location rules
 └── rest-api/              # REST API endpoints

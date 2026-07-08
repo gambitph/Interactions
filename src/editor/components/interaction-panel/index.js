@@ -382,6 +382,30 @@ const InteractionPanel = props => {
 				/>
 			</div>
 
+			{ interactionConfig.type === 'element' && (
+				<PanelBody
+					title={ __( 'Interaction Trigger', 'interactions' ) }
+					initialOpen={ true }
+					className="interact-panel-interaction-trigger"
+				>
+					{ interactionWarnings && <span className="interact-warning-text">{ interactionWarnings.message }</span> }
+					<TargetSelector
+						horizontalTypes={ [] }
+						assignBlockIdOnPick
+						value={ editedInteraction.target }
+						onChange={ target => {
+							setEditedInteraction( interaction => {
+								return {
+									...interaction,
+									target,
+								}
+							} )
+							setIsDirty( true )
+						} }
+					/>
+				</PanelBody>
+			) }
+
 			{ interactionConfig.options.length > 0 && (
 				<PanelBody
 					title={ __( 'Settings', 'interactions' ) }
@@ -584,30 +608,6 @@ const InteractionPanel = props => {
 					</PanelBody>
 				)
 			} ) }
-
-			{ interactionConfig.type === 'element' && (
-				<PanelBody
-					title={ __( 'Interaction Trigger', 'interactions' ) }
-					initialOpen={ false }
-					className="interact-panel-interaction-trigger"
-				>
-					{ interactionWarnings && <span className="interact-warning-text">{ interactionWarnings.message }</span> }
-					<TargetSelector
-						horizontalTypes={ [] }
-						assignBlockIdOnPick
-						value={ editedInteraction.target }
-						onChange={ target => {
-							setEditedInteraction( interaction => {
-								return {
-									...interaction,
-									target,
-								}
-							} )
-							setIsDirty( true )
-						} }
-					/>
-				</PanelBody>
-			) }
 
 			<PanelBody
 				title={ __( 'Location Rules', 'interactions' ) }
