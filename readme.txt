@@ -8,7 +8,7 @@ Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add animations and interactivity to your site. Choose from ready-made effects like scroll & hover in the Interactions Library, or build your own.
+Add animations and interactivity in Elementor, Bricks and the Block Editor. Choose from our library of ready-made effects like scroll & hover, or build your own.
 
 == Description ==
 
@@ -25,6 +25,22 @@ You don't need coding skills or complex tools. With Interactions, you can:
 - **Add functional features** – Securely update post data, handle form submissions, display user info, copy text to clipboard, and more without coding. [Learn more](https://docs.wpinteractions.com/category/729-interactions)
 
 Whether you want subtle hover effects, attention-grabbing story-telling animations, playful micro-interactions, or powerful functional features, [Interactions](https://wpinteractions.com) makes it possible.
+
+### Works with
+
+* The native WordPress Block Editor / Gutenberg
+* Popular Page Builders
+	* Elementor (Interaction library WIP)
+	* Bricks (Interaction library WIP)
+	* Divi (WIP)
+* Popular Block Editor Builders
+	* Stackable
+	* Kadence
+	* Spectra
+	* GenerateBlocks
+	* CoBlocks
+	* Greenshift
+	* Otter
 
 ### 🚀 Features
 
