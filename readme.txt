@@ -1,4 +1,4 @@
-=== Interactions - Create Interactive Experiences in Elementor, Bricks, and the WordPress Block Editor ===
+=== Interactions - Create Interactive Experiences in WordPress ===
 Contributors: bfintal, gambitph
 Tags: animation, interaction, interactivity, blocks, gutenberg
 Requires at least: 6.7.5
@@ -65,7 +65,7 @@ Create [custom interactions](https://docs.wpinteractions.com/article/571-what-ar
 - Designers who want **scroll animations** without code  
 - Marketers who want **attention-grabbing hover effects**  
 - Bloggers who want **dynamic storytelling** with animations  
-- Site builders who want **to bring their block designs to life, or create unique micro-interactions**
+- Site builders who want **to bring their designs to life, or create unique micro-interactions**
 - Developers who need **functional features** like post meta updates and data handling
 - Anyone building **modern interactive websites** in WordPress  
 
@@ -111,10 +111,10 @@ https://github.com/gambitph/Interactions
 1. Install “Interactions” from the WordPress Plugin Directory, or upload it to `/wp-content/plugins/interactions/`.
 2. Activate the plugin from the “Plugins” menu.
 3. Edit a post or page with Elementor, Bricks, or the WordPress block editor (Gutenberg).
-4. In the WordPress block editor, open the **Interactions Library** panel from the top and pick an effect.  
+4. In Gutenberg, open the **Interactions Library** panel from the top and pick an effect.  
    – OR –  
-   Create your own using the **Trigger → Action builder** in Elementor, Bricks, or the WordPress block editor.
-5. Save and preview your interactive blocks and elements!
+   Create your own using the **Trigger → Action builder**.
+5. Save and preview your interactive elements.
 
 == Frequently Asked Questions ==
 

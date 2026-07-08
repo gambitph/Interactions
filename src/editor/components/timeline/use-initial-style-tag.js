@@ -4,16 +4,9 @@
 
 import { useEffect, useRef } from '@wordpress/element'
 import { debounce } from 'lodash'
+import { getEditorCanvasElement } from '~interact/editor/editors'
 
-// Gets the main editor element, either the iframe or the main document.
-const getEditorEl = () => {
-	const iframe = document.querySelector( 'iframe[name="editor-canvas"]' )
-	let editorEl = document.querySelector( '.editor-styles-wrapper' )
-	if ( iframe ) {
-		editorEl = iframe.contentDocument.querySelector( '.editor-styles-wrapper' )
-	}
-	return editorEl
-}
+const getEditorEl = () => getEditorCanvasElement()
 
 // Creates a style tag inside the editor to hold the initial interaction styles
 export const useInitialStyleTag = style => {

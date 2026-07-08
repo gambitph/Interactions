@@ -1,7 +1,19 @@
+.components-modal__screen-overlay:has(.interact-import-export-modal) {
+	position: fixed !important;
+	inset: 0 !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	z-index: 100001;
+}
+
 .interact-import-export-modal {
 	width: 100%;
 	max-width: 50%;
 	max-height: 90%;
+	margin: 0 !important;
+	z-index: 100002;
 
 	.components-modal__content {
 		margin-top: 56px;

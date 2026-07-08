@@ -18,27 +18,53 @@ const BlockPickerPopover = props => {
 		isSmall = false,
 		anchor = null,
 		noArrow = false,
+		description = __( 'Please select a block in the editor area to add this interaction to.', 'interactions' ),
+		primaryLabel = __( 'Select Block', 'interactions' ),
+		primaryDisabled = null,
+		enableBlockSelectMode = true,
 	} = props
 
 	const {
 		selectedClientId, blockName,
 	} = useSelect( select => {
-		const clientId = select( 'interact/block-select' ).getSelectedClientId()
-		const block = select( 'core/block-editor' ).getBlock( clientId )
+		if ( ! enableBlockSelectMode ) {
+			return {
+				selectedClientId: null,
+				blockName: '',
+			}
+		}
+
+		const blockSelectStore = select( 'interact/block-select' )
+		const blockEditorStore = select( 'core/block-editor' )
+		if ( ! blockSelectStore?.getSelectedClientId || ! blockEditorStore?.getBlock ) {
+			return {
+				selectedClientId: null,
+				blockName: '',
+			}
+		}
+
+		const clientId = blockSelectStore.getSelectedClientId()
+		const block = blockEditorStore.getBlock( clientId )
 		const blockName = block?.name || ''
 		return {
 			selectedClientId: clientId,
 			blockName,
 		}
-	} )
+	}, [ enableBlockSelectMode ] )
+
+	const isPrimaryDisabled = primaryDisabled ?? ! selectedClientId
 
 	useEffect( () => {
+		if ( ! enableBlockSelectMode ) {
+			return NOOP
+		}
+
 		dispatch( 'interact/block-select' ).setSelectMode( true )
 		return () => {
 			dispatch( 'interact/block-select' ).setSelectMode( false )
 			dispatch( 'interact/block-select' ).setSelectedClientId( null )
 		}
-	}, [] )
+	}, [ enableBlockSelectMode ] )
 
 	return (
 		<Popover
@@ -50,7 +76,7 @@ const BlockPickerPopover = props => {
 		>
 			<PanelBody>
 				<FlexLayout className={ classNames( { 'interact-picker--small': isSmall } ) } justifyContent="flex-end">
-					<p>{ __( 'Please select a block in the editor area to add this interaction to.', 'interactions' ) }</p>
+					<p>{ description }</p>
 					<Button
 						variant="primary"
 						onClick={ () => {
@@ -60,9 +86,9 @@ const BlockPickerPopover = props => {
 							// then ask if he wants to overwrite it.
 							onBlockSelect( selectedClientId, blockName )
 						} }
-						disabled={ ! selectedClientId }
+						disabled={ isPrimaryDisabled }
 					>
-						{ __( 'Select Block', 'interactions' ) }
+						{ primaryLabel }
 					</Button>
 					<Button
 						variant="secondary"

@@ -9,11 +9,14 @@ import {
 import {
 	Fragment, useEffect, useState,
 } from '@wordpress/element'
-import { select } from '@wordpress/data'
 import { __, sprintf } from '@wordpress/i18n'
 import apiFetch from '@wordpress/api-fetch'
+import { getCurrentEditorPostContext } from '~interact/editor/editors'
 
 const NOOP = () => {}
+
+const getCurrentPostId = () => getCurrentEditorPostContext().postId
+const getCurrentPostType = () => getCurrentEditorPostContext().postType
 
 const updateLocation = ( locations, index1, index2, newLocation ) => {
 	const newLocations = cloneDeep( locations )
@@ -94,7 +97,7 @@ const LocationRules = props => {
 									onChange( removeLocation( locations, i, k ) )
 								} }
 								onClickAnd={ () => {
-									const value = locations.length === 0 ? select( 'core/editor' ).getCurrentPostId() : ''
+									const value = locations.length === 0 ? getCurrentPostId() : ''
 									onChange( addLocation( locations, i, k + 1, {
 										param: 'post',
 										operator: '==',
@@ -111,7 +114,7 @@ const LocationRules = props => {
 				label={ __( 'Add rule group', 'interactions' ) }
 				variant="secondary"
 				onClick={ () => {
-					const value = locations.length === 0 ? select( 'core/editor' ).getCurrentPostId() : ''
+					const value = locations.length === 0 ? getCurrentPostId() : ''
 					onChange( addLocation( locations, locations.length, 0, {
 						param: 'post',
 						operator: '==',
@@ -151,10 +154,10 @@ const LocationRule = props => {
 
 				// If param is a post/page, then the post_id doesn't exist yet, then we need to add it near the top as "Current Post" or "Current Page"
 				if ( param === 'post' || param === 'page' ) {
-					const postType = select( 'core/editor' ).getCurrentPostType()
+					const postType = getCurrentPostType()
 					options.some( ( { post_type, options } ) => {
 						if ( post_type === postType ) {
-							const currentPostId = select( 'core/editor' ).getCurrentPostId()
+							const currentPostId = getCurrentPostId()
 							// Check if the current post is already in the list
 							const exists = options.some( ( { value } ) => {
 								return value === currentPostId
