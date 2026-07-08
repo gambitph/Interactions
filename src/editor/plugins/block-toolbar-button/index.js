@@ -151,7 +151,7 @@ const withBlockToolbarButton = createHigherOrderComponent( BlockEdit => {
 						) }
 						{ isPopoverOpen && popoverMode === 'select' && (
 							<Popover
-								className="interact-block-toolbar-button__select-popover"
+								className="interact-popover interact-block-toolbar-button__select-popover"
 								offset={ 13 }
 								flip={ true }
 								variant="toolbar"
