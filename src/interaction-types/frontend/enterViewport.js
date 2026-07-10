@@ -10,10 +10,18 @@ InteractRunner.addInteractionConfig( {
 			// Normalize the threshold to be between 0 and the maximum possible threshold
 			// for the current trigger. This ensures the interaction always works.
 			const rect = trigger.getBoundingClientRect()
-			const visibleHeight = Math.min( window.innerHeight, rect.height )
-			const maxThreshold = ( visibleHeight / rect.height ) - 0.01
 			const threshold = parseFloat( interaction.getOption( 'threshold', 0.3 ) )
-			const normalizedThreshold = Math.min( Math.max( threshold, 0 ), maxThreshold )
+			// Guard against a zero (or not-yet-laid-out) height. On slower
+			// devices the element may not have its final height when we
+			// initialize, which would make maxThreshold NaN and throw when
+			// constructing the IntersectionObserver.
+			let normalizedThreshold = Math.max( threshold, 0 )
+			if ( rect.height > 0 ) {
+				const visibleHeight = Math.min( window.innerHeight, rect.height )
+				const maxThreshold = ( visibleHeight / rect.height ) - 0.01
+				normalizedThreshold = Math.min( normalizedThreshold, maxThreshold )
+			}
+			normalizedThreshold = Math.max( normalizedThreshold, 0 )
 
 			// Use Intersection Observer to detect when the target enters the viewport
 			const callback = entries => {
@@ -30,7 +38,14 @@ InteractRunner.addInteractionConfig( {
 				} )
 			}
 
-			const io = new IntersectionObserver( callback, { threshold: normalizedThreshold } ) // eslint-disable-line compat/compat
+			// Fire slightly before the element scrolls into view. Android
+			// Chrome batches/defers IntersectionObserver callbacks during
+			// momentum (fling) scrolling, so without this lead time reveals
+			// "pop in" late compared to iOS Safari.
+			const io = new IntersectionObserver( callback, { // eslint-disable-line compat/compat
+				threshold: normalizedThreshold,
+				rootMargin: '0px 0px 15% 0px',
+			} )
 			io.observe( trigger )
 
 			return () => {
