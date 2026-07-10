@@ -24,3 +24,6 @@ This project has two GitHub repositories, used depending on whether we're buildi
 - Premium-only repo: https://github.com/bfintal/Interactions-Premium
 - The premium repo contains **only** the premium plugin code.
 - It is placed in the `pro__premium_only` directory inside the free plugin's root folder.
+## Archived Repository
+
+> **Note:** The old repository at https://github.com/gambitph/wp-interactions is now archived and **should not be referenced anymore**. All development has moved to the free and premium repositories listed above.
