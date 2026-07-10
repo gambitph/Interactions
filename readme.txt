@@ -1,6 +1,6 @@
 === Interactions - Create Interactive Experiences in WordPress ===
 Contributors: bfintal, gambitph
-Tags: animation, interaction, interactivity, blocks, gutenberg
+Tags: animation, interaction, interactivity, blocks, elementor, bricks, gutenberg
 Requires at least: 7.0
 Tested up to: 7.0
 Requires PHP: 8.0
@@ -48,7 +48,7 @@ Create [custom interactions](https://docs.wpinteractions.com/article/571-what-ar
 
 **Animations & Visual Effects:**
 
-- **Animations for WordPress blocks** (fade, slide, zoom, rotate, shadow, etc.)
+- **Animation effects** (fade, slide, zoom, rotate, shadow, etc.)
 - **Scroll effects** – reveal content as users scroll down
 - **Hover effects** – highlight and animate blocks on hover
 - **Click triggers** – run actions when buttons, images, or sections are clicked
@@ -75,6 +75,7 @@ Create [custom interactions](https://docs.wpinteractions.com/article/571-what-ar
 - **Custom trigger → action builder** – advanced users can design unique effects
 - **Performance optimized** – loads only what's needed for your chosen interactions
 - **Works with any block and any theme**
+- **Works with Elementor and Bricks**
 
 ### 🎯 Perfect For
 

@@ -1,7 +1,7 @@
 {
 	"name": "interactions",
 	"version": "1.4.0",
-	"description": "Make your blocks interactive! Effortlessly set triggers that do actions",
+	"description": "Make your page elements interactive! Effortlessly set triggers that do actions",
 	"author": "Benjamin Intal of Gambit",
 	"private": true,
 	"license": "GPL-2.0-or-later",
