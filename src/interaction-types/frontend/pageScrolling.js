@@ -11,7 +11,10 @@ InteractRunner.addInteractionConfig( {
 				const winScroll = document.body.scrollTop || document.documentElement.scrollTop
 				const height = document.documentElement.scrollHeight - document.documentElement.clientHeight
 				const scrolled = height ? winScroll / height : 0
-				animation.seekPercentage( scrolled, isFirstCall === true ? 0 : smoothness )
+
+				// Clamp between 0 and 1 (iOS overscroll can produce negative values).
+				const clampedScrolled = Math.max( 0, Math.min( 1, scrolled ) )
+				animation.seekPercentage( clampedScrolled, isFirstCall === true ? 0 : smoothness )
 			}
 
 			// Coalesce scroll events into a single rAF so we only seek once per

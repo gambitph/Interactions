@@ -38,14 +38,17 @@ InteractRunner.addInteractionConfig( {
 				} )
 			}
 
-			// Fire slightly before the element scrolls into view. Android
-			// Chrome batches/defers IntersectionObserver callbacks during
+			// Fire slightly before the element scrolls into view on Android only.
+			// Android Chrome batches/defers IntersectionObserver callbacks during
 			// momentum (fling) scrolling, so without this lead time reveals
 			// "pop in" late compared to iOS Safari.
-			const io = new IntersectionObserver( callback, { // eslint-disable-line compat/compat
-				threshold: normalizedThreshold,
-				rootMargin: '0px 0px 15% 0px',
-			} )
+			const isAndroid = /Android/i.test( navigator.userAgent )
+			const observerOptions = { threshold: normalizedThreshold }
+			if ( isAndroid ) {
+				observerOptions.rootMargin = '0px 0px 15% 0px'
+			}
+
+			const io = new IntersectionObserver( callback, observerOptions ) // eslint-disable-line compat/compat
 			io.observe( trigger )
 
 			return () => {
