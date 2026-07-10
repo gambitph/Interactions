@@ -104,7 +104,11 @@ class InteractRunner {
 		// SiteGround Speed Optimizer) can change script execution order so that
 		// init() fires before configure(), leaving interactions inert until
 		// InteractRunner.init() is called manually. See WP-Interactions #4.
-		if ( this._isInitialized ) {
+		//
+		// This only applies on the frontend. The editor calls configure() then
+		// init() itself on every preview refresh, so auto-initializing here
+		// would double-init and duplicate listeners.
+		if ( this.isFrontend && this._isInitialized ) {
 			this.init()
 		}
 	}
