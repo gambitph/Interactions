@@ -36,12 +36,16 @@ class InteractionsEditorAbstract {
 		return this.getEditorMode() === 'bricks'
 	}
 
+	isDivi() {
+		return this.getEditorMode() === 'divi'
+	}
+
 	isGutenberg() {
 		return this.getEditorMode() === 'gutenberg'
 	}
 
 	isBuilder() {
-		return this.isElementor() || this.isBricks()
+		return this.isElementor() || this.isBricks() || this.isDivi()
 	}
 
 	ensureBuilderEditorStyles() {

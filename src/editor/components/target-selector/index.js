@@ -4,6 +4,7 @@ import { GridLayout, FlexLayout } from '~interact/editor/components'
 import {
 	getSelectedBlockAnchor,
 	isBricksEditor,
+	isDiviEditor,
 	isElementorEditor,
 	startEditorElementPicker,
 } from '~interact/editor/editors'
@@ -43,7 +44,7 @@ const TargetSelector = props => {
 		noArrow = false,
 	} = props
 
-	const isBuilder = isBricksEditor() || isElementorEditor()
+	const isBuilder = isBricksEditor() || isElementorEditor() || isDiviEditor()
 	const isElementor = isElementorEditor()
 	const hasBlockEditor = !! select( 'core/block-editor' )?.getSelectedBlockClientId
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
@@ -219,9 +220,15 @@ const TargetSelector = props => {
 		targetOptions = targetOptions.filter( target => bricksTargetTypes.includes( target.value ) )
 	}
 
+	if ( isDiviEditor() ) {
+		const diviTargetTypes = [ 'trigger', 'class', 'selector', 'window' ]
+		targetOptions = targetOptions.filter( target => diviTargetTypes.includes( target.value ) )
+	}
+
 	useEffect( () => {
 		return () => {
 			elementPickerStopRef.current?.()
+			pendingBuilderTargetRef.current = null
 			setPendingBuilderTarget( null )
 		}
 	}, [] )

@@ -2,6 +2,7 @@ import { editorMode } from 'interactions'
 import GutenbergInteractionsEditor from './gutenberg'
 import ElementorInteractionsEditor from './elementor'
 import BricksInteractionsEditor from './bricks'
+import DiviInteractionsEditor from './divi'
 
 let activeEditor = null
 
@@ -11,7 +12,9 @@ const createInteractionsEditor = () => {
 		? new ElementorInteractionsEditor()
 		: editorMode === 'bricks'
 			? new BricksInteractionsEditor()
-			: new GutenbergInteractionsEditor()
+			: editorMode === 'divi'
+				? new DiviInteractionsEditor()
+				: new GutenbergInteractionsEditor()
 }
 
 // Return the memoized editor adapter instance.
@@ -27,6 +30,8 @@ export const getEditorMode = () => getInteractionsEditor().getEditorMode()
 export const isElementorEditor = () => getInteractionsEditor().isElementor()
 
 export const isBricksEditor = () => getInteractionsEditor().isBricks()
+
+export const isDiviEditor = () => getInteractionsEditor().isDivi()
 
 export const isGutenbergEditor = () => getInteractionsEditor().isGutenberg()
 

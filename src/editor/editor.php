@@ -23,6 +23,12 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 			}
 			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor' ) );
 
+			// Only register the Divi builder enqueue callback when Divi is
+			// present on the request.
+			if ( function_exists( 'et_core_is_fb_enabled' ) ) {
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_divi_editor' ) );
+			}
+
 			// Only register the Bricks builder enqueue callback when Bricks is
 			// present on the request.
 			if ( function_exists( 'bricks_is_builder_main' ) || function_exists( 'bricks_is_builder' ) ) {
@@ -68,6 +74,29 @@ if ( ! class_exists( 'Interact_Editor' ) ) {
 			}
 
 			$this->enqueue_editor( 'bricks' );
+		}
+
+		/**
+		 * Loads the editor script inside Divi's Visual Builder top window.
+		 *
+		 * @return void
+		 */
+		public function enqueue_divi_editor() {
+			$is_divi_builder = function_exists( 'et_core_is_fb_enabled' ) &&
+				et_core_is_fb_enabled() &&
+				( ! isset( $_GET['app_window'] ) || '1' !== $_GET['app_window'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			if ( ! $is_divi_builder ) {
+				return;
+			}
+
+			// Defense-in-depth: only load the builder editor for users who can
+			// edit content, even if the request matches Divi's builder URL.
+			if ( ! current_user_can( 'edit_posts' ) ) {
+				return;
+			}
+
+			$this->enqueue_editor( 'divi' );
 		}
 
 		/**
