@@ -13,6 +13,7 @@ class InteractRunner {
 		this._startingStyles = ''
 		this.isFrontend = true
 		this.interactions = []
+		this._isInitialized = false
 	}
 
 	// Spawn an identical runner
@@ -97,6 +98,19 @@ class InteractRunner {
 		// the starting state, so that when the page loads, it will be in
 		// the starting state and won't flicker.
 		this.configureStartingActions()
+
+		// If init() already ran before this configuration arrived, initialize
+		// the newly created interactions now. Caching/defer plugins (e.g.
+		// SiteGround Speed Optimizer) can change script execution order so that
+		// init() fires before configure(), leaving interactions inert until
+		// InteractRunner.init() is called manually. See WP-Interactions #4.
+		//
+		// This only applies on the frontend. The editor calls configure() then
+		// init() itself on every preview refresh, so auto-initializing here
+		// would double-init and duplicate listeners.
+		if ( this.isFrontend && this._isInitialized ) {
+			this.init()
+		}
 	}
 
 	/**
@@ -168,6 +182,8 @@ class InteractRunner {
 		this.interactions.forEach( interaction => {
 			interaction.init()
 		} )
+
+		this._isInitialized = true
 	}
 
 	/**
@@ -179,6 +195,8 @@ class InteractRunner {
 		this.interactions.forEach( interaction => {
 			interaction.destroy()
 		} )
+
+		this._isInitialized = false
 	}
 }
 
