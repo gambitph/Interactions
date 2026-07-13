@@ -59,6 +59,27 @@ const addLocation = ( locations, index1, index2, newLocation ) => {
 	return newLocations
 }
 
+// Module-level cache of location rule responses keyed by `param`. The endpoint
+// runs potentially expensive, unbounded queries (see issue #29), so we memoize
+// each param's response and share in-flight requests across every LocationRule
+// instance to avoid redundant/parallel fetches.
+const locationRulesCache = new Map()
+
+const fetchLocationRules = param => {
+	if ( ! locationRulesCache.has( param ) ) {
+		const request = apiFetch( {
+			path: `/interact/v1/get_location_rules/${ param }`,
+			method: 'GET',
+		} ).catch( error => {
+			// Don't cache failed requests so they can be retried later.
+			locationRulesCache.delete( param )
+			throw error
+		} )
+		locationRulesCache.set( param, request )
+	}
+	return locationRulesCache.get( param )
+}
+
 // Flatten the editor options so we can easily check them without looping
 // through all the options.
 const ruleEditorOptions = {}
@@ -143,14 +164,18 @@ const LocationRule = props => {
 	const [ isBusy, setIsBusy ] = useState( false )
 
 	useEffect( () => {
+		let isMounted = true
 		setIsBusy( true )
-		apiFetch( {
-			path: `/interact/v1/get_location_rules/${ param }`,
-			method: 'GET',
-		} )
+		fetchLocationRules( param )
 			.then( response => {
+				if ( ! isMounted ) {
+					return
+				}
 				setIsBusy( false )
-				const options = response
+
+				// Clone the cached response so we never mutate the shared cache
+				// when adding the "Current Post/Page" option below.
+				const options = cloneDeep( response )
 
 				// If param is a post/page, then the post_id doesn't exist yet, then we need to add it near the top as "Current Post" or "Current Page"
 				if ( param === 'post' || param === 'page' ) {
@@ -179,8 +204,16 @@ const LocationRule = props => {
 				setValueOptions( options )
 			} )
 			.catch( error => {
+				if ( ! isMounted ) {
+					return
+				}
+				setIsBusy( false )
 				console.error( 'Interactions error getting location rules:', error ) // eslint-disable-line no-console
 			} )
+
+		return () => {
+			isMounted = false
+		}
 	}, [ param ] )
 
 	const {
