@@ -6,6 +6,10 @@ import {
 import { select, dispatch } from '@wordpress/data'
 import { sprintf, __ } from '@wordpress/i18n'
 import { addClientIdAnchorPair } from '../components/timeline/with-tracked-anchors'
+import {
+	getCurrentEditorPostContext,
+	openInteractionsSidebar,
+} from '~interact/editor/editors'
 
 const getUniqueTitle = title => {
 	const interactions = select( 'interact/interactions' ).getInteractions()
@@ -52,12 +56,17 @@ const getBlockNameFromAnchor = anchor => {
 
 // Returns the current page
 export const getLocationForCurrentPage = () => {
-	const currentPostType = select( 'core/editor' ).getCurrentPostType()
+	const {
+		postId,
+		postType,
+	} = getCurrentEditorPostContext()
+
+	const currentPostType = postType
 	let locationParam = currentPostType === 'page' ? 'page'
 		: currentPostType === 'wp_template' ? 'wp_template' // Site editor templates
 			: !! currentPostType ? 'post'
 				: null
-	let locationValue = select( 'core/editor' ).getCurrentPostId()
+	let locationValue = postId
 
 	if ( ! locationParam ) {
 		locationParam = 'all'
@@ -382,14 +391,4 @@ export const getOrGenerateBlockClass = ( clientId, updateAttribute = true ) => {
 	return className
 }
 
-/**
- * Utility function to open the Interactions sidebar.
- *
- * @return {Object} Dispatch action object
- */
-export const openInteractionsSidebar = () => {
-	if ( dispatch( 'core/edit-post' ) ) {
-		return dispatch( 'core/edit-post' ).openGeneralSidebar( 'interact-editor/sidebar' )
-	}
-	return dispatch( 'core/edit-site' ).openGeneralSidebar( 'interact-editor/sidebar' )
-}
+export { openInteractionsSidebar }

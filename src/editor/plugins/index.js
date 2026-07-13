@@ -1,4 +1,8 @@
-import './block-toolbar-button'
-import './top-toolbar-button'
-import './block-highlight'
-import './block-select'
+import { editorMode } from 'interactions'
+
+if ( editorMode === 'gutenberg' ) {
+	require( './block-toolbar-button' )
+	require( './top-toolbar-button' )
+	require( './block-highlight' )
+	require( './block-select' )
+}

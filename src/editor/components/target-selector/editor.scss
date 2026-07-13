@@ -9,6 +9,7 @@
 	width: max-content;
 	p {
 		margin: 0;
+		font-size: 13px;
 	}
 }
 .interact-picker--small {
@@ -19,6 +20,12 @@
 }
 .interact-target-block-button ~ span:empty {
 	display: none;
+}
+
+.interact-target-block-button.is-picking {
+	border-color: var(--wp-components-color-accent, #05f) !important;
+	box-shadow: inset 0 0 0 1px var(--wp-components-color-accent, #05f);
+	background: color-mix(in srgb, var(--wp-components-color-accent, #05f) 10%, #fff);
 }
 
 .interact-target-selector__warn {
@@ -68,11 +75,4 @@
 			min-height: 220px;
 		}
 	}
-}
-
-/* Wordpress 7.0 compatibility */
-
-// Text control losses its margin bottom.
-.interact-target-block-input .components-base-control__field {
-	margin-bottom: 8px;
 }

@@ -239,7 +239,7 @@ export const InteractionLibrary = () => {
 					/>
 				) }
 			</> }
-			className="interact-interaction-library-modal"
+			className="interact-modal interact-interaction-library-modal"
 			onRequestClose={ handleClose }
 		>
 			<GuidedModalTour tourId="interaction-library" />

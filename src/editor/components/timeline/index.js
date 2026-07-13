@@ -8,6 +8,7 @@ import {
 	FlexLayout, GridLayout, Separator, TargetSelector,
 } from '..'
 import TimelineSVG from '~interact/editor/assets/timeline.svg'
+import { isElementorEditor } from '~interact/editor/editors'
 import {
 	createNewAction,
 	duplicateAction,
@@ -122,13 +123,16 @@ const Timeline = props => {
 	const [ isTimelineFocused, setIsTimelineFocused ] = useState( false )
 	const [ draggedAction, setDraggedAction ] = useState( null )
 	const [ showTimelineHightlight, setShowTimelineHightlight ] = useState( false )
+	const [ previewRefreshNonce, setPreviewRefreshNonce ] = useState( 0 )
 	const timeHighlightRef = useRef()
 	const timelineWrapperRef = useRef()
+	const previewStartTimeoutRef = useRef()
 	const deviceType = useDeviceType()
 	const isControlKey = useWithControl()
 	const isShiftKey = useWithShift()
 	const instance = useRef( timelineInstance++ )
 	const lastSelectedAction = useRef() // Holds the last highlighted action, we insert new actions on this same start time of this.
+	const isElementor = isElementorEditor()
 
 	// TODO: we need to have a right click context with (duplicate, copy, paste, delete)
 
@@ -397,7 +401,7 @@ const Timeline = props => {
 	}, [ isTimelineFocused ] )
 
 	// Add the initial state styles of the actions.
-	const [ runnerRef, initialStyles ] = useTimelineRunnerRef( interaction, actions, timelineIndex )
+	const [ runnerRef, initialStyles ] = useTimelineRunnerRef( interaction, actions, timelineIndex, previewRefreshNonce )
 	useInitialStyleTag( initialStyles )
 
 	// If the preview is stopped, reset the preview.
@@ -437,6 +441,37 @@ const Timeline = props => {
 		window?.addEventListener( 'interact/timeline-restart-preview', restartPreview )
 		return () => window?.removeEventListener( 'interact/timeline-restart-preview', restartPreview )
 	}, [ isPreviewing, runnerRef, timelineIndex ] )
+
+	const startPreview = () => {
+		if ( ! isElementor ) {
+			runnerRef.current?.playPreview( timelineIndex )
+			setIsPreviewing( true )
+			return
+		}
+
+		// Elementor can replace the preview DOM without changing interaction
+		// data, so force the runner hook to rebuild before playing again.
+		runnerRef.current?.stopPreview( timelineIndex )
+		setPreviewRefreshNonce( value => value + 1 )
+		setIsPreviewing( true )
+
+		if ( previewStartTimeoutRef.current ) {
+			clearTimeout( previewStartTimeoutRef.current )
+		}
+
+		previewStartTimeoutRef.current = setTimeout( () => {
+			runnerRef.current?.playPreview( timelineIndex )
+		}, 30 )
+	}
+
+	useEffect( () => {
+		return () => {
+			if ( previewStartTimeoutRef.current ) {
+				clearTimeout( previewStartTimeoutRef.current )
+				previewStartTimeoutRef.current = null
+			}
+		}
+	}, [] )
 
 	// TODO: If percentage, then there should be a "warning" icon if: 1) the actionItem is the only one with this type, and 2) the actionItem's target doesn't have another action with the identical target (same type as well)
 	// TODO: regardless of type, display "warning" icon if target is block/class/selector and no value is filled.
@@ -1113,10 +1148,7 @@ const Timeline = props => {
 							className="interact-timeline__preview-button"
 							label={ __( 'Preview Timeline', 'interactions' ) }
 							icon="controls-play"
-							onClick={ () => {
-								runnerRef.current.playPreview( timelineIndex )
-								setIsPreviewing( true )
-							} }
+							onClick={ startPreview }
 							disabled={ ! actions.length }
 						>
 							{ __( 'Preview', 'interactions' ) }
@@ -1143,7 +1175,8 @@ const Timeline = props => {
 					onChange={ () => {
 						setIsPreviewing( value => {
 							if ( ! value ) {
-								runnerRef.current.playPreview( timelineIndex )
+								startPreview()
+								return true
 							}
 							return ! value
 						} )
@@ -1166,13 +1199,15 @@ const ActionDropGap = props => {
 
 	const [ isHighlighted, setIsHighlighted ] = useState( false )
 
-	const onDragOverHandler = () => {
+	const onDragOverHandler = ev => {
+		ev.preventDefault()
 		setIsHighlighted( true )
 	}
 	const onDragLeaveHandler = () => {
 		setIsHighlighted( false )
 	}
 	const onDragDropHandler = ev => {
+		ev.preventDefault()
 		const actionKeyDrop = ev.dataTransfer.getData( 'text/plain' )
 		onDrop( actionKeyDrop )
 		setIsHighlighted( false )
@@ -1271,6 +1306,7 @@ const ActionItem = props => {
 	}
 
 	const onDragOverHandler = ev => {
+		ev.preventDefault()
 		const rect = dragItemRef.current.getBoundingClientRect()
 		if ( ev.clientY < rect.top + ( rect.height / 2 ) ) {
 			setHighlightLocation( 'top' )
@@ -1284,6 +1320,7 @@ const ActionItem = props => {
 	}
 
 	const onDragDropHandler = ev => {
+		ev.preventDefault()
 		const actionKeyDrop = ev.dataTransfer.getData( 'text/plain' )
 		onDrop( actionKeyDrop, highlightLocation )
 		setHighlightLocation( null )

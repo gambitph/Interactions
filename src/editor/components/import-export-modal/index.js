@@ -6,6 +6,7 @@
  * External deprendencies
  */
 import { getOrGenerateBlockAnchor } from '~interact/editor/util'
+import { getCurrentSelectedTarget } from '~interact/editor/editors'
 import { first } from 'lodash'
 
 /**
@@ -52,9 +53,10 @@ const ImportExportModal = props => {
 		getBlockNamesByClientId,
 		getSelectedBlockClientId,
 	} = useSelect( select => {
+		const blockEditorStore = select( 'core/block-editor' )
 		return {
-			getBlockNamesByClientId: select( 'core/block-editor' ).getBlockNamesByClientId,
-			getSelectedBlockClientId: select( 'core/block-editor' ).getSelectedBlockClientId,
+			getBlockNamesByClientId: blockEditorStore?.getBlockNamesByClientId || ( () => [] ),
+			getSelectedBlockClientId: blockEditorStore?.getSelectedBlockClientId || ( () => null ),
 		}
 	} )
 
@@ -83,9 +85,14 @@ const ImportExportModal = props => {
 				target = null,
 			} = data
 
+			const selectedTarget = getCurrentSelectedTarget()
+			if ( selectedTarget ) {
+				target = selectedTarget
+			}
+
 			// If the currently selected block is valid, overwrite the interaction trigger.
 			const clientId = getSelectedBlockClientId()
-			if ( clientId ) {
+			if ( clientId && ! selectedTarget ) {
 				target = {
 					type: 'block',
 					value: getOrGenerateBlockAnchor( clientId, true ) || '',
@@ -175,7 +182,7 @@ const ImportExportModal = props => {
 	return (
 		<Modal
 			title={ title }
-			className="interact-import-export-modal"
+			className="interact-modal interact-import-export-modal"
 			onRequestClose={ onClose }
 		>
 			<div className="interact-import-export-modal__wrapper">

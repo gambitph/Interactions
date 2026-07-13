@@ -194,6 +194,10 @@ function copyDir( src, dest ) {
 	const items = fs.readdirSync( src )
 	let hasCopiedFiles = false
 	for ( const item of items ) {
+		// Skip hidden files and directories (those starting with a '.').
+		if ( item.startsWith( '.' ) ) {
+			continue
+		}
 		const srcPath = path.join( src, item )
 		const destPath = path.join( dest, item )
 		const stat = fs.statSync( srcPath )
@@ -224,6 +228,10 @@ function copyBuiltDir( src, dest ) {
 	ensureDir( dest )
 	const items = fs.readdirSync( src )
 	for ( const item of items ) {
+		// Skip hidden files and directories (those starting with a '.').
+		if ( item.startsWith( '.' ) ) {
+			continue
+		}
 		const srcPath = path.join( src, item )
 		const destPath = path.join( dest, item )
 		const stat = fs.statSync( srcPath )
@@ -242,6 +250,10 @@ function copyBuiltFiles( src, dest ) {
 	ensureDir( dest )
 	const items = fs.readdirSync( src )
 	for ( const item of items ) {
+		// Skip hidden files and directories (those starting with a '.').
+		if ( item.startsWith( '.' ) ) {
+			continue
+		}
 		const srcPath = path.join( src, item )
 		const destPath = path.join( dest, item )
 		const stat = fs.statSync( srcPath )

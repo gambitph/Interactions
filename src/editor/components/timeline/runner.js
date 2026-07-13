@@ -9,6 +9,7 @@ import { cloneDeep } from 'lodash'
 import { getBlockClientId } from './with-tracked-anchors'
 import { doAction } from '@wordpress/hooks'
 import { select } from '@wordpress/data'
+import { getEditorMode } from '~interact/editor/editors'
 
 // Create the runner.
 const runner = new InteractEditorRunner()
@@ -37,11 +38,11 @@ const interactionTypesEditorContext = require.context(
 interactionTypesEditorContext.keys().forEach( interactionTypesEditorContext )
 doAction( 'interact.interaction.types.loaded' )
 
-export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
+export const useTimelineRunnerRef = ( interaction, actions, timelineIndex, refreshNonce = 0 ) => {
 	const runnerRef = useRef( null )
 	const [ initialStyles, setInitialStyles ] = useState( '' )
 
-	const renderingMode = select( 'core/editor' ).getRenderingMode()
+	const renderingMode = select( 'core/editor' )?.getRenderingMode?.() || getEditorMode()
 	const prevRenderingMode = useRef( renderingMode )
 
 	// Initialize the runner
@@ -78,7 +79,7 @@ export const useTimelineRunnerRef = ( interaction, actions, timelineIndex ) => {
 		}
 
 		prevRenderingMode.current = renderingMode
-	}, [ interaction, timelineIndex, actions, renderingMode ] )
+	}, [ interaction, timelineIndex, actions, renderingMode, refreshNonce ] )
 
 	return [ runnerRef, initialStyles ]
 }

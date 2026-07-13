@@ -2,12 +2,12 @@
 /**
  * Plugin Name: Interactions
  * Plugin URI: https://wpinteractions.com/
- * Description: Add animations and interactivity to your blocks. Choose from ready-made effects like scroll & hover in the Interactions Library, or build your own.
+ * Description: Add animations and interactivity in Elementor, Bricks and the Block Editor. Choose from our library of ready-made effects like scroll & hover, or build your own.
  * Author: Gambit Technologies, Inc
  * Author URI: http://gambit.ph
  * License: GPLv2 or later
  * Text Domain: interactions
- * Version: 1.3.3
+ * Version: 1.4.0
  *
  * @fs_premium_only /freemius.php, /freemius/
  */
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 defined( 'INTERACT_BUILD' ) || define( 'INTERACT_BUILD', 'free' );
-defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.3.3' );
+defined( 'INTERACT_VERSION' ) || define( 'INTERACT_VERSION', '1.4.0' );
 defined( 'INTERACT_FILE' ) || define( 'INTERACT_FILE', __FILE__ );
 
 /**
@@ -79,6 +79,15 @@ if ( ! is_admin() ) {
 if ( is_admin() ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'src/admin/admin.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'src/editor/editor.php' );
+} else {
+	add_action( 'after_setup_theme', function() {
+		if (
+			( function_exists( 'bricks_is_builder_main' ) && bricks_is_builder_main() ) ||
+			( function_exists( 'bricks_is_builder' ) && bricks_is_builder() )
+		) {
+			require_once( plugin_dir_path( __FILE__ ) . 'src/editor/editor.php' );
+		}
+	} );
 }
 
 /**
