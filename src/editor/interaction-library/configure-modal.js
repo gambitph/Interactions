@@ -122,16 +122,14 @@ export const ConfigureModal = props => {
 
 					// Save through the editor if it's the last interaction
 					if ( index === array.length - 1 ) {
-						// Create the new interaction
-						window.dispatchEvent( new window.CustomEvent( 'interact/add-interaction', {
-							detail: {
-								type: interaction?.type ?? '',
-								target: interaction.target,
-								props: interaction,
-							},
-						} ) )
-
 						setTimeout( () => {
+							window.dispatchEvent( new window.CustomEvent( 'interact/add-interaction', {
+								detail: {
+									type: interaction?.type ?? '',
+									target: interaction.target,
+									props: interaction,
+								},
+							} ) )
 							window?.dispatchEvent( new CustomEvent( 'interact/save-interaction' ) )
 							dispatch( 'core/editor' ).savePost()
 						}, 100 )

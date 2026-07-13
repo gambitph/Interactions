@@ -13,7 +13,7 @@ import {
 /**
  * External dependencies
  */
-import { guidedTourStates } from 'interactions'
+import { editorMode, guidedTourStates } from 'interactions'
 
 /**
  * WordPress dependencies
@@ -27,7 +27,7 @@ import {
 const ModalTour = lazy( () => import( /* webpackChunkName: "modal-tour" */ '../modal-tour' ) )
 
 // The main tour component.
-const GuidedModalTour = memo( props => {
+const GuidedModalTourContent = props => {
 	const {
 		tourId = '', // This is the ID of the tour, this will be used to store the tour state in the database and to get the steps.
 	} = props
@@ -105,6 +105,14 @@ const GuidedModalTour = memo( props => {
 			/>
 		</Suspense>
 	)
+}
+
+const GuidedModalTour = memo( props => {
+	if ( editorMode !== 'gutenberg' ) {
+		return null
+	}
+
+	return <GuidedModalTourContent { ...props } />
 } )
 
 export default GuidedModalTour
