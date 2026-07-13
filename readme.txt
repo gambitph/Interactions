@@ -1,27 +1,27 @@
-=== Interactions - Create Interactive Experiences in WordPress ===
+=== Interactions – Animations for Elementor & Gutenberg ===
 Contributors: bfintal, gambitph
-Tags: animation, interaction, interactivity, blocks, elementor, bricks, gutenberg
-Requires at least: 7.0
-Tested up to: 7.0
+Tags: animation, elementor, gutenberg, scroll-animations, bricks
+Requires at least: 7.0.1
+Tested up to: 7.0.1
 Requires PHP: 8.0
 Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add animations and interactivity in Elementor, Bricks and the Block Editor. Choose from our library of ready-made effects like scroll & hover, or build your own.
+Scroll, hover & click animations. Build interactive experiences for Elementor, Bricks & Gutenberg. No-code Trigger → Action builder with ready-made effects.
 
 == Description ==
 
-**Interactions – WordPress Animations, Interactive Experiences for Elementor, Bricks, and Gutenberg Blocks**
+**Interactions – Animations and Interactive Experiences for Elementor & Gutenberg**
 
 [Visit our website](https://wpinteractions.com) to learn more about how Interactions work.
 
-Want to make your website feel alive and interactive? **Interactions** is the easiest way to add animations, effects, interactivity, and functional features to WordPress — directly inside Elementor, Bricks, or the WordPress block editor. Check our [samples page here](https://wpinteractions.com/samples/) to see a glimpse of what type of interactions you can create. 
+Want to make your website feel alive and interactive? **Interactions** is a no-code WordPress animation plugin for scroll effects, hover animations, click interactions, and micro-interactions — built for **Elementor**, **Bricks**, and **Gutenberg**. Add fade-in-on-scroll, parallax-style motion, button hover effects, and custom Trigger → Action automations without writing JavaScript. Check our [samples page here](https://wpinteractions.com/samples/) to see a glimpse of what type of interactions you can create.
 
 You don't need coding skills or complex tools. With Interactions, you can:
 
 - **Pick from the [Interactions Library](https://docs.wpinteractions.com/article/744-how-to-use-interactions-library)** – A collection of pre-built animations and effects (like images that move upon scrolling down the page, buttons that glow when hovered, and more). Just click and apply. [Learn more](https://docs.wpinteractions.com/article/744-how-to-use-interactions-library)
-- **Build your own custom effects** – Use a simple **Trigger → Action** system. Example: "On scroll → Fade in block", or "On click → Play video". [Learn more](https://docs.wpinteractions.com/article/577-what-is-wp-interactions-and-how-does-it-work)
+- **Build your own custom effects** – Use a simple **Trigger → Action** system. Example: "On scroll → Fade in element", or "On click → Play video". [Learn more](https://docs.wpinteractions.com/article/577-what-is-wp-interactions-and-how-does-it-work)
 - **Add functional features** – Securely update post data, handle form submissions, display user info, copy text to clipboard, and more without coding. [Learn more](https://docs.wpinteractions.com/category/729-interactions)
 
 Whether you want subtle hover effects, attention-grabbing story-telling animations, playful micro-interactions, or powerful functional features, [Interactions](https://wpinteractions.com) makes it possible.
@@ -50,7 +50,7 @@ Create [custom interactions](https://docs.wpinteractions.com/article/571-what-ar
 
 - **Animation effects** (fade, slide, zoom, rotate, shadow, etc.)
 - **Scroll effects** – reveal content as users scroll down
-- **Hover effects** – highlight and animate blocks on hover
+- **Hover effects** – highlight and animate elements on hover
 - **Click triggers** – run actions when buttons, images, or sections are clicked
 
 **Basic Interactions:**
@@ -74,8 +74,17 @@ Create [custom interactions](https://docs.wpinteractions.com/article/571-what-ar
 - **Reusable Interaction Library** – apply popular effects instantly
 - **Custom trigger → action builder** – advanced users can design unique effects
 - **Performance optimized** – loads only what's needed for your chosen interactions
-- **Works with any block and any theme**
+- **Works with blocks, page builder elements, and any theme**
 - **Works with Elementor and Bricks**
+
+### Why Interactions?
+
+- **WordPress scroll animation plugin** — reveal content on scroll
+- **Hover effect plugin** — buttons, cards, images
+- **Elementor animation plugin** — works inside the Elementor editor
+- **Gutenberg animation plugin** — library + builder in the block editor
+- **No-code interaction builder** — visual Trigger → Action timeline
+- **Performance-friendly** — loads only what's used on the page
 
 ### 🎯 Perfect For
 
@@ -128,27 +137,38 @@ https://github.com/gambitph/Interactions
 1. Install “Interactions” from the WordPress Plugin Directory, or upload it to `/wp-content/plugins/interactions/`.
 2. Activate the plugin from the “Plugins” menu.
 3. Edit a post or page with Elementor, Bricks, or the WordPress block editor (Gutenberg).
-4. In Gutenberg, open the **Interactions Library** panel from the top and pick an effect.  
+4. Open the **Interactions** panel from the lower right of the screen.
    – OR –  
-   Create your own using the **Trigger → Action builder**.
-5. Save and preview your interactive elements.
+   In the block editor, open the Interactions library or panel on the top toolbar.
 
 == Frequently Asked Questions ==
 
 = Is this just an animation plugin for WordPress? =  
 No! While Interactions excels at animations, it's much more than that. It's a comprehensive interaction system that includes functional features like updating post meta, triggering DOM events, copying text to clipboard, and much more. You can build both visual effects and powerful functional features.
 
-= Does it work with Elementor or other page builders? =  
-Yes. Interactions supports Elementor and Bricks, in addition to the **WordPress block editor (Gutenberg)**.
+= Does Interactions work with Elementor? =  
+Yes. You can add scroll, hover, and click animations to Elementor elements using the built-in Trigger → Action builder. The pre-built Interaction Library is currently available in the Block Editor.
+
+= Does Interactions work with Bricks Builder? =  
+Yes. Interactions integrates with Bricks so you can target elements and build custom animations and interactions directly in the builder.
+
+= How do I add scroll animations in WordPress? =  
+Use triggers like "Enter viewport" or "Page scrolling" to fade, slide, or animate elements as users scroll. Apply pre-built scroll effects from the Interaction Library in Gutenberg, or build your own in Elementor, Bricks, or Gutenberg.
 
 = Can I add scroll animations to WordPress with this plugin? =  
-Yes. You can animate blocks when they enter the viewport, fade in, slide in, or trigger other effects on scroll.
+Yes. You can animate elements when they enter the viewport, fade in, slide in, or trigger other effects on scroll.
 
 = Can I update post meta or custom fields with this plugin? =  
 Yes! The premium version includes "Update Post Meta" and "Update User Meta" actions that let you modify database values without coding. Perfect for counters, user preferences, and dynamic content.
 
 = Will it slow down my website? =  
-No. Interactions only loads when they are used on the current page, in addition to this, only the effects you use are loaded, keeping performance fast.
+No. Interactions only loads the scripts needed for interactions used on the current page, and only the effects you use are loaded, keeping performance fast.
+
+= Will Interactions slow down my website or break caching plugins? =  
+No. Interactions loads only what is needed for the interactions on each page. Version 1.4.0 also includes performance improvements and better compatibility with caching and optimization plugins.
+
+= Is this an alternative to Elementor motion effects? =  
+Yes. Interactions adds a flexible Trigger → Action system for Elementor (and other editors), including scroll animations, hover effects, and advanced functional actions beyond basic motion effects.
 
 = Can I reuse animations across multiple pages? =  
 Yes. You can use Location Rules to specify simple or complex rules on where or when interactions are loaded. This makes it simple to create a one-time effect for a specific area only, to a card hover effect present across your entire website.
@@ -164,12 +184,19 @@ The free version includes basic animations and interactions. Premium adds advanc
 
 == Upgrade Notice ==
 
+= 1.4.0 =
+New: Elementor and Bricks support. Improved performance and caching plugin compatibility. Better scroll animations on Android.
+
 == Changelog ==
 
 = 1.4.0 =
 
 * New: Added support for Elementor page builder
 * New: Added support for Bricks page builder
+* Updated: Plugin listing title and readme for Elementor, Bricks & Gutenberg support
+* Fixed: Improved support for caching and performance plugins #36
+* Fixed: Scroll animation jankiness in Android devices #37
+* Fixed: Performance improvements #35 #32
 * Fixed: Kadence issue where the inspector tab switches when Interactions is active #23
 
 = 1.3.3 =
