@@ -23,7 +23,7 @@ const AddInteractionButton = () => {
 						ev.preventDefault()
 					}
 				} }
-				className="ugb-insert-library-button"
+				className="interact-insert-library-button"
 				icon={ <IconSVG width="20" height="20" /> }
 			>
 				{ __( 'Interactions', 'interactions' ) }

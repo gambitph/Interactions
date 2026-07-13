@@ -127,6 +127,7 @@ const withBlockToolbarButton = createHigherOrderComponent( BlockEdit => {
 				<BlockControls>
 					<ToolbarGroup>
 						<ToolbarButton
+							className="interact-block-toolbar-button"
 							icon={ <IconSVG width="20" height="20" /> }
 							title={ label }
 							onClick={ () => setIsPopoverOpen( value => ! value ) }

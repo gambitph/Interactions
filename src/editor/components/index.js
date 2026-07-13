@@ -8,6 +8,7 @@ export { default as AddInteractionButton } from './add-interaction-button'
 export { default as AddActionButton } from './add-action-button'
 export { default as TargetSelector } from './target-selector'
 export { default as ImportExportModal } from './import-export-modal'
+export { default as GuidedModalTour } from './guided-modal-tour'
 
 export const GridLayout = props => {
 	const {

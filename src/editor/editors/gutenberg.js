@@ -2,6 +2,7 @@ import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
 import { InteractionLibrary } from '../interaction-library'
+import { GuidedModalTour } from '../components'
 
 import { registerPlugin } from '@wordpress/plugins'
 import { __ } from '@wordpress/i18n'
@@ -58,7 +59,12 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 				select( 'interact/interaction-library-modal' ).getMode(),
 			[] )
 
-			return interactionLibraryMode ? <InteractionLibrary /> : null
+			return (
+				<>
+					{ interactionLibraryMode ? <InteractionLibrary /> : null }
+					<GuidedModalTour tourId="editor" />
+				</>
+			)
 		}
 
 		registerPlugin( 'interact-editor', {

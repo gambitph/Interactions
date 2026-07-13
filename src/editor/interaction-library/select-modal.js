@@ -93,6 +93,7 @@ export const SelectModal = props => {
 									type="button"
 									className={ classNames(
 										'interact-interaction-library__select__category',
+										'interact-interaction-library__select__category--' + category.value,
 										{ active: selectedCategory === category.value }
 									) }
 									onClick={ () => setSelectedCategory( category.value ) }

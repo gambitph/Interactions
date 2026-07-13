@@ -1145,6 +1145,7 @@ const Timeline = props => {
 				<>
 					{ ! isPreviewing && (
 						<Button
+							className="interact-timeline__preview-button"
 							label={ __( 'Preview Timeline', 'interactions' ) }
 							icon="controls-play"
 							onClick={ startPreview }

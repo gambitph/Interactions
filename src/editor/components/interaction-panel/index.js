@@ -1,5 +1,5 @@
 import {
-	LocationRules, Timeline, Separator,
+	LocationRules, Timeline, Separator, GuidedModalTour,
 } from '~interact/editor/components'
 import { interactions as interactionsConfig } from 'interactions'
 import { cloneDeep } from 'lodash'
@@ -636,6 +636,8 @@ const InteractionPanel = props => {
 					</Button>
 				</div>
 			</PanelBody>
+
+			<GuidedModalTour tourId="sidebar" />
 
 			{ /* <PanelBody
 				title={ __( 'Conditions', 'interactions' ) }
