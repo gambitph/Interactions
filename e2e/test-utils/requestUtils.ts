@@ -104,6 +104,56 @@ class ExtendedRequestUtils extends BaseRequestUtils {
 
 		return String( page.id )
 	}
+
+	createInteraction = async function( title = 'E2E Test Interaction' ) {
+		const key = `interaction_e2e_${ Date.now() }`
+		const data = JSON.stringify( {
+			key,
+			title,
+			active: true,
+			type: 'click',
+			target: {
+				type: 'block',
+				value: '',
+			},
+			timelines: [
+				{
+					loop: false,
+					onceOnly: false,
+					alternate: false,
+					reset: false,
+					reverse: false,
+					actions: [],
+				},
+			],
+			options: {},
+			locations: [
+				[
+					{
+						param: 'all',
+						operator: '==',
+						value: '',
+					},
+				],
+			],
+		} )
+
+		await this.rest( {
+			method: 'POST',
+			path: '/interact/v1/update_interaction',
+			data: { data },
+		} )
+
+		return key
+	}
+
+	deleteInteraction = async function( key: string ) {
+		await this.rest( {
+			method: 'POST',
+			path: '/interact/v1/delete_interaction',
+			data: { key },
+		} )
+	}
 }
 
 export { ExtendedRequestUtils }

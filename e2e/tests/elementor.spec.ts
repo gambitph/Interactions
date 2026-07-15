@@ -42,4 +42,23 @@ test.describe( 'Elementor Editor', () => {
 		await expect( interactions.getInteractionsSidebar() ).toBeVisible()
 		await expect( panel.locator( '.interact-pagebuilder-panel__title' ) ).toContainText( 'Interactions' )
 	} )
+
+	test( 'clicking Manage all your interactions navigates to the interactions post list', async ( {
+		interactions,
+		requestUtils,
+	} ) => {
+		const interactionKey = await requestUtils.createInteraction()
+
+		try {
+			await interactions.openElementorEditor( pageId )
+			await interactions.openElementorSidebar()
+
+			const managePage = await interactions.clickManageAllInteractionsLink()
+			await interactions.expectInteractionsPostList( managePage )
+
+			await managePage.close()
+		} finally {
+			await requestUtils.deleteInteraction( interactionKey )
+		}
+	} )
 } )

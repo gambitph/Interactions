@@ -70,4 +70,22 @@ test.describe( 'Block Editor', () => {
 		await expect( page.locator( '.interface-complementary-area' ).filter( { has: interactions.getInteractionsSidebar() } ) ).toBeVisible( { timeout: 15000 } )
 		await expect( page.locator( '.interact-interaction-card' ).first() ).toBeVisible( { timeout: 30000 } )
 	} )
+
+	test( 'clicking Manage all your interactions navigates to the interactions post list', async ( {
+		interactions,
+		requestUtils,
+	} ) => {
+		const interactionKey = await requestUtils.createInteraction()
+
+		try {
+			await interactions.openBlockEditorSidebar()
+
+			const managePage = await interactions.clickManageAllInteractionsLink()
+			await interactions.expectInteractionsPostList( managePage )
+
+			await managePage.close()
+		} finally {
+			await requestUtils.deleteInteraction( interactionKey )
+		}
+	} )
 } )

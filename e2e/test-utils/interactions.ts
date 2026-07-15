@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { expect, Page } from '@playwright/test'
 
 export class InteractionsFixture {
 	page: Page;
@@ -35,6 +35,39 @@ export class InteractionsFixture {
 
 	getElementorPanel() {
 		return this.page.locator( '.interact-elementor-panel' )
+	}
+
+	getManageAllInteractionsLink() {
+		return this.page.getByRole( 'link', { name: 'Manage all your interactions' } )
+	}
+
+	async openBlockEditorSidebar() {
+		await this.getSidebarToolbarButton().click()
+		await this.getInteractionsSidebar().waitFor( { state: 'visible' } )
+	}
+
+	async clickManageAllInteractionsLink() {
+		const manageLink = this.getManageAllInteractionsLink()
+		await expect( manageLink ).toBeVisible()
+
+		const [ managePage ] = await Promise.all( [
+			this.page.context().waitForEvent( 'page' ),
+			manageLink.click(),
+		] )
+
+		return managePage
+	}
+
+	async expectInteractionsPostList( managePage: Page ) {
+		await managePage.waitForURL( /post_type=interact-interaction/ )
+		await expect( managePage.locator( 'h1.wp-heading-inline' ) ).toContainText( 'Interactions' )
+		await expect( managePage.locator( 'body' ) ).toHaveClass( /post-type-interact-interaction/ )
+		await expect( managePage.locator( '.wp-list-table' ) ).toBeVisible()
+	}
+
+	async openElementorSidebar() {
+		await this.getElementorLauncherButton().click()
+		await this.getElementorPanel().waitFor( { state: 'visible' } )
 	}
 
 	async dismissElementorOnboarding() {
