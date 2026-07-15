@@ -29,12 +29,23 @@
 		"build:premium": "node scripts/update-build-type.js premium && node scripts/sync-version.js ${npm_config_suffix} && npm run clean:css-js && npx wp-scripts build --config pro__premium_only/webpack.config.js && npx webpack --config pro__premium_only/webpack.css.config.js && npm run build:css:wp-components-scoped && npm run build:frontend-php:premium && npm run optimize-videos && BUILD_TYPE=premium npm run package ${npm_config_suffix}",
 		"start:premium": "cd pro__premium_only && npm run start",
 		"lint:premium": "cd pro__premium_only && npm run lint",
-		"lint:premium:fix": "cd pro__premium_only && npm run lint:fix"
+		"lint:premium:fix": "cd pro__premium_only && npm run lint:fix",
+		"build:e2e": "node scripts/update-build-type.js free && npx wp-scripts build && npm run build:css && npm run build:frontend-php",
+		"build:e2e:premium": "node scripts/update-build-type.js premium && npx wp-scripts build && npx wp-scripts build --config pro__premium_only/webpack.config.js && npx webpack --config pro__premium_only/webpack.css.config.js && npm run build:css:wp-components-scoped && npm run build:frontend-php:premium",
+		"test": "npx playwright test --config e2e/playwright.config.ts",
+		"test:debug": "npx playwright test --config e2e/playwright.config.ts --ui",
+		"sync-playwright-matrix": "node tools/playwright-test-matrix.js"
 	},
 	"browserslist": [
 		"extends @wordpress/browserslist-config"
 	],
 	"devDependencies": {
+		"@playwright/test": "^1.49.1",
+		"@types/node": "^22.10.2",
+		"@wordpress/e2e-test-utils-playwright": "^1.14.0",
+		"@wordpress/env": "^10.18.0",
+		"compare-versions": "^3.6.0",
+		"dotenv": "^16.4.7",
 		"@node-minify/core": "^8.0.6",
 		"@node-minify/uglify-js": "^8.0.6",
 		"@svgr/webpack": "^8.1.0",

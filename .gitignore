@@ -6,3 +6,8 @@ build-plugin/
 *.log
 *.map
 pro__premium_only/
+.env
+wp-auth.json
+playwright-report/
+playwright-interact/
+test-results/
