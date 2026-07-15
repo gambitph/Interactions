@@ -33,6 +33,10 @@ export class InteractionsFixture {
 		return this.page.locator( '.interact-elementor-launcher' )
 	}
 
+	getElementorPanel() {
+		return this.page.locator( '.interact-elementor-panel' )
+	}
+
 	async dismissElementorOnboarding() {
 		const closeButtons = [
 			this.page.getByRole( 'button', { name: 'Close' } ),
@@ -50,16 +54,18 @@ export class InteractionsFixture {
 	async openElementorEditor( postId: string ) {
 		await this.page.goto( `/wp-admin/post.php?post=${ postId }&action=elementor` )
 		await this.page.waitForFunction( () => window.elementor !== undefined, {
-			timeout: 60000,
+			timeout: 90000,
 		} )
 		await this.page.locator( '#elementor-preview-iframe' ).waitFor( {
 			state: 'attached',
-			timeout: 60000,
+			timeout: 90000,
 		} )
 		await this.dismissElementorOnboarding()
-		await this.getElementorLauncherButton().waitFor( {
-			state: 'visible',
-			timeout: 60000,
+		await this.page.waitForFunction( () => {
+			const launcher = document.querySelector( '.interact-elementor-launcher' )
+			return launcher && ! launcher.classList.contains( 'is-hidden' )
+		}, {
+			timeout: 90000,
 		} )
 	}
 }

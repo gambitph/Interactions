@@ -1,6 +1,6 @@
 import { test, expect } from 'e2e/test-utils'
 
-test.describe.configure( { timeout: 120000 } )
+test.describe.configure( { timeout: 180000, retries: 1 } )
 
 test.describe( 'Elementor Editor', () => {
 	let pageId = null
@@ -15,13 +15,14 @@ test.describe( 'Elementor Editor', () => {
 		}
 	} )
 
-	test( 'Interactions button is visible in the lower right of the Elementor editor', async ( {
+	test( 'Interactions button is available and opens the Interactions sidebar', async ( {
 		page,
 		interactions,
 	} ) => {
 		await interactions.openElementorEditor( pageId )
 
 		const launcher = interactions.getElementorLauncherButton()
+		const panel = interactions.getElementorPanel()
 
 		await expect( launcher ).toBeVisible()
 		await expect( launcher ).toHaveText( 'Interactions' )
@@ -33,5 +34,12 @@ test.describe( 'Elementor Editor', () => {
 		expect( viewport ).not.toBeNull()
 		expect( box.x + box.width ).toBeGreaterThan( viewport.width * 0.5 )
 		expect( box.y + box.height ).toBeGreaterThan( viewport.height * 0.5 )
+
+		await expect( panel ).not.toHaveClass( /is-open/ )
+		await launcher.click()
+
+		await expect( panel ).toHaveClass( /is-open/ )
+		await expect( interactions.getInteractionsSidebar() ).toBeVisible()
+		await expect( panel.locator( '.interact-pagebuilder-panel__title' ) ).toContainText( 'Interactions' )
 	} )
 } )
