@@ -4,11 +4,16 @@ on:
     branches: [ master, develop ]
   pull_request:
     branches: [ master, develop ]
+permissions:
+  contents: read
+  actions: write
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
@@ -47,6 +52,8 @@ jobs:
     name: PHP ${{ matrix.php_version }} and WP ${{ matrix.wp_version || 'latest' }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
@@ -129,6 +136,10 @@ jobs:
         filepath: ./playwright-interact/errors.md
     - name: Add test results to summary
       if: ${{ !cancelled() && steps.run-playwright-tests.outcome == 'failure' }}
+      env:
+        SUMMARY_BODY: ${{ steps.mto.outputs.body }}
+        REPORT_NAME: playwright-report-php_${{ matrix.php_version }}-wp_${{ env.WP_VERSION }}-${{ env.VERSION_SUFFIX }}
+        ARTIFACT_ID: ${{ steps.artifact-upload-step.outputs.artifact-id }}
       run: |
-        echo "${{ steps.mto.outputs.body }}" >> $GITHUB_STEP_SUMMARY
-        echo "Report: [playwright-report-php_${{ matrix.php_version }}-wp_${{ env.WP_VERSION }}-${{ env.VERSION_SUFFIX }}.zip](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> $GITHUB_STEP_SUMMARY
+        echo "$SUMMARY_BODY" >> $GITHUB_STEP_SUMMARY
+        echo "Report: [${REPORT_NAME}.zip](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${ARTIFACT_ID})" >> $GITHUB_STEP_SUMMARY

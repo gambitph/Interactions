@@ -109,10 +109,6 @@ export class InteractionsFixture {
 			state: 'attached',
 			timeout: 90000,
 		} )
-		await this.page.waitForResponse(
-			response => response.url().includes( '/dist/editor.js' ) && response.ok(),
-			{ timeout: 90000 },
-		).catch( () => {} )
 		await this.dismissElementorOnboarding()
 		await this.getElementorLauncherButton().waitFor( {
 			state: 'visible',
