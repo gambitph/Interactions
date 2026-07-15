@@ -9,8 +9,10 @@ import {
 	useEffect,
 	useState,
 } from '@wordpress/element'
+import { customAlphabet } from 'nanoid'
 
 const NOOP = () => {}
+const generateInteractionTargetId = customAlphabet( '1234567890abcdef', 10 )
 
 // Divi editor adapter for the initial Visual Builder integration milestone.
 class DiviInteractionsEditor extends InteractionsEditorAbstract {
@@ -114,6 +116,20 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 		return null
 	}
 
+	saveEditor() {
+		// Reuse Divi's own save button so the builder persists the current page
+		// after an interaction modifies module attributes such as target IDs.
+		const saveButton = Array.from( document.querySelectorAll( '.et-vb-page-bar-action-button' ) )
+			.find( button => button.textContent?.trim() === 'Save' )
+
+		if ( ! saveButton || saveButton.disabled ) {
+			return Promise.resolve()
+		}
+
+		saveButton.click()
+		return Promise.resolve()
+	}
+
 	getCanvasDocument() {
 		const iframe = document.querySelector( 'iframe[src*="app_window=1"]' )
 		return iframe?.contentDocument || null
@@ -124,83 +140,116 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 		return iframe?.contentWindow || null
 	}
 
+	getDiviDataApi() {
+		const canvasWindow = this.getCanvasWindow()
+
+		// Prefer the builder iframe first because Divi mounts most of its runtime
+		// there, then fall back to any mirrored top-window stores.
+		return (
+			canvasWindow?.wp?.data ||
+			canvasWindow?.divi?.data ||
+			window.top?.wp?.data ||
+			window.top?.divi?.data ||
+			window.wp?.data ||
+			window.divi?.data ||
+			null
+		)
+	}
+
+	getModuleIdFromElement( element ) {
+		const targetElement = this.getSelectableElement( element )
+		if ( ! targetElement ) {
+			return ''
+		}
+
+		// Divi exposes the module identity on a few different attributes depending
+		// on the element type, so check the common variants in one place.
+		const moduleId =
+			targetElement.getAttribute( 'data-id' ) ||
+			targetElement.getAttribute( 'data-wrapper-id' ) ||
+			targetElement.getAttribute( 'data-module-id' ) ||
+			targetElement.dataset?.id ||
+			targetElement.dataset?.wrapperId ||
+			targetElement.dataset?.moduleId ||
+			''
+
+		return typeof moduleId === 'string' ? moduleId : ''
+	}
+
+	getStoredInteractionTarget( moduleId ) {
+		if ( ! moduleId ) {
+			return ''
+		}
+
+		const attrs = this.getDiviDataApi()?.select?.( 'divi/edit-post' )?.getModuleAttrs?.( moduleId )
+
+		// The store can return either Immutable-style values or plain objects, so
+		// support both shapes and normalize them to a simple string.
+		const interactionTarget = attrs?.getIn?.(
+			[ 'module', 'decoration', 'interactionTarget' ],
+			''
+		) ?? attrs?.module?.decoration?.interactionTarget ?? ''
+
+		if ( interactionTarget && typeof interactionTarget === 'object' ) {
+			return interactionTarget.value || ''
+		}
+
+		return typeof interactionTarget === 'string' ? interactionTarget : ''
+	}
+
+	ensureInteractionTarget( moduleId ) {
+		if ( ! moduleId ) {
+			return ''
+		}
+
+		const existingTarget = this.getStoredInteractionTarget( moduleId )
+		if ( existingTarget ) {
+			return existingTarget
+		}
+
+		// Persist the target on the Divi module itself so the same identifier is
+		// rendered in both the builder and the frontend output.
+		const targetId = generateInteractionTargetId( 10 )
+		this.getDiviDataApi()?.dispatch?.( 'divi/edit-post' )?.editModuleAttribute?.( {
+			id: moduleId,
+			attrName: 'module.decoration.interactionTarget',
+			value: targetId,
+			caller: 'user',
+			subName: false,
+		} )
+		return targetId
+	}
+
 	getSelectableElement( element ) {
 		return element?.closest?.( '.et_pb_module, .et_pb_column, .et_pb_column_inner, .et_pb_row, .et_pb_row_inner, .et_pb_section' ) || null
 	}
 
-	getElementInstanceClass( element ) {
-		if ( ! element?.classList ) {
-			return ''
+	syncInteractionTargetElement( element, interactionTarget ) {
+		if ( ! element || ! interactionTarget ) {
+			return
 		}
 
-		return Array.from( element.classList ).find( className =>
-			/^et_pb_[a-z0-9_]+_(?:\d+|[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})$/i.test( className )
-		) || ''
+		// Mirror the saved target onto the live builder DOM immediately so picker
+		// previews can work before Divi re-renders the module from store state.
+		element.setAttribute( 'data-interaction-target', interactionTarget )
 	}
 
-	getElementBaseClass( element ) {
-		const instanceClass = this.getElementInstanceClass( element )
-		if ( ! instanceClass ) {
-			return ''
-		}
-
-		return instanceClass
-			.replace( /_(?:\d+|[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})$/i, '' )
-	}
-
-	getModuleOrderIndex( element ) {
-		const moduleId = element?.dataset?.id
-		if ( ! moduleId ) {
-			return null
-		}
-
-		const canvasWindow = this.getCanvasWindow()
-		const select = canvasWindow?.wp?.data?.select || canvasWindow?.divi?.data?.select
-		const editPostStore = select?.( 'divi/edit-post' )
-		const module = editPostStore?.getModule?.( moduleId )
-
-		if ( ! module ) {
-			return null
-		}
-
-		return module.orderIndex ?? module.get?.( 'orderIndex' ) ?? null
-	}
-
-	getDomOrderIndex( element ) {
-		const targetElement = this.getSelectableElement( element )
-		const baseClass = this.getElementBaseClass( targetElement )
-		const previewDocument = this.getCanvasDocument()
-		if ( ! targetElement || ! baseClass || ! previewDocument ) {
-			return null
-		}
-
-		const matches = Array.from( previewDocument.querySelectorAll( `.${ baseClass }` ) )
-			.filter( match => this.getSelectableElement( match ) === match )
-		const index = matches.indexOf( targetElement )
-
-		return index === -1 ? null : index
-	}
-
-	getFrontendOrderClass( element ) {
-		const baseClass = this.getElementBaseClass( element )
-		const orderIndex = this.getDomOrderIndex( element ) ?? this.getModuleOrderIndex( element )
-		if ( ! baseClass || orderIndex === null || typeof orderIndex === 'undefined' ) {
-			return ''
-		}
-
-		return `${ baseClass }_${ orderIndex }`
-	}
-
-	buildTargetFromElement( element, targetType = 'selector' ) {
+	buildTargetFromElement( element ) {
 		const targetElement = this.getSelectableElement( element )
 		if ( ! targetElement ) {
 			return null
 		}
 
-		const orderClass = this.getFrontendOrderClass( targetElement ) || this.getElementInstanceClass( targetElement )
-		if ( ! orderClass ) {
+		// Resolve the clicked DOM node back to the Divi module record, then map it
+		// to the persistent interaction target we expose to the Interactions UI.
+		const moduleId = this.getModuleIdFromElement( targetElement )
+		const interactionTarget = moduleId
+			? this.ensureInteractionTarget( moduleId )
+			: ''
+		if ( ! interactionTarget ) {
 			return null
 		}
+		this.syncInteractionTargetElement( targetElement, interactionTarget )
 
 		const moduleClass = Array.from( targetElement.classList ).find( className =>
 			/^et_pb_(section|row|row_inner|column|column_inner|[a-z0-9_]+)$/i.test( className ) &&
@@ -208,8 +257,8 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 		) || targetElement.tagName?.toLowerCase() || 'divi-element'
 
 		return {
-			type: targetType,
-			value: targetType === 'class' ? orderClass : `.${ orderClass }`,
+			type: 'selector',
+			value: `[data-interaction-target="${ interactionTarget }"]`,
 			blockName: moduleClass,
 		}
 	}
@@ -281,7 +330,6 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 	}
 
 	startElementPicker( {
-		targetType = 'selector',
 		onPick = NOOP,
 		onCancel = NOOP,
 	} = {} ) {
@@ -319,7 +367,9 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 			}
 		}
 
-		const clickHandler = event => {
+		// Capture the target on mousedown so Divi's own click-to-edit behavior
+		// does not consume the first interaction before we can resolve it.
+		const mouseDownHandler = event => {
 			const candidate = this.getSelectableElement( event.target )
 			if ( ! candidate ) {
 				return
@@ -327,7 +377,7 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 
 			event.preventDefault()
 			event.stopPropagation()
-			const target = this.buildTargetFromElement( candidate, targetType )
+			const target = this.buildTargetFromElement( candidate )
 			stop()
 
 			if ( target ) {
@@ -347,13 +397,13 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 		const stop = () => {
 			clearHighlight()
 			previewDocument.removeEventListener( 'mousemove', mouseMoveHandler, true )
-			previewDocument.removeEventListener( 'click', clickHandler, true )
+			previewDocument.removeEventListener( 'mousedown', mouseDownHandler, true )
 			previewDocument.removeEventListener( 'keydown', keyHandler, true )
 			document.removeEventListener( 'keydown', keyHandler, true )
 		}
 
 		previewDocument.addEventListener( 'mousemove', mouseMoveHandler, true )
-		previewDocument.addEventListener( 'click', clickHandler, true )
+		previewDocument.addEventListener( 'mousedown', mouseDownHandler, true )
 		previewDocument.addEventListener( 'keydown', keyHandler, true )
 		document.addEventListener( 'keydown', keyHandler, true )
 

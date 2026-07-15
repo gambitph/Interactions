@@ -60,6 +60,8 @@ const TargetSelector = props => {
 	const displayType = isElementor && elementorUiType === 'elementor-element'
 		? 'elementor-element'
 		: value.type
+	// Remove the picker button for Divi when the target type is class, since Divi doesn't support it.
+	const isDiviManualClassInput = isDiviEditor() && displayType === 'class'
 
 	const targetButton = (
 		<>
@@ -221,14 +223,15 @@ const TargetSelector = props => {
 	}
 
 	if ( isDiviEditor() ) {
-		const diviTargetTypes = [ 'trigger', 'class', 'selector', 'window' ]
-		targetOptions = targetOptions.filter( target => diviTargetTypes.includes( target.value ) )
+		const diviTargetOrder = [ 'selector', 'class', 'trigger', 'window' ]
+		targetOptions = diviTargetOrder
+			.map( targetValue => targetOptions.find( target => target.value === targetValue ) )
+			.filter( Boolean )
 	}
 
 	useEffect( () => {
 		return () => {
 			elementPickerStopRef.current?.()
-			pendingBuilderTargetRef.current = null
 			setPendingBuilderTarget( null )
 		}
 	}, [] )
@@ -320,7 +323,7 @@ const TargetSelector = props => {
 				) }
 				{ displayType === 'class' && (
 					<FlexLayout justifyContent="start">
-						{ isHorizontal && targetButton }
+						{ isHorizontal && ! isDiviManualClassInput && targetButton }
 						<TextControl
 							label={ __( 'CSS Class', 'interactions' ) }
 							value={ value.value }
@@ -338,7 +341,7 @@ const TargetSelector = props => {
 								}
 							} }
 						/>
-						{ ! isHorizontal && targetButton }
+						{ ! isHorizontal && ! isDiviManualClassInput && targetButton }
 					</FlexLayout>
 				) }
 				{ displayType === 'block-name' && (

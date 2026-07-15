@@ -52,3 +52,5 @@ export const getCurrentSelectedTarget = () => getInteractionsEditor().getCurrent
 export const registerEditorSelectionTracking = () => getInteractionsEditor().registerSelectionTracking()
 
 export const startEditorElementPicker = args => getInteractionsEditor().startElementPicker( args )
+
+export const saveCurrentEditor = () => getInteractionsEditor().saveEditor()

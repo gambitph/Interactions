@@ -115,6 +115,11 @@ class InteractionsEditorAbstract {
 		return NOOP
 	}
 
+	// Persist the parent editor when the interaction data should also be saved.
+	saveEditor() {
+		return Promise.resolve()
+	}
+
 	// Start an editor-specific target picker.
 	startElementPicker( args = {} ) {
 		const {
