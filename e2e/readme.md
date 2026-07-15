@@ -13,6 +13,7 @@ WP_AUTH_STORAGE=wp-auth.json
 WP_USERNAME=admin
 WP_PASSWORD=password
 INTERACTIONS_SLUG=Interactions/interactions
+ELEMENTOR_SLUG=elementor/elementor
 ```
 
 Start a local WordPress environment:

@@ -77,7 +77,7 @@ jobs:
         echo '{
           "core": '$core',
           "phpVersion": "${{ matrix.php_version }}",
-          "plugins": [ "." ],
+          "plugins": [ ".", "https://downloads.wordpress.org/plugin/elementor.zip" ],
           "config": {
               "SCRIPT_DEBUG": false
             }
@@ -112,6 +112,7 @@ jobs:
         WP_USERNAME: admin
         WP_PASSWORD: password
         INTERACTIONS_SLUG: Interactions/interactions
+        ELEMENTOR_SLUG: elementor/elementor
       run: npm run test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() && steps.run-playwright-tests.outcome == 'failure' }}

@@ -91,6 +91,19 @@ class ExtendedRequestUtils extends BaseRequestUtils {
 			},
 		} )
 	}
+
+	createPage = async function( title: string ) {
+		const page = await this.rest( {
+			method: 'POST',
+			path: '/wp/v2/pages',
+			data: {
+				title,
+				status: 'draft',
+			},
+		} )
+
+		return String( page.id )
+	}
 }
 
 export { ExtendedRequestUtils }

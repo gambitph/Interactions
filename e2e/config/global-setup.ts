@@ -25,6 +25,10 @@ async function globalSetup() {
 
 	await requestUtils.activatePlugin( process.env.INTERACTIONS_SLUG )
 
+	if ( process.env.ELEMENTOR_SLUG ) {
+		await requestUtils.activatePlugin( process.env.ELEMENTOR_SLUG )
+	}
+
 	await requestContext.dispose()
 }
 
