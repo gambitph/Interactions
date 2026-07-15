@@ -1,0 +1,123 @@
+import { expect, Page } from '@playwright/test'
+
+export class InteractionsFixture {
+	page: Page;
+
+	constructor( page: Page ) {
+		this.page = page
+	}
+
+	getLibraryToolbarButton() {
+		return this.page.locator( '.interact-add-interaction-button-wrapper .ugb-insert-library-button' )
+	}
+
+	getSidebarToolbarButton() {
+		return this.page.locator( 'button[aria-controls="interact-editor:sidebar"]' )
+	}
+
+	getInteractionLibraryModal() {
+		return this.page.locator( '.interact-interaction-library-modal' )
+	}
+
+	getInteractionsSidebar() {
+		return this.page.locator( '.interact-sidebar' )
+	}
+
+	getFirstFreePresetCard() {
+		return this.page
+			.locator( '.interact-interaction-library__select__preset-card:not(.interact-premium-preset)' )
+			.first()
+	}
+
+	getElementorLauncherButton() {
+		return this.page.locator( '.interact-elementor-launcher' )
+	}
+
+	getElementorPanel() {
+		return this.page.locator( '.interact-elementor-panel' )
+	}
+
+	getManageAllInteractionsLink() {
+		return this.page.getByRole( 'link', { name: 'Manage all your interactions' } )
+	}
+
+	async openBlockEditorSidebar() {
+		await this.getSidebarToolbarButton().click()
+		await this.getInteractionsSidebar().waitFor( { state: 'visible' } )
+	}
+
+	async reloadEditorPage() {
+		await this.page.reload()
+		await this.getSidebarToolbarButton().waitFor( { state: 'visible', timeout: 60000 } )
+	}
+
+	async clickManageAllInteractionsLink() {
+		const manageLink = this.getManageAllInteractionsLink()
+		await expect( manageLink ).toBeVisible( { timeout: 30000 } )
+
+		const [ managePage ] = await Promise.all( [
+			this.page.context().waitForEvent( 'page' ),
+			manageLink.click(),
+		] )
+
+		return managePage
+	}
+
+	async expectInteractionsPostList( managePage: Page ) {
+		await managePage.waitForURL( /post_type=interact-interaction/ )
+		await expect( managePage.locator( 'h1.wp-heading-inline' ) ).toContainText( 'Interactions' )
+		await expect( managePage.locator( 'body' ) ).toHaveClass( /post-type-interact-interaction/ )
+		await expect( managePage.locator( '.wp-list-table' ) ).toBeVisible()
+	}
+
+	async openElementorSidebar() {
+		await this.getElementorLauncherButton().click()
+		await this.getElementorPanel().waitFor( { state: 'visible' } )
+	}
+
+	async dismissElementorOnboarding() {
+		const dialogs = this.page.locator( '.elementor-dialog, .e-route-panel' )
+
+		if ( await dialogs.first().isVisible().catch( () => false ) ) {
+			const closeButton = dialogs.first().locator(
+				'button.dialog-close-button, button[aria-label="Close"]'
+			).first()
+
+			if ( await closeButton.isVisible().catch( () => false ) ) {
+				await closeButton.click().catch( () => {} )
+			}
+		}
+	}
+
+	async openElementorEditor( postId: string ) {
+		await this.page.goto( `/wp-admin/post.php?post=${ postId }&action=elementor`, {
+			waitUntil: 'domcontentloaded',
+			timeout: 60000,
+		} )
+
+		// Elementor's editor keeps loading assets and may never reach "load".
+		// Wait for the editor shell instead of window.elementor.
+		try {
+			await this.page.waitForURL( /action=elementor/, { timeout: 15000 } )
+		} catch ( error ) {
+			throw new Error(
+				`Expected Elementor editor URL but landed on ${ this.page.url() }. ` +
+				'Is Elementor installed and activated? Set ELEMENTOR_SLUG in .env if needed.'
+			)
+		}
+
+		await this.page.locator( '#elementor-panel' ).waitFor( {
+			state: 'visible',
+			timeout: 90000,
+		} )
+		await this.page.locator( '#elementor-preview-iframe' ).waitFor( {
+			state: 'attached',
+			timeout: 90000,
+		} )
+		await this.dismissElementorOnboarding()
+		await this.getElementorLauncherButton().waitFor( {
+			state: 'visible',
+			timeout: 90000,
+		} )
+	}
+}
