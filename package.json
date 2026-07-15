@@ -6,7 +6,7 @@
 	"private": true,
 	"license": "GPL-2.0-or-later",
 	"engines": {
-		"node": ">=18"
+		"node": ">=22 <23"
 	},
 	"scripts": {
 		"prebuild": "npm run lint:js",

@@ -5,6 +5,8 @@ plugin in order to quickly assess whether everything is in working condition.
 
 ## Usage
 
+Node.js **22 LTS** is required. The version is pinned in [`.nvmrc`](../.nvmrc) (used by CI and `nvm`/`fnm` locally).
+
 Create an `.env` file in the root directory of the plugin with the contents:
 
 ```

@@ -16,7 +16,8 @@ jobs:
         persist-credentials: false
     - uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+        node-version-file: '.nvmrc'
+        check-latest: true
         cache: npm
         cache-dependency-path: package-lock.json
     - name: Build Interactions Free Plugin
@@ -51,20 +52,18 @@ jobs:
           # interactions-playwright-matrix-end
     name: PHP ${{ matrix.php_version }} and WP ${{ matrix.wp_version || 'latest' }}
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-        cache: npm
-        cache-dependency-path: package-lock.json
     - name: Restore plugin build
       uses: actions/download-artifact@v4
       with:
         name: interactions-playwright-build
     - name: Extract plugin build
       run: tar -xzf interactions-playwright-build.tar.gz
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        check-latest: true
+        cache: npm
+        cache-dependency-path: package-lock.json
     - name: Install dependencies
       run: npm ci --legacy-peer-deps
     - name: Set the version suffix for the output
