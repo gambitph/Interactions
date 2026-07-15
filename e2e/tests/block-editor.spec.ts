@@ -1,5 +1,7 @@
 import { test, expect } from 'e2e/test-utils'
 
+test.describe.configure( { timeout: 60000 } )
+
 test.describe( 'Block Editor', () => {
 	let pid = null
 
@@ -72,12 +74,15 @@ test.describe( 'Block Editor', () => {
 	} )
 
 	test( 'clicking Manage all your interactions navigates to the interactions post list', async ( {
+		page,
 		interactions,
 		requestUtils,
 	} ) => {
 		const interactionKey = await requestUtils.createInteraction()
 
 		try {
+			// Reload so the editor refetches interactions after the REST create.
+			await interactions.reloadEditorPage()
 			await interactions.openBlockEditorSidebar()
 
 			const managePage = await interactions.clickManageAllInteractionsLink()

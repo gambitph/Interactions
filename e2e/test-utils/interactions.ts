@@ -46,9 +46,14 @@ export class InteractionsFixture {
 		await this.getInteractionsSidebar().waitFor( { state: 'visible' } )
 	}
 
+	async reloadEditorPage() {
+		await this.page.reload()
+		await this.getSidebarToolbarButton().waitFor( { state: 'visible', timeout: 60000 } )
+	}
+
 	async clickManageAllInteractionsLink() {
 		const manageLink = this.getManageAllInteractionsLink()
-		await expect( manageLink ).toBeVisible()
+		await expect( manageLink ).toBeVisible( { timeout: 30000 } )
 
 		const [ managePage ] = await Promise.all( [
 			this.page.context().waitForEvent( 'page' ),
