@@ -38,33 +38,51 @@ export class InteractionsFixture {
 	}
 
 	async dismissElementorOnboarding() {
-		const closeButtons = [
-			this.page.getByRole( 'button', { name: 'Close' } ),
-			this.page.locator( '.dialog-close-button' ),
-			this.page.locator( '[aria-label="Close"]' ),
-		]
+		const dialogs = this.page.locator( '.elementor-dialog, .e-route-panel' )
 
-		for ( const button of closeButtons ) {
-			if ( await button.first().isVisible().catch( () => false ) ) {
-				await button.first().click().catch( () => {} )
+		if ( await dialogs.first().isVisible().catch( () => false ) ) {
+			const closeButton = dialogs.first().locator(
+				'button.dialog-close-button, button[aria-label="Close"]'
+			).first()
+
+			if ( await closeButton.isVisible().catch( () => false ) ) {
+				await closeButton.click().catch( () => {} )
 			}
 		}
 	}
 
 	async openElementorEditor( postId: string ) {
-		await this.page.goto( `/wp-admin/post.php?post=${ postId }&action=elementor` )
-		await this.page.waitForFunction( () => window.elementor !== undefined, {
+		await this.page.goto( `/wp-admin/post.php?post=${ postId }&action=elementor`, {
+			waitUntil: 'domcontentloaded',
+			timeout: 60000,
+		} )
+
+		// Elementor's editor keeps loading assets and may never reach "load".
+		// Wait for the editor shell instead of window.elementor.
+		try {
+			await this.page.waitForURL( /action=elementor/, { timeout: 15000 } )
+		} catch ( error ) {
+			throw new Error(
+				`Expected Elementor editor URL but landed on ${ this.page.url() }. ` +
+				'Is Elementor installed and activated? Set ELEMENTOR_SLUG in .env if needed.'
+			)
+		}
+
+		await this.page.locator( '#elementor-panel' ).waitFor( {
+			state: 'visible',
 			timeout: 90000,
 		} )
 		await this.page.locator( '#elementor-preview-iframe' ).waitFor( {
 			state: 'attached',
 			timeout: 90000,
 		} )
+		await this.page.waitForResponse(
+			response => response.url().includes( '/dist/editor.js' ) && response.ok(),
+			{ timeout: 90000 },
+		).catch( () => {} )
 		await this.dismissElementorOnboarding()
-		await this.page.waitForFunction( () => {
-			const launcher = document.querySelector( '.interact-elementor-launcher' )
-			return launcher && ! launcher.classList.contains( 'is-hidden' )
-		}, {
+		await this.getElementorLauncherButton().waitFor( {
+			state: 'visible',
 			timeout: 90000,
 		} )
 	}

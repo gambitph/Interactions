@@ -16,11 +16,15 @@ INTERACTIONS_SLUG=Interactions/interactions
 ELEMENTOR_SLUG=elementor/elementor
 ```
 
-Start a local WordPress environment:
+Start a local WordPress environment (requires Docker):
 
 ```bash
 npx @wordpress/env start
 ```
+
+For local sites (e.g. `https://local.local`), ensure the free **Elementor** plugin is
+installed. Global setup activates only Interactions and Elementor — other plugins are
+deactivated before each run.
 
 Build the plugin for testing:
 
