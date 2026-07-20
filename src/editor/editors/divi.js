@@ -19,6 +19,7 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 	constructor() {
 		super()
 		this.selectedElement = null
+		this.selectionTrackingCleanup = null
 	}
 
 	getEditorMode() {
@@ -268,65 +269,77 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 	}
 
 	registerSelectionTracking() {
-		let isBound = false
+		if ( this.selectionTrackingCleanup ) {
+			return this.selectionTrackingCleanup
+		}
+
+		let boundDocument = null
+		let boundIframe = null
 		let observer = null
-		let observerTimeoutId = null
 
-		const bindListeners = () => {
-			if ( isBound ) {
-				return true
+		const clickHandler = event => {
+			const candidate = this.getSelectableElement( event.target )
+			if ( candidate ) {
+				this.selectedElement = { element: candidate }
 			}
-
-			const previewDocument = this.getCanvasDocument()
-			if ( ! previewDocument?.body ) {
-				return false
-			}
-
-			previewDocument.addEventListener( 'click', event => {
-				const candidate = this.getSelectableElement( event.target )
-				if ( candidate ) {
-					this.selectedElement = { element: candidate }
-				}
-			}, true )
-
-			isBound = true
-			return true
 		}
 
-		if ( ! bindListeners() ) {
-			const stopObserving = () => {
-				observer?.disconnect()
-				observer = null
-
-				if ( observerTimeoutId ) {
-					window.clearTimeout( observerTimeoutId )
-					observerTimeoutId = null
-				}
+		const unbindDocument = () => {
+			if ( boundDocument ) {
+				boundDocument.removeEventListener( 'click', clickHandler, true )
+				boundDocument = null
 			}
-
-			observer = new MutationObserver( () => {
-				if ( bindListeners() ) {
-					stopObserving()
-				}
-			} )
-
-			observer.observe( document.body, {
-				childList: true,
-				subtree: true,
-			} )
-
-			observerTimeoutId = window.setTimeout( () => {
-				stopObserving()
-			}, 10000 )
 		}
 
-		return () => {
+		const bindDocument = previewDocument => {
+			if ( ! previewDocument?.body || boundDocument === previewDocument ) {
+				return
+			}
+
+			unbindDocument()
+			previewDocument.addEventListener( 'click', clickHandler, true )
+			boundDocument = previewDocument
+		}
+
+		const syncBindings = () => {
+			const nextIframe = document.querySelector( 'iframe[src*="app_window=1"]' )
+			if ( boundIframe && boundIframe !== nextIframe ) {
+				boundIframe.removeEventListener( 'load', syncBindings )
+				boundIframe = null
+				unbindDocument()
+			}
+
+			if ( nextIframe && boundIframe !== nextIframe ) {
+				// Re-run the binding step after every iframe reload so selection
+				// tracking follows Divi's canvas document as it gets replaced.
+				nextIframe.addEventListener( 'load', syncBindings )
+				boundIframe = nextIframe
+			}
+
+			bindDocument( this.getCanvasDocument() )
+		}
+
+		syncBindings()
+
+		// Keep watching for iframe replacement because Divi can recreate the app
+		// window during builder navigation without reloading the top document.
+		observer = new MutationObserver( syncBindings )
+		observer.observe( document.body, {
+			childList: true,
+			subtree: true,
+		} )
+
+		this.selectionTrackingCleanup = () => {
 			observer?.disconnect()
-
-			if ( observerTimeoutId ) {
-				window.clearTimeout( observerTimeoutId )
+			if ( boundIframe ) {
+				boundIframe.removeEventListener( 'load', syncBindings )
 			}
+			unbindDocument()
+			boundIframe = null
+			this.selectionTrackingCleanup = null
 		}
+
+		return this.selectionTrackingCleanup
 	}
 
 	startElementPicker( {
