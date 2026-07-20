@@ -18,6 +18,7 @@ import {
 } from '@wordpress/icons'
 import { useState, useMemo } from '@wordpress/element'
 import { __ } from '@wordpress/i18n'
+import { isBuilderEditor } from '~interact/editor/editors'
 
 /**
  * Internal deprendencies
@@ -37,6 +38,9 @@ export const SelectModal = props => {
 		mode = 'insert',
 	} = props
 	const [ selectedCategory, setSelectedCategory ] = useState( 'all' )
+	const incompatibleApplyLabel = isBuilderEditor()
+		? __( 'Can not apply to selected element', 'interactions' )
+		: __( 'Can not apply to current block', 'interactions' )
 
 	const adjustedPresets = useMemo( () => (
 		presets.map( preset => {
@@ -153,7 +157,7 @@ export const SelectModal = props => {
 														</Button>
 													}
 												</>
-												: <p>{ __( 'Can not apply to current block', 'interactions' ) }</p>
+												: <p>{ incompatibleApplyLabel }</p>
 											}
 										</>
 									) }

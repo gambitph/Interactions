@@ -273,3 +273,11 @@ export const InteractionLibrary = () => {
 		</Modal>
 	)
 }
+
+export const InteractionLibraryRoot = () => {
+	const interactionLibraryMode = useSelect( select =>
+		select( 'interact/interaction-library-modal' ).getMode(),
+	[] )
+
+	return interactionLibraryMode ? <InteractionLibrary /> : null
+}

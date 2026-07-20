@@ -54,3 +54,8 @@ export const registerEditorSelectionTracking = () => getInteractionsEditor().reg
 export const startEditorElementPicker = args => getInteractionsEditor().startElementPicker( args )
 
 export const saveCurrentEditor = () => getInteractionsEditor().saveEditor()
+
+export const insertLibraryPreset = selectedPreset => getInteractionsEditor().insertLibraryPreset( selectedPreset )
+
+export const resolveLibraryPresetTargets = ( interactionSetup, selectedPreset, insertionContext ) =>
+	getInteractionsEditor().resolveLibraryPresetTargets( interactionSetup, selectedPreset, insertionContext )

@@ -1,8 +1,10 @@
 import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
-import { InteractionLibrary } from '../interaction-library'
+import { InteractionLibraryRoot } from '../interaction-library'
+import { applyTargetMappings } from '../interaction-library/util'
 
+import { parse } from '@wordpress/blocks'
 import { registerPlugin } from '@wordpress/plugins'
 import { __ } from '@wordpress/i18n'
 import {
@@ -53,19 +55,11 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			)
 		}
 
-		const GutenbergInteractionLibraryComponent = () => {
-			const interactionLibraryMode = useSelect( select =>
-				select( 'interact/interaction-library-modal' ).getMode(),
-			[] )
-
-			return interactionLibraryMode ? <InteractionLibrary /> : null
-		}
-
 		registerPlugin( 'interact-editor', {
 			render: GutenbergInteractionsEditorComponent,
 		} )
 		registerPlugin( 'interact-editor-library', {
-			render: GutenbergInteractionLibraryComponent,
+			render: InteractionLibraryRoot,
 		} )
 
 		return super.init()
@@ -125,6 +119,34 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			blockName: block.name || '',
 			options: '',
 		}
+	}
+
+	// Persist the current post when the library or interaction editor saves.
+	saveEditor() {
+		return Promise.resolve( dispatch( 'core/editor' )?.savePost?.() )
+	}
+
+	// Insert the preset's serialized Gutenberg example and return the inserted
+	// top-level block so the library can resolve any target mappings from it.
+	insertLibraryPreset( selectedPreset = {} ) {
+		const [ block ] = parse( selectedPreset.serializedBlockExample ?? '' )
+		if ( ! block ) {
+			return null
+		}
+
+		dispatch( 'core/block-editor' ).insertBlocks( block )
+		return block
+	}
+
+	// Resolve target mappings using Gutenberg's current block-tree descriptors.
+	resolveLibraryPresetTargets( interactionSetup, selectedPreset = {}, insertionContext = null ) {
+		applyTargetMappings(
+			interactionSetup,
+			selectedPreset.targetMappings,
+			insertionContext
+		)
+
+		return interactionSetup
 	}
 }
 
