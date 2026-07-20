@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Interactions
  * Plugin URI: https://wpinteractions.com/
- * Description: Add animations and interactivity in Elementor, Bricks and the Block Editor. Choose from our library of ready-made effects like scroll & hover, or build your own.
+ * Description: Scroll, hover & click animations and interactive experiences for Elementor, Bricks & Gutenberg. No-code builder with ready-made effects.
  * Author: Gambit Technologies, Inc
  * Author URI: http://gambit.ph
  * License: GPLv2 or later

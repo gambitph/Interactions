@@ -9,7 +9,7 @@ InteractRunner.addInteractionConfig( {
 			const animation = interaction.createTimelineInstance( 0, {} )
 			const trigger = interaction.getCurrentTrigger()
 
-			const scrollHandler = isFirstCall => {
+			const update = isFirstCall => {
 				const rect = trigger.getBoundingClientRect()
 				const viewportHeight = window.innerHeight
 
@@ -20,19 +20,38 @@ InteractRunner.addInteractionConfig( {
 				// Negative offset means start counting later and finish sooner, contracting the bounds.
 				const elementScroll = viewportHeight - rect.top + offset
 				const totalScroll = viewportHeight + rect.height + ( offset * 2 )
-				const scrolled = elementScroll / totalScroll
+				const scrolled = totalScroll ? elementScroll / totalScroll : 0
 
 				// Clamp between 0 and 1
 				const clampedScrolled = Math.max( 0, Math.min( 1, scrolled ) )
 				animation.seekPercentage( clampedScrolled, isFirstCall === true ? 0 : smoothness )
 			}
 
-			window.addEventListener( 'scroll', scrollHandler )
-			scrollHandler( true )
+			// Coalesce scroll events into a single rAF so we only seek once per
+			// frame. Firing anime.js on every scroll event janks slower Android
+			// devices.
+			let rafId = null
+			const scrollHandler = () => {
+				if ( rafId !== null ) {
+					return
+				}
+				rafId = window.requestAnimationFrame( () => {
+					rafId = null
+					update( false )
+				} )
+			}
+
+			// Passive so the listener never blocks scrolling on mobile.
+			window.addEventListener( 'scroll', scrollHandler, { passive: true } )
+			update( true )
 
 			return () => {
+				if ( rafId !== null ) {
+					window.cancelAnimationFrame( rafId )
+					rafId = null
+				}
 				animation.destroy()
-				window.removeEventListener( 'scroll', scrollHandler )
+				window.removeEventListener( 'scroll', scrollHandler, { passive: true } )
 			}
 		},
 	},

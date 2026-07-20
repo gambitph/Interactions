@@ -2,5 +2,10 @@ node_modules/
 vendor/
 build/
 dist/
+e2e/
+tools/
+playwright-report/
+playwright-interact/
+test-results/
 *.min.js
 src/editor/animejs/index.js
