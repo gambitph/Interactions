@@ -1,9 +1,7 @@
 /**
  * Internal deprendencies
  */
-import {
-	setValueAtPath, addLoopDelayToPreview, applyTargetMappings,
-} from './util'
+import { setValueAtPath, addLoopDelayToPreview } from './util'
 import { PropertyControl } from '../components/timeline/property-control'
 import TargetSelector from '../components/target-selector'
 import getVideoUrl from './videos'
@@ -12,6 +10,11 @@ import { useInteractions } from '../hooks'
 import {
 	openInteractionsSidebar, createNewAction, createNewInteraction,
 } from '~interact/editor/util'
+import {
+	insertLibraryPreset,
+	isBuilderEditor,
+	resolveLibraryPresetTargets,
+} from '~interact/editor/editors'
 
 /**
  * External deprendencies
@@ -21,7 +24,6 @@ import {
  * WordPress deprendencies
  */
 import { Button } from '@wordpress/components'
-import { parse } from '@wordpress/blocks'
 import { dispatch } from '@wordpress/data'
 import {
 	useState, useMemo, useEffect,
@@ -43,10 +45,15 @@ export const ConfigureModal = props => {
 	const [ optionValues, setOptionValues ] = useState( {} )
 	const [ selectedTarget, setSelectedTarget ] = useState( interactionTarget )
 	const [ sideBarEl, setSideBarEl ] = useState( null )
+	const selectedTargetLabel = isBuilderEditor()
+		? __( 'This interaction will be applied to the selected element. Click here to modify.', 'interactions' )
+		: __( 'This interaction will be applied to the selected block. Click here to modify.', 'interactions' )
 
 	useEffect( () => {
 		// Set the editor sidebar as anchor for target selector
-		setSideBarEl( document.querySelector( '.interface-interface-skeleton__sidebar' ) || null )
+		setSideBarEl(
+			document.querySelector( '.interface-interface-skeleton__sidebar, .interact-pagebuilder-sidebar' ) || null
+		)
 	}, [] )
 
 	const interactionSetup = useMemo( () => ( selectedPreset.interactionSetup ), [ selectedPreset ] )
@@ -80,21 +87,17 @@ export const ConfigureModal = props => {
 				} )
 			} )
 
-			const targetMappings = selectedPreset.targetMappings
-
-			// If mode is inset, create a new block based on the seralized example.
-			// Otherwise, use the target from target selector.
+			// In insert mode, let the active editor adapter own how preset content
+			// is created so this modal no longer depends on Gutenberg block APIs.
 			if ( mode === 'insert' ) {
-				const block = parse( selectedPreset.serializedBlockExample ?? '' )[ 0 ]
-				if ( ! block ) {
+				const insertedContent = insertLibraryPreset( selectedPreset )
+				if ( ! insertedContent ) {
 					return
 				}
-				dispatch( 'core/block-editor' ).insertBlocks( block )
 
-				// If target mappings are provided, dynamically create target for each.
-				applyTargetMappings( interactionSetup, targetMappings, block, )
+				resolveLibraryPresetTargets( interactionSetup, selectedPreset, insertedContent )
 			} else if ( mode === 'apply' ) {
-				applyTargetMappings( interactionSetup, targetMappings, selectedTarget )
+				resolveLibraryPresetTargets( interactionSetup, selectedPreset, selectedTarget )
 			}
 		}
 
@@ -139,7 +142,6 @@ export const ConfigureModal = props => {
 						},
 					} ) )
 					window?.dispatchEvent( new CustomEvent( 'interact/save-interaction' ) )
-					dispatch( 'core/editor' ).savePost()
 				}, 100 )
 			} else {
 				const newInteraction = createNewInteraction(
@@ -209,7 +211,7 @@ export const ConfigureModal = props => {
 						{ mode === 'apply' && (
 							<details className="interact-interaction-library__configure__target-selector">
 								<summary>
-									{ __( 'This interaction will be applied to the selected block. Click here to modify.', 'interactions' ) }
+									{ selectedTargetLabel }
 								</summary>
 								<TargetSelector
 									isHorizontal={ false }

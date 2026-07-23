@@ -1,6 +1,7 @@
 import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
+import { InteractionLibraryRoot } from '../interaction-library'
 
 import { __ } from '@wordpress/i18n'
 import { Button } from '@wordpress/components'
@@ -102,6 +103,7 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 							</div>
 						</div>
 					</div>
+					<InteractionLibraryRoot />
 				</>
 			)
 		}

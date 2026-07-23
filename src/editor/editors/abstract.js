@@ -6,6 +6,7 @@ import {
 	pluginVersion,
 	srcUrl,
 } from 'interactions'
+import { applyTargetMappings } from '../interaction-library/util'
 import { select } from '@wordpress/data'
 
 const NOOP = () => {}
@@ -36,12 +37,16 @@ class InteractionsEditorAbstract {
 		return this.getEditorMode() === 'bricks'
 	}
 
+	isDivi() {
+		return this.getEditorMode() === 'divi'
+	}
+
 	isGutenberg() {
 		return this.getEditorMode() === 'gutenberg'
 	}
 
 	isBuilder() {
-		return this.isElementor() || this.isBricks()
+		return this.isElementor() || this.isBricks() || this.isDivi()
 	}
 
 	ensureBuilderEditorStyles() {
@@ -109,6 +114,29 @@ class InteractionsEditorAbstract {
 
 	registerSelectionTracking() {
 		return NOOP
+	}
+
+	// Persist the parent editor when the interaction data should also be saved.
+	saveEditor() {
+		return Promise.resolve()
+	}
+
+	// Insert a library preset into the current editor and return the inserted
+	// content descriptor so target mappings can be resolved afterward.
+	insertLibraryPreset() {
+		return null
+	}
+
+	// Resolve a preset's target mappings against either inserted editor content
+	// or a selected target object, depending on the current library mode.
+	resolveLibraryPresetTargets( interactionSetup, selectedPreset = {}, insertionContext = null ) {
+		applyTargetMappings(
+			interactionSetup,
+			selectedPreset.targetMappings,
+			insertionContext
+		)
+
+		return interactionSetup
 	}
 
 	// Start an editor-specific target picker.

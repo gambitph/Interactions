@@ -142,7 +142,8 @@
 /* Interaction Elementor Editor Panel Styles */
 
 .interact-elementor-launcher,
-.interact-bricks-launcher {
+.interact-bricks-launcher,
+.interact-divi-launcher {
 	display: inline-flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -181,7 +182,8 @@
 }
 
 .interact-elementor-launcher.is-hidden,
-.interact-bricks-launcher.is-hidden {
+.interact-bricks-launcher.is-hidden,
+.interact-divi-launcher.is-hidden {
 	opacity: 0;
 	pointer-events: none;
 }
@@ -228,6 +230,11 @@
 		margin-bottom: 0;
 		color: inherit;
 	}
+}
+
+.interact-divi-panel {
+	top: 0;
+	height: 100vh;
 }
 
 .interact-pagebuilder-panel.is-open {
