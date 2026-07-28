@@ -7,6 +7,7 @@ import {
 	srcUrl,
 } from 'interactions'
 import { applyTargetMappings } from '../interaction-library/util'
+import { getPresetBuilderTargetRefs } from '../interaction-library/preset-schema'
 import { select } from '@wordpress/data'
 
 const NOOP = () => {}
@@ -47,6 +48,10 @@ class InteractionsEditorAbstract {
 
 	isBuilder() {
 		return this.isElementor() || this.isBricks() || this.isDivi()
+	}
+
+	getPresetTargetRefs( selectedPreset = {} ) {
+		return getPresetBuilderTargetRefs( selectedPreset, this.getEditorMode() )
 	}
 
 	ensureBuilderEditorStyles() {
@@ -116,24 +121,42 @@ class InteractionsEditorAbstract {
 		return NOOP
 	}
 
+	canInsertPreset() {
+		return false
+	}
+
 	// Persist the parent editor when the interaction data should also be saved.
 	saveEditor() {
 		return Promise.resolve()
 	}
 
+	insertPresetContent() {
+		return null
+	}
+
 	// Insert a library preset into the current editor and return the inserted
 	// content descriptor so target mappings can be resolved afterward.
-	insertLibraryPreset() {
-		return null
+	insertLibraryPreset( selectedPreset ) {
+		return this.insertPresetContent( selectedPreset )
 	}
 
 	// Resolve a preset's target mappings against either inserted editor content
 	// or a selected target object, depending on the current library mode.
 	resolveLibraryPresetTargets( interactionSetup, selectedPreset = {}, insertionContext = null ) {
+		const targetMappingsSource = insertionContext?.targetMappingsSource ?? insertionContext
+		const fallbackTarget = insertionContext?.defaultTarget ?? targetMappingsSource
+		const targetRefs = insertionContext?.targetRefs ?? this.getPresetTargetRefs( selectedPreset )
+		const resolver = insertionContext?.resolveTargetMappingTarget ?? null
+
 		applyTargetMappings(
 			interactionSetup,
 			selectedPreset.targetMappings,
-			insertionContext
+			Array.isArray( selectedPreset.targetMappings ) && selectedPreset.targetMappings.length > 0
+				? targetMappingsSource
+				: fallbackTarget,
+			[ 'target' ],
+			targetRefs,
+			resolver
 		)
 
 		return interactionSetup

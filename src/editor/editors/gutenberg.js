@@ -2,7 +2,7 @@ import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
 import { InteractionLibraryRoot } from '../interaction-library'
-import { applyTargetMappings } from '../interaction-library/util'
+import { getPresetBuilderExample } from '../interaction-library/preset-schema'
 
 import { parse } from '@wordpress/blocks'
 import { registerPlugin } from '@wordpress/plugins'
@@ -126,27 +126,23 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 		return Promise.resolve( dispatch( 'core/editor' )?.savePost?.() )
 	}
 
-	// Insert the preset's serialized Gutenberg example and return the inserted
-	// top-level block so the library can resolve any target mappings from it.
-	insertLibraryPreset( selectedPreset = {} ) {
-		const [ block ] = parse( selectedPreset.serializedBlockExample ?? '' )
+	canInsertPreset( preset ) {
+		return !! getPresetBuilderExample( preset, 'gutenberg' )
+	}
+
+	// Insert the preset block tree and return it so target mappings can resolve
+	// against the freshly inserted Gutenberg blocks.
+	insertPresetContent( preset ) {
+		const [ block ] = parse( getPresetBuilderExample( preset, 'gutenberg' ) ?? '' )
 		if ( ! block ) {
 			return null
 		}
 
 		dispatch( 'core/block-editor' ).insertBlocks( block )
-		return block
-	}
 
-	// Resolve target mappings using Gutenberg's current block-tree descriptors.
-	resolveLibraryPresetTargets( interactionSetup, selectedPreset = {}, insertionContext = null ) {
-		applyTargetMappings(
-			interactionSetup,
-			selectedPreset.targetMappings,
-			insertionContext
-		)
-
-		return interactionSetup
+		return {
+			targetMappingsSource: block,
+		}
 	}
 }
 

@@ -125,15 +125,107 @@ export const createTargetObj = block => ( {
 	value: getOrGenerateBlockAnchor( block?.clientId ),
 } )
 
-// Utility to apply mappings
-export const applyTargetMappings = ( interactionSetup, targetMappings, blockOrTarget, fallbackPath = [ 'target' ] ) => {
+/**
+ * Resolve a semantic target ref from a preset to the underlying Gutenberg
+ * block path used by the inserted block tree.
+ *
+ * @param {Object}      targetRefs - Preset target ref definitions.
+ * @param {string|null} targetRef  - Semantic ref name to resolve.
+ *
+ * @return {?Array<string|number>} The resolved block path, if available.
+ */
+const getTargetRefPath = ( targetRefs, targetRef ) => {
+	if ( ! targetRef || ! targetRefs || typeof targetRefs !== 'object' ) {
+		return null
+	}
+
+	const targetRefConfig = targetRefs[ targetRef ]
+	if ( Array.isArray( targetRefConfig ) ) {
+		return targetRefConfig
+	}
+
+	if ( Array.isArray( targetRefConfig?.blockPath ) ) {
+		return targetRefConfig.blockPath
+	}
+
+	return null
+}
+
+/**
+ * Resolve a mapping entry into an interaction target object.
+ *
+ * @param {Object}    blockOrTarget - Inserted Gutenberg block tree or direct target.
+ * @param {Object}    mapping       - Target mapping definition for one assignment.
+ * @param {Object}    targetRefs    - Preset target ref definitions.
+ * @param {?Function} resolver      - Optional editor-specific resolver.
+ *
+ * @return {?Object} The resolved interaction target object.
+ */
+const resolveTargetMappingTarget = ( blockOrTarget, mapping = {}, targetRefs = {}, resolver = null ) => {
+	if ( typeof resolver === 'function' ) {
+		const resolvedTarget = resolver( mapping )
+		if ( resolvedTarget ) {
+			return resolvedTarget
+		}
+	}
+
+	if ( ! blockOrTarget?.clientId ) {
+		return blockOrTarget
+	}
+
+	const resolvedBlockPath = Array.isArray( mapping.blockPath )
+		? mapping.blockPath
+		: getTargetRefPath( targetRefs, mapping.targetRef )
+
+	if ( ! Array.isArray( resolvedBlockPath ) ) {
+		return null
+	}
+
+	const block = getValueAtPath( blockOrTarget, resolvedBlockPath )
+	return block?.clientId ? createTargetObj( block ) : null
+}
+
+/**
+ * Apply preset target mappings to an interaction setup object.
+ *
+ * Supports both legacy Gutenberg `blockPath` mappings and semantic `targetRef`
+ * mappings so presets can migrate gradually without breaking existing inserts.
+ *
+ * @param {Object}               interactionSetup - Interaction config to mutate.
+ * @param {Array<Object>}        targetMappings   - Mapping definitions to apply.
+ * @param {Object}               blockOrTarget    - Inserted block tree or target.
+ * @param {Array<string|number>} fallbackPath     - Path used when no mappings exist.
+ * @param {Object}               targetRefs       - Preset target ref definitions.
+ * @param {?Function}            resolver         - Optional editor-specific resolver.
+ *
+ * @return {void}
+ */
+export const applyTargetMappings = (
+	interactionSetup,
+	targetMappings,
+	blockOrTarget,
+	fallbackPath = [ 'target' ],
+	targetRefs = {},
+	resolver = null
+) => {
 	// If target mappings are provided, dynamically create target for each.
 	if ( Array.isArray( targetMappings ) && targetMappings.length > 0 ) {
-		targetMappings.forEach( ( { blockPath, interactionPath } ) => {
-			// If it has clientId, then it's a block, and we have to create the target object
-			const target = blockOrTarget?.clientId
-				? createTargetObj( getValueAtPath( blockOrTarget, blockPath ) )
-				: blockOrTarget
+		targetMappings.forEach( mapping => {
+			const {
+				targetRef,
+				blockPath,
+				interactionPath,
+			} = mapping
+			const target = resolveTargetMappingTarget( blockOrTarget, mapping, targetRefs, resolver )
+			if ( ! target ) {
+				// eslint-disable-next-line no-console
+				console.warn( 'Interactions Library target mapping could not be resolved.', {
+					targetRef,
+					blockPath,
+					interactionPath,
+				} )
+				return
+			}
 			setValueAtPath( interactionSetup, interactionPath, target )
 		} )
 	} else {

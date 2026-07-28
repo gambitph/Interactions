@@ -127,9 +127,9 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:video -->\n<figure class=\"wp-block-video\"><video src=\"https://videos.pexels.com/video-files/1572321/1572321-uhd_2560_1440_24fps.mp4\"></video></figure>\n<!-- /wp:video -->",
     "applyWhitelist": [
         "/video",
         "core/cover"
-    ]
+    ],
+    "gutenbergExample": "<!-- wp:video -->\n<figure class=\"wp-block-video\"><video src=\"https://videos.pexels.com/video-files/1572321/1572321-uhd_2560_1440_24fps.mp4\"></video></figure>\n<!-- /wp:video -->"
 }

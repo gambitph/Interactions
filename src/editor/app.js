@@ -226,6 +226,11 @@ const InteractionsApp = ( {
 		setInteractionLibraryMode( 'apply' )
 	}
 
+	const onOpenInteractionLibraryInsertHandler = () => {
+		setInteractionLibraryTarget( null )
+		setInteractionLibraryMode( 'insert' )
+	}
+
 	return <>
 		{ selectedInteraction === null && loadingError && isShowingError &&
 			<PanelBody>
@@ -269,7 +274,7 @@ const InteractionsApp = ( {
 						</Button>
 						<Button
 							icon={ <LibrarySVG width="20" height="20" /> }
-							disabled
+							onClick={ onOpenInteractionLibraryInsertHandler }
 						>
 							{ __( 'Insert', 'interactions' ) }
 						</Button>

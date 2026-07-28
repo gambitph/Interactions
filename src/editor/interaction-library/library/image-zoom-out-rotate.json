@@ -56,7 +56,7 @@
                             "rotate": "10"
                         }
                     },
-					{
+                    {
                         "type": "scale",
                         "target": {
                             "type": "selector",
@@ -260,8 +260,55 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:image {\"sizeSlug\":\"large\"} -->\r\n<figure class=\"wp-block-image size-large\"><img src=\"https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&amp;w=1933&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\"/></figure>\r\n<!-- /wp:image -->",
     "applyWhitelist": [
         "\\bimage\\b"
-    ]
+    ],
+    "gutenbergExample": "<!-- wp:image {\"sizeSlug\":\"large\"} -->\r\n<figure class=\"wp-block-image size-large\"><img src=\"https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&amp;w=1933&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\"/></figure>\r\n<!-- /wp:image -->",
+    "elementorExample": [
+        {
+            "id": "interact-image-zoom-out-rotate",
+            "elType": "widget",
+            "widgetType": "image",
+            "settings": {
+                "image": {
+                    "id": "",
+                    "url": "https://images.pexels.com/photos/2325452/pexels-photo-2325452.jpeg?cs=srgb&dl=pexels-francesco-ungaro-2325452.jpg",
+                    "source": "url",
+                    "size": ""
+                },
+                "image_size": "full",
+                "caption_source": "none",
+                "link_to": "none",
+                "open_lightbox": "default"
+            }
+        }
+    ],
+    "bricksExample": [
+        {
+            "id": "interact-image-zoom-out-rotate",
+            "name": "image",
+            "settings": {
+                "image": {
+                    "url": "https://images.pexels.com/photos/2325452/pexels-photo-2325452.jpeg?cs=srgb&dl=pexels-francesco-ungaro-2325452.jpg"
+                }
+            }
+        }
+    ],
+    "diviExample": {
+        "id": "interact-image-zoom-out-rotate",
+        "name": "divi/image",
+        "props": {
+            "image": {
+                "innerContent": {
+                    "desktop": {
+                        "value": {
+                            "src": "https://images.pexels.com/photos/2325452/pexels-photo-2325452.jpeg?cs=srgb&dl=pexels-francesco-ungaro-2325452.jpg",
+                            "alt": "",
+                            "titleText": ""
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
