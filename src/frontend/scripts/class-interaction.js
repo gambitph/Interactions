@@ -146,22 +146,26 @@ export class Interaction {
 				let actionTargetSelector = this.getTargetsSelector( action.target, triggerSelector )
 
 				// TODO: Move this to the action class
-				// Run the blockElementSelector function if it exists.  This function
+				// Run the blockElementSelectors function if it exists.  This function
 				// allows us to target a specific element depending on the block.
-				if ( actionConfig.blockElementSelector && ( action.target.type === 'block' || action.target.type === 'block-name' || action.target.type === 'class' ) ) {
+				if ( actionConfig.blockElementSelectors && ( action.target.type === 'block' || action.target.type === 'block-name' || action.target.type === 'class' ) ) {
 					const blockName = action.target.type === 'block' ? action.target.blockName : action.target.value
-					actionTargetSelector = actionConfig.blockElementSelector( actionTargetSelector, new TargetBlock( blockName ) )
+					actionTargetSelector = actionConfig.blockElementSelectors( actionTargetSelector, new TargetBlock( blockName ) )
 				}
 
-				// If we're in the editor, don't set the initial styles
-				// unless the action is clicked.
-				if ( actionConfig.initialStyles && this.runner.isFrontend ) {
+				const actionTargetSelectors = Array.isArray( actionTargetSelector )
+					? actionTargetSelector
+					: [ actionTargetSelector ]
+
+				if ( actionConfig.initialStyles ) {
 					const styles = actionConfig.initialStyles( action )
-					if ( ! cssObject[ actionTargetSelector ] ) {
-						cssObject[ actionTargetSelector ] = []
-					}
-					if ( styles ) {
-						cssObject[ actionTargetSelector ].push( styles )
+					for ( const selector of actionTargetSelectors ) {
+						if ( ! cssObject[ selector ] ) {
+							cssObject[ selector ] = []
+						}
+						if ( styles ) {
+							cssObject[ selector ].push( styles )
+						}
 					}
 				}
 			} )
@@ -459,7 +463,7 @@ export class Interaction {
 		return `.wp-block-${ blockName.replace( '/', '-' ) }`
 	}
 
-	// Run the blockElementSelector function if it exists. Allow each action to
+	// Run the blockElementSelectors function if it exists. Allow each action to
 	// target a specific element depending on the block if needed. For example,
 	// for the cover block, the background color would need to be an inside
 	// element.
@@ -468,17 +472,24 @@ export class Interaction {
 		if ( ! actionConfig ) {
 			return targets
 		}
-		return targets
-			.map( el => {
-				if ( actionConfig.blockElementSelector ) {
-					const selector = actionConfig.blockElementSelector( ':scope', new TargetBlock( el ) )
-					if ( selector !== ':scope' ) {
-						return el.querySelector( selector ) || el // Make sure this is never null or the editor will error.
+
+		return targets.flatMap( el => {
+			if ( actionConfig.blockElementSelectors ) {
+				let selectors = actionConfig.blockElementSelectors( ':scope', new TargetBlock( el ) )
+				selectors = Array.isArray( selectors ) ? selectors : [ selectors ]
+
+				const elements = selectors.flatMap( selector => {
+					if ( selector === ':scope' ) {
+						return [ el ]
 					}
-				}
-				return el
-			} )
-			.filter( el => el !== null && el !== undefined ) // Ensure only valid elements are included
+					return Array.from( el.querySelectorAll( selector ) )
+				} )
+
+				return elements.length ? elements : [ el ]
+			}
+
+			return [ el ]
+		} )
 	}
 }
 

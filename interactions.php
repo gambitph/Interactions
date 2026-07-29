@@ -135,6 +135,22 @@ if ( ! function_exists( 'interact_require_types' ) ) {
 		// require_once( plugin_dir_path( __FILE__ ) . 'src/interaction-types/class-interaction-type-form-submitted.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'src/interaction-types/class-interaction-type-element-scrolling.php' );
 
+		// Stackable integration
+		if ( defined( 'STACKABLE_VERSION' ) ) {
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-accordion-toggle.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/interaction-types/class-interaction-type-stackable-accordion-toggle.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-carousel-change-slide.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/interaction-types/class-interaction-type-stackable-carousel-slide-change.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-tabs-change-tab.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/interaction-types/class-interaction-type-stackable-tabs-change.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-horizontal-scroller-scroll.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/interaction-types/class-interaction-type-stackable-horizontal-scroller-scroll.php' );
+
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-progress-bar-change-value.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-progress-circle-change-value.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'src/integrations/stackable/action-types/class-action-type-stackable-count-up-reset.php' );
+		}
+
 		do_action( 'interact/require_types' );
 	}
 }
