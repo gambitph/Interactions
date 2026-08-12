@@ -434,9 +434,26 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 			return targetElement
 		}
 
-		return targetElement.querySelector?.(
-			'.et_pb_column[data-id], .et_pb_column_inner[data-id], .et_pb_group[data-id], .et_pb_group_carousel[data-id]'
-		) || null
+	return targetElement.querySelector?.(
+		'.et_pb_column[data-id], .et_pb_column_inner[data-id], .et_pb_group[data-id], .et_pb_group_carousel[data-id]'
+	) || null
+	}
+
+	// Some Divi modules render their real interactive target inside the wrapper,
+	// so mirror the picker target onto that child element in the builder preview.
+	getTargetPreviewElement( element ) {
+		if ( ! element ) {
+			return null
+		}
+
+		const moduleId = this.getModuleIdFromElement( element )
+		const moduleName = this.getModuleName( moduleId )
+
+		if ( moduleName === 'divi/button' ) {
+			return element.querySelector( 'a' ) || element
+		}
+
+		return element
 	}
 
 	syncInteractionTargetElement( element, interactionTarget ) {
@@ -446,7 +463,7 @@ class DiviInteractionsEditor extends InteractionsEditorAbstract {
 
 		// Mirror the saved target onto the live builder DOM immediately so picker
 		// previews can work before Divi re-renders the module from store state.
-		element.setAttribute( 'data-interaction-target', interactionTarget )
+		this.getTargetPreviewElement( element )?.setAttribute( 'data-interaction-target', interactionTarget )
 	}
 
 	buildTargetFromElement( element ) {

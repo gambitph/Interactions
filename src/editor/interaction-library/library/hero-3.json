@@ -115,5 +115,171 @@
         "options": []
     },
     "applyWhitelist": [],
-    "gutenbergExample": "<!-- wp:cover {\"url\":\"https://www.pexels.com/download/video/3135929/\",\"dimRatio\":50,\"backgroundType\":\"video\",\"minHeight\":100,\"minHeightUnit\":\"vh\",\"align\":\"full\",\"layout\":{\"type\":\"default\"}} -->\r\n<div class=\"wp-block-cover alignfull\" style=\"min-height:100vh\"><video class=\"wp-block-cover__video-background intrinsic-ignore\" autoplay muted loop playsinline src=\"https://www.pexels.com/download/video/3135929/\" data-object-fit=\"cover\"></video><span aria-hidden=\"true\" class=\"wp-block-cover__background has-background-dim\"></span><div class=\"wp-block-cover__inner-container\"><!-- wp:heading {\"level\":1,\"fontSize\":\"xx-large\"} -->\r\n<h1 class=\"wp-block-heading has-xx-large-font-size\"><span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Modern Web Solutions</span></span>\r\n<span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Built for Tomorrow's</span></span>\r\n<span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Digital Needs</span></span></h1>\r\n<!-- /wp:heading --></div></div>\r\n<!-- /wp:cover -->"
+    "gutenbergExample": "<!-- wp:cover {\"url\":\"https://www.pexels.com/download/video/3135929/\",\"dimRatio\":50,\"backgroundType\":\"video\",\"minHeight\":100,\"minHeightUnit\":\"vh\",\"align\":\"full\",\"layout\":{\"type\":\"default\"}} -->\r\n<div class=\"wp-block-cover alignfull\" style=\"min-height:100vh\"><video class=\"wp-block-cover__video-background intrinsic-ignore\" autoplay muted loop playsinline src=\"https://www.pexels.com/download/video/3135929/\" data-object-fit=\"cover\"></video><span aria-hidden=\"true\" class=\"wp-block-cover__background has-background-dim\"></span><div class=\"wp-block-cover__inner-container\"><!-- wp:heading {\"level\":1,\"fontSize\":\"xx-large\"} -->\r\n<h1 class=\"wp-block-heading has-xx-large-font-size\"><span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Modern Web Solutions</span></span>\r\n<span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Built for Tomorrow's</span></span>\r\n<span style=\"display: block; overflow: hidden; height: 1.5em;\"><span style=\"display: block;\">Digital Needs</span></span></h1>\r\n<!-- /wp:heading --></div></div>\r\n<!-- /wp:cover -->",
+    "elementorExample": [
+        {
+            "id": "interact-hero-3",
+            "elType": "container",
+            "settings": {
+                "content_width": "full",
+                "flex_direction": "column",
+                "justify_content": "center",
+                "min_height": {
+                    "unit": "vh",
+                    "size": 100,
+                    "sizes": []
+                },
+                "overflow": "hidden",
+                "background_background": "classic",
+                "background_color": "#292929",
+                "padding": {
+                    "unit": "px",
+                    "top": "60",
+                    "right": "60",
+                    "bottom": "60",
+                    "left": "60",
+                    "isLinked": true
+                }
+            },
+            "elements": [
+                {
+                    "id": "interact-hero-3-video",
+                    "elType": "widget",
+                    "widgetType": "html",
+                    "settings": {
+                        "html": "<video autoplay muted loop playsinline src=\"https://www.pexels.com/download/video/3135929/\" style=\"display:block;width:100%;height:100vh;object-fit:cover;opacity:.5;\"></video>",
+                        "_position": "absolute",
+                        "_element_width": "initial",
+                        "_element_custom_width": {
+                            "unit": "%",
+                            "size": 100,
+                            "sizes": []
+                        },
+                        "_offset_orientation_h": "start",
+                        "_offset_x": {
+                            "unit": "px",
+                            "size": 0,
+                            "sizes": []
+                        },
+                        "_offset_orientation_v": "start",
+                        "_offset_y": {
+                            "unit": "px",
+                            "size": 0,
+                            "sizes": []
+                        },
+                        "_z_index": 0
+                    }
+                },
+                {
+                    "id": "interact-hero-3-heading",
+                    "elType": "widget",
+                    "widgetType": "html",
+                    "settings": {
+                        "html": "<h1 style=\"color:#fff;font-size:4rem;line-height:1.15;\"><span style=\"display:block;overflow:hidden;height:1.5em;\"><span style=\"display:block;\">Modern Web Solutions</span></span><span style=\"display:block;overflow:hidden;height:1.5em;\"><span style=\"display:block;\">Built for Tomorrow's</span></span><span style=\"display:block;overflow:hidden;height:1.5em;\"><span style=\"display:block;\">Digital Needs</span></span></h1>",
+                        "_z_index": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "targetRefs": {
+        "heroRoot": {
+            "gutenberg": {
+                "blockPath": []
+            },
+            "elementor": {
+                "path": [
+                    0
+                ]
+            }
+        },
+        "heroVideo": {
+            "gutenberg": {
+                "blockPath": [],
+                "target": {
+                    "type": "selector",
+                    "value": "video"
+                }
+            },
+            "elementor": {
+                "path": [
+                    0,
+                    "elements",
+                    0
+                ],
+                "target": {
+                    "type": "selector",
+                    "value": "video"
+                }
+            }
+        },
+        "headingLines": {
+            "gutenberg": {
+                "blockPath": [],
+                "target": {
+                    "type": "selector",
+                    "value": "span span"
+                }
+            },
+            "elementor": {
+                "path": [
+                    0,
+                    "elements",
+                    1
+                ],
+                "target": {
+                    "type": "selector",
+                    "value": "span span"
+                }
+            }
+        }
+    },
+    "targetMappings": [
+        {
+            "targetRef": "heroRoot",
+            "interactionPath": [
+                "target"
+            ]
+        },
+        {
+            "targetRef": "headingLines",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                0,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroVideo",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                1,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroVideo",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                2,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "headingLines",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                3,
+                "target"
+            ]
+        }
+    ]
 }

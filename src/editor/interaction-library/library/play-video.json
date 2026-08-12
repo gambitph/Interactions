@@ -119,8 +119,8 @@
                         "timelines",
                         0,
                         "actions",
-                        1,
-                        "timing",
+                        0,
+                        "value",
                         "startTime"
                     ]
                 }
@@ -130,6 +130,24 @@
     "applyWhitelist": [
         "/video",
         "core/cover"
+    ],
+    "elementorExample": [
+        {
+            "id": "interact-play-video",
+            "elType": "widget",
+            "widgetType": "video",
+            "settings": {
+                "video_type": "hosted",
+                "insert_url": "yes",
+                "external_url": {
+                    "url": "https://videos.pexels.com/video-files/1572321/1572321-uhd_2560_1440_24fps.mp4"
+                },
+                "controls": "yes",
+                "mute": "yes",
+                "play_on_mobile": "yes",
+                "preload": "metadata"
+            }
+        }
     ],
     "gutenbergExample": "<!-- wp:video -->\n<figure class=\"wp-block-video\"><video src=\"https://videos.pexels.com/video-files/1572321/1572321-uhd_2560_1440_24fps.mp4\"></video></figure>\n<!-- /wp:video -->"
 }

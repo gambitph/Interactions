@@ -221,16 +221,18 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 		return Array.isArray( example ) && example.length > 0
 	}
 
-	// Insert into the nearest selected container. If the current selection is a
-	// widget, promote the insert target to its parent container so Elementor can
-	// paste sibling widgets alongside it.
-	getInsertContainer() {
-		let container =
-			this.selectedElement?.view?.getContainer?.() ||
-			window.elementor?.getCurrentElement?.()?.getContainer?.() ||
-			window.elementor?.getPreviewContainer?.() ||
-			window.elementor?.getPreviewView?.()?.getContainer?.() ||
-			null
+	// Top-level preset containers belong at the document root. Widget presets
+	// still use the nearest selected container and become siblings of widgets.
+	getInsertContainer( insertAtRoot = false ) {
+		let container = insertAtRoot
+			? window.elementor?.getPreviewContainer?.() ||
+				window.elementor?.getPreviewView?.()?.getContainer?.() ||
+				null
+			: this.selectedElement?.view?.getContainer?.() ||
+				window.elementor?.getCurrentElement?.()?.getContainer?.() ||
+				window.elementor?.getPreviewContainer?.() ||
+				window.elementor?.getPreviewView?.()?.getContainer?.() ||
+				null
 
 		container = container?.lookup?.() || container
 		if ( ! container ) {
@@ -351,6 +353,35 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 		}
 	}
 
+	// Follow a preset path through Elementor's runtime tree. Preset paths mirror
+	// the JSON example, while pasted children live in Backbone `elements`
+	// collections rather than directly on the returned Container objects.
+	resolveInsertedContainerPath( inserted, targetPath ) {
+		if ( targetPath.length === 0 ) {
+			return this.getFirstInsertedContainer( inserted )
+		}
+
+		let currentValue = Array.isArray( inserted ) ? inserted : [ inserted ]
+		for ( const key of targetPath ) {
+			const resolvedValue = currentValue?.lookup?.() || currentValue
+
+			if ( key === 'elements' ) {
+				const model = resolvedValue?.model || resolvedValue
+				currentValue = model?.get?.( 'elements' ) || resolvedValue?.elements
+			} else if ( typeof key === 'number' && typeof resolvedValue?.at === 'function' ) {
+				currentValue = resolvedValue.at( key )
+			} else {
+				currentValue = resolvedValue?.[ key ]
+			}
+
+			if ( ! currentValue ) {
+				return null
+			}
+		}
+
+		return currentValue?.lookup?.() || currentValue
+	}
+
 	// Resolve a semantic targetRef from the preset into a runtime interaction
 	// target by following the inserted tree path returned by Elementor.
 	resolveInsertedTargetMapping( mapping = {}, inserted, elementorTargetRefs = {} ) {
@@ -363,7 +394,7 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			return null
 		}
 
-		const container = targetPath.reduce( ( currentValue, key ) => currentValue?.[ key ], inserted )
+		const container = this.resolveInsertedContainerPath( inserted, targetPath )
 		if ( ! container ) {
 			return null
 		}
@@ -385,13 +416,14 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 			return null
 		}
 
-		const container = this.getInsertContainer()
-		if ( ! container ) {
+		const normalizedExample = normalizeElementorExample( getPresetBuilderExample( preset, 'elementor' ) )
+		if ( normalizedExample.length === 0 ) {
 			return null
 		}
 
-		const normalizedExample = normalizeElementorExample( getPresetBuilderExample( preset, 'elementor' ) )
-		if ( normalizedExample.length === 0 ) {
+		const insertAtRoot = normalizedExample.every( element => element.elType === 'container' )
+		const container = this.getInsertContainer( insertAtRoot )
+		if ( ! container ) {
 			return null
 		}
 
@@ -421,13 +453,13 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 
 		return {
 			targetMappingsSource: inserted,
-			// Prefer an explicit mapped target, but fall back to the first inserted
-			// element so simple single-widget presets still come in fully targeted.
+			// Explicit mappings must resolve their own node; falling back here
+			// silently applies interactions to the inserted root instead.
 			resolveTargetMappingTarget: mapping => this.resolveInsertedTargetMapping(
 				mapping,
 				inserted,
 				targetRefs
-			) || defaultTarget,
+			),
 			defaultTarget,
 			targetRefs,
 		}

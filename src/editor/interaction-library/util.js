@@ -170,7 +170,26 @@ const resolveTargetMappingTarget = ( blockOrTarget, mapping = {}, targetRefs = {
 	}
 
 	if ( ! blockOrTarget?.clientId ) {
-		return blockOrTarget
+		const targetConfig = targetRefs?.[ mapping.targetRef ]?.target
+		const childSelector = targetConfig?.value || ''
+		if ( ! childSelector || ! blockOrTarget?.value ) {
+			return blockOrTarget
+		}
+
+		// Apply mode receives an existing target instead of an inserted editor
+		// tree, so scope semantic child refs to that selected target directly.
+		const baseSelector = blockOrTarget.type === 'block'
+			? `#${ blockOrTarget.value }`
+			: blockOrTarget.type === 'class'
+				? `.${ blockOrTarget.value }`
+				: blockOrTarget.value
+
+		return {
+			type: targetConfig.type || 'selector',
+			value: `${ baseSelector } ${ childSelector }`,
+			blockName: targetConfig.blockName || blockOrTarget.blockName || '',
+			options: targetConfig.options || '',
+		}
 	}
 
 	const resolvedBlockPath = Array.isArray( mapping.blockPath )
@@ -182,7 +201,23 @@ const resolveTargetMappingTarget = ( blockOrTarget, mapping = {}, targetRefs = {
 	}
 
 	const block = getValueAtPath( blockOrTarget, resolvedBlockPath )
-	return block?.clientId ? createTargetObj( block ) : null
+	if ( ! block?.clientId ) {
+		return null
+	}
+
+	const blockTarget = createTargetObj( block )
+	const targetConfig = targetRefs?.[ mapping.targetRef ]?.target
+	if ( ! targetConfig ) {
+		return blockTarget
+	}
+
+	const childSelector = targetConfig.value || ''
+	return {
+		type: targetConfig.type || 'selector',
+		value: childSelector ? `#${ blockTarget.value } ${ childSelector }` : `#${ blockTarget.value }`,
+		blockName: targetConfig.blockName || blockTarget.blockName,
+		options: targetConfig.options || '',
+	}
 }
 
 /**

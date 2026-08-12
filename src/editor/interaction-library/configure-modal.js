@@ -84,7 +84,7 @@ export const ConfigureModal = props => {
 		// Allow an entry to handle configurations and block generation for complex interactions
 		if ( config ) {
 			try {
-				isRunDefaultConfig = config( selectedPreset, optionValues, interactionSetup )
+				isRunDefaultConfig = config( selectedPreset, optionValues, interactionSetup, mode )
 			} catch ( error ) {
 				console.error( 'Interactions Library configuration error:', error.message ) // eslint-disable-line no-console
 				isRunDefaultConfig = false
