@@ -183,5 +183,37 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:heading -->\r\n<h2 class=\"wp-block-heading\">Interactions</h2>\r\n<!-- /wp:heading -->"
+    "gutenbergExample": "<!-- wp:heading -->\r\n<h2 class=\"wp-block-heading\">Interactions</h2>\r\n<!-- /wp:heading -->",
+    "elementorExample": [
+        {
+            "id": "interact-flickering-text",
+            "elType": "widget",
+            "widgetType": "text-editor",
+            "settings": {
+                "editor": "<h2>Interactions</h2>"
+            }
+        }
+    ],
+    "bricksExample": [
+        {
+            "id": "interact-flickering-text",
+            "name": "heading",
+            "settings": {
+                "text": "Interactions"
+            }
+        }
+    ],
+    "diviExample": {
+        "id": "interact-flickering-text",
+        "name": "divi/text",
+        "props": {
+            "content": {
+                "innerContent": {
+                    "desktop": {
+                        "value": "<h2>Interactions</h2>"
+                    }
+                }
+            }
+        }
+    }
 }

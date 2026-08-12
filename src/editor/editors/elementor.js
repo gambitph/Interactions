@@ -1,6 +1,12 @@
 import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
+import { InteractionLibraryRoot } from '../interaction-library'
+import { normalizeElementorExample } from '../interaction-library/elementor-example'
+import {
+	getPresetBuilderExample,
+	getPresetBuilderTargetRefs,
+} from '../interaction-library/preset-schema'
 
 import { __ } from '@wordpress/i18n'
 import { Button } from '@wordpress/components'
@@ -60,7 +66,6 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 
 			return (
 				<>
-
 					<Button
 						className={ `interact-elementor-launcher${ isOpen ? ' is-hidden' : '' }` }
 						variant="primary"
@@ -75,13 +80,6 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 					>
 						{ __( 'Interactions', 'interactions' ) }
 					</Button>
-					{ /* { isOpen && (
-						<div
-							className="interact-elementor-backdrop"
-							onClick={ () => setIsOpen( false ) }
-							aria-hidden="true"
-						/>
-					) } */ }
 					<div className={ `interact-pagebuilder-panel interact-elementor-panel${ isOpen ? ' is-open' : '' }` }>
 						<div className="interact-pagebuilder-panel__header">
 							<div className="interact-pagebuilder-panel__title">
@@ -102,6 +100,7 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 							</div>
 						</div>
 					</div>
+					<InteractionLibraryRoot />
 				</>
 			)
 		}
@@ -130,6 +129,8 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 		return null
 	}
 
+	// Some Elementor widgets render through editor-only wrappers, so the
+	// interaction target needs to point at the frontend child instead.
 	getWidgetContentTargetSelector( targetElement, elementId ) {
 		if ( ! targetElement || ! elementId ) {
 			return ''
@@ -213,6 +214,255 @@ class ElementorInteractionsEditor extends InteractionsEditorAbstract {
 	// Return the currently selected Elementor target.
 	getCurrentSelectedTarget() {
 		return this.buildTargetFromElement( this.selectedElement?.element || null )
+	}
+
+	canInsertPreset( preset ) {
+		const example = getPresetBuilderExample( preset, 'elementor' )
+		return Array.isArray( example ) && example.length > 0
+	}
+
+	// Top-level preset containers belong at the document root. Widget presets
+	// still use the nearest selected container and become siblings of widgets.
+	getInsertContainer( insertAtRoot = false ) {
+		let container = insertAtRoot
+			? window.elementor?.getPreviewContainer?.() ||
+				window.elementor?.getPreviewView?.()?.getContainer?.() ||
+				null
+			: this.selectedElement?.view?.getContainer?.() ||
+				window.elementor?.getCurrentElement?.()?.getContainer?.() ||
+				window.elementor?.getPreviewContainer?.() ||
+				window.elementor?.getPreviewView?.()?.getContainer?.() ||
+				null
+
+		container = container?.lookup?.() || container
+		if ( ! container ) {
+			return null
+		}
+
+		const elementType = container.model?.get?.( 'elType' ) || ''
+		if ( elementType === 'widget' ) {
+			return container.parent || null
+		}
+
+		return container
+	}
+
+	getFirstInsertedContainer( inserted ) {
+		if ( Array.isArray( inserted ) ) {
+			for ( const item of inserted ) {
+				const firstInsertedContainer = this.getFirstInsertedContainer( item )
+				if ( firstInsertedContainer ) {
+					return firstInsertedContainer
+				}
+			}
+			return null
+		}
+
+		return inserted?.lookup?.() || inserted || null
+	}
+
+	// Read the minimum metadata we need from either the live preview DOM or the
+	// inserted container model. Insert mode can resolve before the preview node
+	// exists, so we cannot depend on the DOM alone here.
+	getContainerMeta( container ) {
+		const resolvedContainer = container?.lookup?.() || container
+		const model = resolvedContainer?.model || resolvedContainer
+		const element = resolvedContainer?.view?.$el?.get?.( 0 ) || null
+		const targetElement = element?.closest?.( '.elementor-element[data-id]' ) || null
+
+		return {
+			element,
+			targetElement,
+			elementId:
+				targetElement?.getAttribute?.( 'data-id' ) ||
+				model?.get?.( 'id' ) ||
+				model?.id ||
+				'',
+			elementType:
+				targetElement?.getAttribute?.( 'data-element_type' ) ||
+				model?.get?.( 'elType' ) ||
+				'',
+			widgetType:
+				targetElement?.getAttribute?.( 'data-widget_type' ) ||
+				model?.get?.( 'widgetType' ) ||
+				'',
+		}
+	}
+
+	// Build a normal interaction target from an inserted Elementor container.
+	// This powers both the default target for simple presets and path-based
+	// targetRef resolution for complex presets.
+	buildTargetFromContainer( container, targetType = 'selector' ) {
+		const {
+			element,
+			elementId,
+			elementType,
+			widgetType,
+		} = this.getContainerMeta( container )
+
+		if ( element ) {
+			return this.buildTargetFromElement( element, targetType )
+		}
+
+		if ( ! elementId ) {
+			return null
+		}
+
+		const wrapperSelector = `.elementor-element.elementor-element-${ elementId }`
+		const targetTargetType = targetType === 'class' ? 'class' : 'selector'
+		const targetValue = targetTargetType === 'class'
+			? `elementor-element-${ elementId }`
+			: widgetType.startsWith( 'button.' )
+				? `${ wrapperSelector } a.elementor-button`
+				: widgetType.startsWith( 'icon.' )
+					? `${ wrapperSelector } .elementor-icon`
+					: wrapperSelector
+
+		return {
+			type: targetTargetType,
+			value: targetValue,
+			blockName: widgetType || elementType || 'elementor-element',
+		}
+	}
+
+	getWrapperSelectorFromContainer( container ) {
+		const { elementId } = this.getContainerMeta( container )
+
+		return elementId ? `.elementor-element.elementor-element-${ elementId }` : ''
+	}
+
+	// Scope a preset's child selector to the inserted widget wrapper so
+	// `targetRefs` can point at nested frontend elements such as buttons.
+	buildChildSelectorTarget( container, targetConfig = {} ) {
+		const baseTarget = this.buildTargetFromContainer( container )
+		if ( ! baseTarget ) {
+			return null
+		}
+
+		const childSelector = targetConfig.value || ''
+		const wrapperSelector = this.getWrapperSelectorFromContainer( container ) || baseTarget.value
+		const scopedSelector = childSelector
+			? `${ wrapperSelector } ${ childSelector }`
+			: wrapperSelector
+
+		return {
+			type: targetConfig.type || 'selector',
+			value: scopedSelector,
+			blockName: targetConfig.blockName || baseTarget.blockName,
+			options: targetConfig.options || '',
+		}
+	}
+
+	// Follow a preset path through Elementor's runtime tree. Preset paths mirror
+	// the JSON example, while pasted children live in Backbone `elements`
+	// collections rather than directly on the returned Container objects.
+	resolveInsertedContainerPath( inserted, targetPath ) {
+		if ( targetPath.length === 0 ) {
+			return this.getFirstInsertedContainer( inserted )
+		}
+
+		let currentValue = Array.isArray( inserted ) ? inserted : [ inserted ]
+		for ( const key of targetPath ) {
+			const resolvedValue = currentValue?.lookup?.() || currentValue
+
+			if ( key === 'elements' ) {
+				const model = resolvedValue?.model || resolvedValue
+				currentValue = model?.get?.( 'elements' ) || resolvedValue?.elements
+			} else if ( typeof key === 'number' && typeof resolvedValue?.at === 'function' ) {
+				currentValue = resolvedValue.at( key )
+			} else {
+				currentValue = resolvedValue?.[ key ]
+			}
+
+			if ( ! currentValue ) {
+				return null
+			}
+		}
+
+		return currentValue?.lookup?.() || currentValue
+	}
+
+	// Resolve a semantic targetRef from the preset into a runtime interaction
+	// target by following the inserted tree path returned by Elementor.
+	resolveInsertedTargetMapping( mapping = {}, inserted, elementorTargetRefs = {} ) {
+		const targetRefConfig = elementorTargetRefs?.[ mapping.targetRef ]
+		const targetPath = Array.isArray( targetRefConfig )
+			? targetRefConfig
+			: targetRefConfig?.path
+
+		if ( ! Array.isArray( targetPath ) ) {
+			return null
+		}
+
+		const container = this.resolveInsertedContainerPath( inserted, targetPath )
+		if ( ! container ) {
+			return null
+		}
+
+		if ( targetRefConfig?.target ) {
+			return this.buildChildSelectorTarget( container, targetRefConfig.target )
+		}
+
+		return this.buildTargetFromContainer( container )
+	}
+
+	// Insert a preset into Elementor through its paste command so the builder
+	// can create any required wrapper containers automatically. The returned
+	// context is later consumed by the shared library flow to resolve either:
+	// 1. explicit targetRefs/targetMappings, or
+	// 2. a default target for simple presets with only `elementorExample`.
+	async insertPresetContent( preset ) {
+		if ( ! this.canInsertPreset( preset ) || ! window.$e?.run ) {
+			return null
+		}
+
+		const normalizedExample = normalizeElementorExample( getPresetBuilderExample( preset, 'elementor' ) )
+		if ( normalizedExample.length === 0 ) {
+			return null
+		}
+
+		const insertAtRoot = normalizedExample.every( element => element.elType === 'container' )
+		const container = this.getInsertContainer( insertAtRoot )
+		if ( ! container ) {
+			return null
+		}
+
+		const inserted = await window.$e.run( 'document/elements/paste', {
+			container,
+			rebuild: true,
+			storageType: 'json',
+			data: JSON.stringify( {
+				type: 'elementor',
+				elements: normalizedExample,
+			} ),
+			options: {
+				at: container.view?.collection?.length,
+			},
+		} )
+
+		// The first inserted container becomes the fallback target for presets
+		// that do not declare target mappings.
+		const firstInsertedContainer = this.getFirstInsertedContainer( inserted )
+		if ( ! firstInsertedContainer ) {
+			return null
+		}
+		const defaultTarget = this.buildTargetFromContainer( firstInsertedContainer )
+
+		window.$e.internal?.( 'document/save/set-is-modified', { status: true } )
+		const targetRefs = getPresetBuilderTargetRefs( preset, 'elementor' )
+
+		return {
+			targetMappingsSource: inserted,
+			// Explicit mappings must resolve their own node; falling back here
+			// silently applies interactions to the inserted root instead.
+			resolveTargetMappingTarget: mapping => this.resolveInsertedTargetMapping(
+				mapping,
+				inserted,
+				targetRefs
+			),
+			defaultTarget,
+			targetRefs,
+		}
 	}
 
 	// Track the current Elementor selection from the editor panel.

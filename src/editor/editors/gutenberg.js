@@ -1,8 +1,10 @@
 import IconSVG from '../assets/icon.svg'
 import InteractionsApp from '../app'
 import InteractionsEditorAbstract from './abstract'
-import { InteractionLibrary } from '../interaction-library'
+import { InteractionLibraryRoot } from '../interaction-library'
+import { getPresetBuilderExample } from '../interaction-library/preset-schema'
 
+import { parse } from '@wordpress/blocks'
 import { registerPlugin } from '@wordpress/plugins'
 import { __ } from '@wordpress/i18n'
 import {
@@ -53,19 +55,11 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			)
 		}
 
-		const GutenbergInteractionLibraryComponent = () => {
-			const interactionLibraryMode = useSelect( select =>
-				select( 'interact/interaction-library-modal' ).getMode(),
-			[] )
-
-			return interactionLibraryMode ? <InteractionLibrary /> : null
-		}
-
 		registerPlugin( 'interact-editor', {
 			render: GutenbergInteractionsEditorComponent,
 		} )
 		registerPlugin( 'interact-editor-library', {
-			render: GutenbergInteractionLibraryComponent,
+			render: InteractionLibraryRoot,
 		} )
 
 		return super.init()
@@ -124,6 +118,30 @@ class GutenbergInteractionsEditor extends InteractionsEditorAbstract {
 			value: className,
 			blockName: block.name || '',
 			options: '',
+		}
+	}
+
+	// Persist the current post when the library or interaction editor saves.
+	saveEditor() {
+		return Promise.resolve( dispatch( 'core/editor' )?.savePost?.() )
+	}
+
+	canInsertPreset( preset ) {
+		return !! getPresetBuilderExample( preset, 'gutenberg' )
+	}
+
+	// Insert the preset block tree and return it so target mappings can resolve
+	// against the freshly inserted Gutenberg blocks.
+	insertPresetContent( preset ) {
+		const [ block ] = parse( getPresetBuilderExample( preset, 'gutenberg' ) ?? '' )
+		if ( ! block ) {
+			return null
+		}
+
+		dispatch( 'core/block-editor' ).insertBlocks( block )
+
+		return {
+			targetMappingsSource: block,
 		}
 	}
 }

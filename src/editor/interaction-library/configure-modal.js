@@ -1,9 +1,7 @@
 /**
  * Internal deprendencies
  */
-import {
-	setValueAtPath, addLoopDelayToPreview, applyTargetMappings,
-} from './util'
+import { setValueAtPath, addLoopDelayToPreview } from './util'
 import { PropertyControl } from '../components/timeline/property-control'
 import TargetSelector from '../components/target-selector'
 import getVideoUrl from './videos'
@@ -12,6 +10,11 @@ import { useInteractions } from '../hooks'
 import {
 	openInteractionsSidebar, createNewAction, createNewInteraction,
 } from '~interact/editor/util'
+import {
+	insertLibraryPreset,
+	isBuilderEditor,
+	resolveLibraryPresetTargets,
+} from '~interact/editor/editors'
 
 /**
  * External deprendencies
@@ -20,11 +23,13 @@ import {
 /**
  * WordPress deprendencies
  */
-import { Button } from '@wordpress/components'
-import { parse } from '@wordpress/blocks'
+import {
+	Button,
+	Spinner,
+} from '@wordpress/components'
 import { dispatch } from '@wordpress/data'
 import {
-	useState, useMemo, useEffect,
+	useState, useMemo, useEffect, useRef, useCallback,
 } from '@wordpress/element'
 import { __ } from '@wordpress/i18n'
 
@@ -43,11 +48,26 @@ export const ConfigureModal = props => {
 	const [ optionValues, setOptionValues ] = useState( {} )
 	const [ selectedTarget, setSelectedTarget ] = useState( interactionTarget )
 	const [ sideBarEl, setSideBarEl ] = useState( null )
+	const [ isApplying, setIsApplying ] = useState( !! selectedPreset.skipConfig )
+	const didAutoApplyRef = useRef( false )
+	const selectedTargetLabel = isBuilderEditor()
+		? __( 'This interaction will be applied to the selected element. Click here to modify.', 'interactions' )
+		: __( 'This interaction will be applied to the selected block. Click here to modify.', 'interactions' )
 
 	useEffect( () => {
 		// Set the editor sidebar as anchor for target selector
-		setSideBarEl( document.querySelector( '.interface-interface-skeleton__sidebar' ) || null )
+		setSideBarEl(
+			document.querySelector( '.interface-interface-skeleton__sidebar, .interact-pagebuilder-sidebar' ) || null
+		)
 	}, [] )
+
+	useEffect( () => {
+		didAutoApplyRef.current = false
+	}, [ selectedPreset ] )
+
+	useEffect( () => {
+		setIsApplying( !! selectedPreset.skipConfig )
+	}, [ selectedPreset ] )
 
 	const interactionSetup = useMemo( () => ( selectedPreset.interactionSetup ), [ selectedPreset ] )
 	const configurableOptions = useMemo( () => selectedPreset.configurableOptions ?? [], [ selectedPreset ] )
@@ -56,13 +76,15 @@ export const ConfigureModal = props => {
 		updateInteraction,
 	} = useInteractions()
 
-	const handleApply = () => {
+	const handleApply = useCallback( async () => {
+		setIsApplying( true )
+
 		const config = getConfig( selectedPreset.config )
 		let isRunDefaultConfig = true
 		// Allow an entry to handle configurations and block generation for complex interactions
 		if ( config ) {
 			try {
-				isRunDefaultConfig = config( selectedPreset, optionValues, interactionSetup )
+				isRunDefaultConfig = config( selectedPreset, optionValues, interactionSetup, mode )
 			} catch ( error ) {
 				console.error( 'Interactions Library configuration error:', error.message ) // eslint-disable-line no-console
 				isRunDefaultConfig = false
@@ -80,21 +102,18 @@ export const ConfigureModal = props => {
 				} )
 			} )
 
-			const targetMappings = selectedPreset.targetMappings
-
-			// If mode is inset, create a new block based on the seralized example.
-			// Otherwise, use the target from target selector.
+			// In insert mode, let the active editor adapter own how preset content
+			// is created so this modal no longer depends on Gutenberg block APIs.
 			if ( mode === 'insert' ) {
-				const block = parse( selectedPreset.serializedBlockExample ?? '' )[ 0 ]
-				if ( ! block ) {
+				const insertedContent = await insertLibraryPreset( selectedPreset )
+				if ( ! insertedContent ) {
+					setIsApplying( false )
 					return
 				}
-				dispatch( 'core/block-editor' ).insertBlocks( block )
 
-				// If target mappings are provided, dynamically create target for each.
-				applyTargetMappings( interactionSetup, targetMappings, block, )
+				resolveLibraryPresetTargets( interactionSetup, selectedPreset, insertedContent )
 			} else if ( mode === 'apply' ) {
-				applyTargetMappings( interactionSetup, targetMappings, selectedTarget )
+				resolveLibraryPresetTargets( interactionSetup, selectedPreset, selectedTarget )
 			}
 		}
 
@@ -139,7 +158,6 @@ export const ConfigureModal = props => {
 						},
 					} ) )
 					window?.dispatchEvent( new CustomEvent( 'interact/save-interaction' ) )
-					dispatch( 'core/editor' ).savePost()
 				}, 100 )
 			} else {
 				const newInteraction = createNewInteraction(
@@ -150,12 +168,54 @@ export const ConfigureModal = props => {
 				updateInteraction( newInteraction )
 			}
 		} )
-	}
 
-	// If skipConfig is true, just apply the interaction user without configuration.
-	if ( selectedPreset.skipConfig ) {
+		setIsApplying( false )
+	}, [
+		closeModal,
+		configurableOptions,
+		interactionSetup,
+		mode,
+		optionValues,
+		selectedPreset,
+		selectedTarget,
+		updateInteraction,
+	] )
+
+	useEffect( () => {
+		// Auto-apply skip-config presets once after the modal mounts for the
+		// selected preset, instead of triggering inserts during render.
+		if ( ! selectedPreset.skipConfig || didAutoApplyRef.current ) {
+			return
+		}
+
+		didAutoApplyRef.current = true
 		handleApply()
-		return null
+	}, [ selectedPreset, handleApply ] )
+
+	// Skip-config presets apply immediately and do not render controls.
+	if ( selectedPreset.skipConfig ) {
+		return (
+			<div
+				className="interact-interaction-library__configure-loading"
+				style={ {
+					minHeight: '260px',
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'center',
+					gap: '12px',
+					textAlign: 'center',
+				} }
+			>
+				<Spinner />
+				<p style={ { margin: 0 } }>
+					{ mode === 'insert'
+						? __( 'Inserting interaction…', 'interactions' )
+						: __( 'Applying interaction…', 'interactions' )
+					}
+				</p>
+			</div>
+		)
 	}
 
 	return (
@@ -209,7 +269,7 @@ export const ConfigureModal = props => {
 						{ mode === 'apply' && (
 							<details className="interact-interaction-library__configure__target-selector">
 								<summary>
-									{ __( 'This interaction will be applied to the selected block. Click here to modify.', 'interactions' ) }
+									{ selectedTargetLabel }
 								</summary>
 								<TargetSelector
 									isHorizontal={ false }
@@ -233,12 +293,20 @@ export const ConfigureModal = props => {
 				<Button
 					variant="primary"
 					className="interact-interaction-library__configure__apply-button__button"
+					disabled={ isApplying }
 					onClick={ handleApply }
 				>
-					{ mode === 'insert'
-						? __( 'Insert Interaction', 'interactions' )
-						: __( 'Apply Interaction', 'interactions' )
-					}
+					{ isApplying
+						? (
+							mode === 'insert'
+								? __( 'Inserting…', 'interactions' )
+								: __( 'Applying…', 'interactions' )
+						)
+						: (
+							mode === 'insert'
+								? __( 'Insert Interaction', 'interactions' )
+								: __( 'Apply Interaction', 'interactions' )
+						) }
 				</Button>
 			</div>
 		</>

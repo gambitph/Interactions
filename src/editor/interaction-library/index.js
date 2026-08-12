@@ -5,6 +5,10 @@ import './store'
 import { SelectModal } from './select-modal'
 import { ConfigureModal } from './configure-modal'
 import { isPresetApplicable, useInteractionPresets } from './util'
+import {
+	getInteractionsEditor,
+	isGutenbergEditor,
+} from '~interact/editor/editors'
 
 /**
  * External deprendencies
@@ -120,6 +124,8 @@ const APPLY_CATEGORIES = [
 ]
 
 export const InteractionLibrary = () => {
+	const isGutenberg = isGutenbergEditor()
+	const interactionsEditor = getInteractionsEditor()
 	const {
 		interactionTarget, interactionMode, favorites,
 	} = useSelect( select => {
@@ -154,11 +160,14 @@ export const InteractionLibrary = () => {
 
 	// Sort all first based on applicability and categories.
 	const sortedPresets = useMemo( () => {
+		const availablePresets = interactionMode === 'insert'
+			? interactionPresets.filter( preset => interactionsEditor.canInsertPreset( preset ) )
+			: interactionPresets
 		let applicable = []
 		const notApplicable = []
 
-		if ( interactionTarget?.blockName ) {
-			interactionPresets.forEach( preset => {
+		if ( interactionMode === 'apply' && isGutenberg && interactionTarget?.blockName ) {
+			availablePresets.forEach( preset => {
 				if ( isPresetApplicable( preset, interactionTarget.blockName ) ) {
 					applicable.push( { ...preset, isApplicable: true } )
 				} else {
@@ -166,7 +175,10 @@ export const InteractionLibrary = () => {
 				}
 			} )
 		} else {
-			applicable = interactionPresets
+			applicable = availablePresets.map( preset => ( {
+				...preset,
+				isApplicable: true,
+			} ) )
 		}
 
 		// Make a sorter function
@@ -189,7 +201,7 @@ export const InteractionLibrary = () => {
 		notApplicable.sort( sorter )
 
 		return [ ...applicable, ...notApplicable ]
-	}, [ interactionTarget, categoryPriority, interactionPresets ] )
+	}, [ interactionTarget, categoryPriority, interactionPresets, interactionsEditor, isGutenberg, interactionMode ] )
 
 	const handleClose = () => {
 		// Close the modal and reset the interaction library target.
@@ -272,4 +284,12 @@ export const InteractionLibrary = () => {
 			) }
 		</Modal>
 	)
+}
+
+export const InteractionLibraryRoot = () => {
+	const interactionLibraryMode = useSelect( select =>
+		select( 'interact/interaction-library-modal' ).getMode(),
+	[] )
+
+	return interactionLibraryMode ? <InteractionLibrary /> : null
 }

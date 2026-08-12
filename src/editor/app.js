@@ -1,5 +1,6 @@
 import ElementSVG from './assets/element.svg'
 import PageSVG from './assets/page.svg'
+import LibrarySVG from './assets/library.svg'
 import {
 	AddInteractionButton,
 	InteractionButton,
@@ -8,6 +9,10 @@ import {
 } from './components'
 import { createNewInteraction, createNewAction } from './util'
 import { useInteractions } from './hooks'
+import {
+	getCurrentSelectedTarget,
+	isBuilderEditor,
+} from './editors'
 import { interactions as interactionsConfig, manageInteractionsUrl } from 'interactions'
 
 import { __ } from '@wordpress/i18n'
@@ -74,6 +79,7 @@ const InteractionsApp = ( {
 	// Interaction library open modal and set target function.
 	const {
 		setMode: setInteractionLibraryMode,
+		setTarget: setInteractionLibraryTarget,
 	} = useDispatch( 'interact/interaction-library-modal' )
 
 	const [ selectedInteraction, setSelectedInteraction ] = useState( null )
@@ -208,6 +214,23 @@ const InteractionsApp = ( {
 		setImportExportModalProps( null )
 	}
 
+	const onOpenInteractionLibraryHandler = () => {
+		const selectedTarget = getCurrentSelectedTarget()
+
+		if ( ! selectedTarget ) {
+			alert( __( 'Select an element in the editor first before opening the Interaction Library.', 'interactions' ) ) // eslint-disable-line no-alert
+			return
+		}
+
+		setInteractionLibraryTarget( selectedTarget )
+		setInteractionLibraryMode( 'apply' )
+	}
+
+	const onOpenInteractionLibraryInsertHandler = () => {
+		setInteractionLibraryTarget( null )
+		setInteractionLibraryMode( 'insert' )
+	}
+
 	return <>
 		{ selectedInteraction === null && loadingError && isShowingError &&
 			<PanelBody>
@@ -234,6 +257,29 @@ const InteractionsApp = ( {
 						</Button>
 					</div>
 				</Notice>
+			</PanelBody>
+		}
+		{ isBuilderEditor() && selectedInteraction === null &&
+			<PanelBody>
+				<BaseControl
+					className="interact-list-control"
+					label={ __( 'Interaction Library', 'interactions' ) }
+				>
+					<div className="interact-panel-side-buttons">
+						<Button
+							icon={ <LibrarySVG width="20" height="20" /> }
+							onClick={ onOpenInteractionLibraryHandler }
+						>
+							{ __( 'Apply', 'interactions' ) }
+						</Button>
+						<Button
+							icon={ <LibrarySVG width="20" height="20" /> }
+							onClick={ onOpenInteractionLibraryInsertHandler }
+						>
+							{ __( 'Insert', 'interactions' ) }
+						</Button>
+					</div>
+				</BaseControl>
 			</PanelBody>
 		}
 		{ allInteractions.length > 0 && selectedInteraction === null &&

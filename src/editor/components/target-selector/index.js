@@ -4,6 +4,7 @@ import { GridLayout, FlexLayout } from '~interact/editor/components'
 import {
 	getSelectedBlockAnchor,
 	isBricksEditor,
+	isDiviEditor,
 	isElementorEditor,
 	startEditorElementPicker,
 } from '~interact/editor/editors'
@@ -43,7 +44,7 @@ const TargetSelector = props => {
 		noArrow = false,
 	} = props
 
-	const isBuilder = isBricksEditor() || isElementorEditor()
+	const isBuilder = isBricksEditor() || isElementorEditor() || isDiviEditor()
 	const isElementor = isElementorEditor()
 	const hasBlockEditor = !! select( 'core/block-editor' )?.getSelectedBlockClientId
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false )
@@ -59,6 +60,8 @@ const TargetSelector = props => {
 	const displayType = isElementor && elementorUiType === 'elementor-element'
 		? 'elementor-element'
 		: value.type
+	// Remove the picker button for Divi when the target type is class, since Divi doesn't support it.
+	const isDiviManualClassInput = isDiviEditor() && displayType === 'class'
 
 	const targetButton = (
 		<>
@@ -219,6 +222,13 @@ const TargetSelector = props => {
 		targetOptions = targetOptions.filter( target => bricksTargetTypes.includes( target.value ) )
 	}
 
+	if ( isDiviEditor() ) {
+		const diviTargetOrder = [ 'selector', 'class', 'trigger', 'window' ]
+		targetOptions = diviTargetOrder
+			.map( targetValue => targetOptions.find( target => target.value === targetValue ) )
+			.filter( Boolean )
+	}
+
 	useEffect( () => {
 		return () => {
 			elementPickerStopRef.current?.()
@@ -313,7 +323,7 @@ const TargetSelector = props => {
 				) }
 				{ displayType === 'class' && (
 					<FlexLayout justifyContent="start">
-						{ isHorizontal && targetButton }
+						{ isHorizontal && ! isDiviManualClassInput && targetButton }
 						<TextControl
 							label={ __( 'CSS Class', 'interactions' ) }
 							value={ value.value }
@@ -331,7 +341,7 @@ const TargetSelector = props => {
 								}
 							} }
 						/>
-						{ ! isHorizontal && targetButton }
+						{ ! isHorizontal && ! isDiviManualClassInput && targetButton }
 					</FlexLayout>
 				) }
 				{ displayType === 'block-name' && (

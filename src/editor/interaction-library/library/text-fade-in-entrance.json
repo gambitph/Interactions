@@ -83,7 +83,7 @@
                         "timelines",
                         0,
                         "actions",
-                        2,
+                        0,
                         "timing",
                         "duration"
                     ]
@@ -101,5 +101,37 @@
             ]
         }
     ],
-    "serializedBlockExample": "<!-- wp:paragraph -->\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula. Integer mollis quam vel euismod auctor. Donec et velit blandit, pharetra nisl et, cursus leo. Duis hendrerit leo vel nisl consectetur, eget fringilla nisi mattis. Sed ac libero luctus, condimentum ligula ac, laoreet arcu. Duis congue diam et consequat lobortis.</p>\r\n<!-- /wp:paragraph -->"
+    "gutenbergExample": "<!-- wp:paragraph -->\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula. Integer mollis quam vel euismod auctor. Donec et velit blandit, pharetra nisl et, cursus leo. Duis hendrerit leo vel nisl consectetur, eget fringilla nisi mattis. Sed ac libero luctus, condimentum ligula ac, laoreet arcu. Duis congue diam et consequat lobortis.</p>\r\n<!-- /wp:paragraph -->",
+    "elementorExample": [
+        {
+            "id": "interact-text-fade-in-entrance",
+            "elType": "widget",
+            "widgetType": "text-editor",
+            "settings": {
+                "editor": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula.</p>"
+            }
+        }
+    ],
+    "bricksExample": [
+        {
+            "id": "interact-text-fade-in-entrance",
+            "name": "text-basic",
+            "settings": {
+                "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula.</p>"
+            }
+        }
+    ],
+    "diviExample": {
+        "id": "interact-text-fade-in-entrance",
+        "name": "divi/text",
+        "props": {
+            "content": {
+                "innerContent": {
+                    "desktop": {
+                        "value": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel consectetur odio, at sagittis lectus. In at sem et lectus imperdiet vehicula.</p>"
+                    }
+                }
+            }
+        }
+    }
 }

@@ -128,5 +128,92 @@
         "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->",
         "<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"sizeSlug\":\"large\",\"style\":{\"border\":{\"radius\":\"12px\"}}} -->\r\n<figure class=\"wp-block-image size-large has-custom-border\"><img src=\"https://images.unsplash.com/photo-1647161221900-2cabf3208088?q=80&w=2066&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\" alt=\"\" style=\"border-radius:12px\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column -->"
     ],
+    "elementorExample": [
+        {
+            "id": "interact-parallax",
+            "elType": "container",
+            "settings": {
+                "content_width": "full",
+                "flex_direction": "row"
+            },
+            "elements": [
+                {
+                    "id": "interact-parallax-layer-1",
+                    "elType": "container",
+                    "settings": {
+                        "content_width": "full"
+                    },
+                    "elements": [
+                        {
+                            "id": "interact-parallax-image-1",
+                            "elType": "widget",
+                            "widgetType": "image",
+                            "settings": {
+                                "image": {
+                                    "id": "",
+                                    "url": "https://images.unsplash.com/photo-1541417904950-b855846fe074?q=80&w=1682&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                    "source": "url",
+                                    "size": ""
+                                },
+                                "image_size": "full",
+                                "caption_source": "none",
+                                "link_to": "none"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "interact-parallax-layer-2",
+                    "elType": "container",
+                    "settings": {
+                        "content_width": "full"
+                    },
+                    "elements": [
+                        {
+                            "id": "interact-parallax-image-2",
+                            "elType": "widget",
+                            "widgetType": "image",
+                            "settings": {
+                                "image": {
+                                    "id": "",
+                                    "url": "https://images.unsplash.com/photo-1538964173425-93884d739596?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                    "source": "url",
+                                    "size": ""
+                                },
+                                "image_size": "full",
+                                "caption_source": "none",
+                                "link_to": "none"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "interact-parallax-layer-3",
+                    "elType": "container",
+                    "settings": {
+                        "content_width": "full"
+                    },
+                    "elements": [
+                        {
+                            "id": "interact-parallax-image-3",
+                            "elType": "widget",
+                            "widgetType": "image",
+                            "settings": {
+                                "image": {
+                                    "id": "",
+                                    "url": "https://images.unsplash.com/photo-1484821582734-6c6c9f99a672?q=80&w=3133&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                    "source": "url",
+                                    "size": ""
+                                },
+                                "image_size": "full",
+                                "caption_source": "none",
+                                "link_to": "none"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     "applyWhitelist": []
 }

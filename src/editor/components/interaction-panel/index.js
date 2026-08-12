@@ -23,6 +23,7 @@ import {
 	useLayoutEffect,
 } from '@wordpress/element'
 import { Icon, download } from '@wordpress/icons'
+import { saveCurrentEditor } from '~interact/editor/editors'
 import TargetSelector from '../target-selector'
 import { getInteractionWarning } from './util'
 
@@ -225,11 +226,13 @@ const InteractionPanel = props => {
 		setStatus( 'publishing' )
 		// TODO: if publishing and then we are missing a target, we should show a notice.
 		onChange( editedInteraction ).then( () => {
-			setStatus( 'idle' )
-			setIsDirty( false )
-			if ( callback ) {
-				setTimeout( callback, 1 ) // Need a timeout here because re-publishing may be too fast.
-			}
+			return Promise.resolve( saveCurrentEditor() ).finally( () => {
+				setStatus( 'idle' )
+				setIsDirty( false )
+				if ( callback ) {
+					setTimeout( callback, 1 ) // Need a timeout here because re-publishing may be too fast.
+				}
+			} )
 		} )
 	}, [ editedInteraction, onChange ] )
 

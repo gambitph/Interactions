@@ -193,6 +193,241 @@
         ],
         "options": []
     },
-    "serializedBlockExample": "<!-- wp:columns {\"align\":\"full\",\"style\":{\"spacing\":{\"blockGap\":{\"left\":\"var:preset|spacing|20\"}}}} -->\r\n<div class=\"wp-block-columns alignfull\"><!-- wp:column {\"verticalAlignment\":\"center\",\"style\":{\"spacing\":{\"padding\":{\"right\":\"var:preset|spacing|50\",\"left\":\"var:preset|spacing|80\"},\"blockGap\":\"var:preset|spacing|40\"}}} -->\r\n<div class=\"wp-block-column is-vertically-aligned-center\" style=\"padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--80)\"><!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">2000-2010</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:heading {\"level\":1,\"style\":{\"spacing\":{\"padding\":{\"right\":\"0\",\"left\":\"0\"}},\"typography\":{\"fontSize\":\"5rem\"}}} -->\r\n<h1 class=\"wp-block-heading\" style=\"padding-right:0;padding-left:0;font-size:5rem\"><strong>Designing Spaces That Inspire</strong></h1>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph -->\r\n<p><strong>BY INTERACTIONS</strong></p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">We bring vision, creativity, and precision together to craft architectural solutions that blend aesthetics with functionality. From concept to completion, our team ensures every project is built to stand the test of time while reflecting the unique character of its environment.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->\r\n\r\n<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\"} -->\r\n<figure class=\"wp-block-image size-large\"><img src=\"https://images.pexels.com/photos/33661575/pexels-photo-33661575.jpeg?cs=srgb&amp;dl=pexels-eran-topcu-733234192-33661575.jpg\" alt=\"\" style=\"aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns -->",
-    "applyWhitelist": []
+    "applyWhitelist": [],
+    "gutenbergExample": "<!-- wp:columns {\"align\":\"full\",\"style\":{\"spacing\":{\"blockGap\":{\"left\":\"var:preset|spacing|20\"}}}} -->\r\n<div class=\"wp-block-columns alignfull\"><!-- wp:column {\"verticalAlignment\":\"center\",\"style\":{\"spacing\":{\"padding\":{\"right\":\"var:preset|spacing|50\",\"left\":\"var:preset|spacing|80\"},\"blockGap\":\"var:preset|spacing|40\"}}} -->\r\n<div class=\"wp-block-column is-vertically-aligned-center\" style=\"padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--80)\"><!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">2000-2010</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:heading {\"level\":1,\"style\":{\"spacing\":{\"padding\":{\"right\":\"0\",\"left\":\"0\"}},\"typography\":{\"fontSize\":\"5rem\"}}} -->\r\n<h1 class=\"wp-block-heading\" style=\"padding-right:0;padding-left:0;font-size:5rem\"><strong>Designing Spaces That Inspire</strong></h1>\r\n<!-- /wp:heading -->\r\n\r\n<!-- wp:paragraph -->\r\n<p><strong>BY INTERACTIONS</strong></p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph {\"fontSize\":\"medium\"} -->\r\n<p class=\"has-medium-font-size\">We bring vision, creativity, and precision together to craft architectural solutions that blend aesthetics with functionality. From concept to completion, our team ensures every project is built to stand the test of time while reflecting the unique character of its environment.</p>\r\n<!-- /wp:paragraph --></div>\r\n<!-- /wp:column -->\r\n\r\n<!-- wp:column -->\r\n<div class=\"wp-block-column\"><!-- wp:image {\"aspectRatio\":\"1\",\"scale\":\"cover\",\"sizeSlug\":\"large\"} -->\r\n<figure class=\"wp-block-image size-large\"><img src=\"https://images.pexels.com/photos/33661575/pexels-photo-33661575.jpeg?cs=srgb&amp;dl=pexels-eran-topcu-733234192-33661575.jpg\" alt=\"\" style=\"aspect-ratio:1;object-fit:cover\"/></figure>\r\n<!-- /wp:image --></div>\r\n<!-- /wp:column --></div>\r\n<!-- /wp:columns -->",
+    "elementorExample": [
+        {
+            "id": "interact-hero-5",
+            "elType": "container",
+            "settings": {
+                "content_width": "full",
+                "flex_direction": "row",
+                "align_items": "center"
+            },
+            "elements": [
+                {
+                    "id": "interact-hero-5-content",
+                    "elType": "container",
+                    "settings": {
+                        "content_width": "full",
+                        "width": {
+                            "unit": "%",
+                            "size": 50,
+                            "sizes": []
+                        },
+                        "flex_direction": "column",
+                        "padding": {
+                            "unit": "px",
+                            "top": "50",
+                            "right": "30",
+                            "bottom": "50",
+                            "left": "70",
+                            "isLinked": false
+                        }
+                    },
+                    "elements": [
+                        {
+                            "id": "interact-hero-5-dates",
+                            "elType": "widget",
+                            "widgetType": "text-editor",
+                            "settings": {
+                                "editor": "<p>2000-2010</p>"
+                            }
+                        },
+                        {
+                            "id": "interact-hero-5-heading",
+                            "elType": "widget",
+                            "widgetType": "heading",
+                            "settings": {
+                                "title": "Designing Spaces That Inspire",
+                                "header_size": "h1"
+                            }
+                        },
+                        {
+                            "id": "interact-hero-5-byline",
+                            "elType": "widget",
+                            "widgetType": "text-editor",
+                            "settings": {
+                                "editor": "<p><strong>BY INTERACTIONS</strong></p>"
+                            }
+                        },
+                        {
+                            "id": "interact-hero-5-description",
+                            "elType": "widget",
+                            "widgetType": "text-editor",
+                            "settings": {
+                                "editor": "<p>We bring vision, creativity, and precision together to craft architectural solutions that blend aesthetics with functionality. From concept to completion, our team ensures every project is built to stand the test of time while reflecting the unique character of its environment.</p>"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "interact-hero-5-image",
+                    "elType": "widget",
+                    "widgetType": "html",
+                    "settings": {
+                        "html": "<img src=\"https://images.pexels.com/photos/33661575/pexels-photo-33661575.jpeg?cs=srgb&dl=pexels-eran-topcu-733234192-33661575.jpg\" alt=\"\" style=\"display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;\">",
+                        "_element_width": "initial",
+                        "_element_custom_width": {
+                            "unit": "%",
+                            "size": 50,
+                            "sizes": []
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "targetRefs": {
+        "heroRoot": {
+            "gutenberg": {
+                "blockPath": []
+            },
+            "elementor": {
+                "path": [
+                    0
+                ]
+            }
+        },
+        "heroImage": {
+            "gutenberg": {
+                "blockPath": [],
+                "target": {
+                    "type": "selector",
+                    "value": "img"
+                }
+            },
+            "elementor": {
+                "path": [
+                    0,
+                    "elements",
+                    1
+                ],
+                "target": {
+                    "type": "selector",
+                    "value": "img"
+                }
+            }
+        },
+        "heroHeading": {
+            "gutenberg": {
+                "blockPath": []
+            },
+            "elementor": {
+                "path": [
+                    0,
+                    "elements",
+                    0,
+                    "elements",
+                    1
+                ]
+            }
+        },
+        "heroParagraphs": {
+            "gutenberg": {
+                "blockPath": [],
+                "target": {
+                    "type": "selector",
+                    "value": "p"
+                }
+            },
+            "elementor": {
+                "path": [
+                    0
+                ],
+                "target": {
+                    "type": "selector",
+                    "value": "p"
+                }
+            }
+        }
+    },
+    "targetMappings": [
+        {
+            "targetRef": "heroRoot",
+            "interactionPath": [
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroImage",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                0,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroHeading",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                1,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroHeading",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                2,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroParagraphs",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                3,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroImage",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                4,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroHeading",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                5,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroHeading",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                6,
+                "target"
+            ]
+        },
+        {
+            "targetRef": "heroParagraphs",
+            "interactionPath": [
+                "timelines",
+                0,
+                "actions",
+                7,
+                "target"
+            ]
+        }
+    ]
 }
